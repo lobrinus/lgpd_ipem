@@ -64,8 +64,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Cabeçalho
-logo = Image.open('ipem_mg.png')
-st.image(logo, width=200)
 st.title("📜 Política de Privacidade do IPEM-MG")
 st.markdown("---")
 
@@ -108,45 +106,107 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-#  Dados Coletados
-dados_coletados = [
-    {
-        "icone": "📋",
-        "titulo": "Dados de Identificação",
-        "itens": "Nome completo, CPF, RG, data de nascimento, filiação, local de nascimento, gênero, nacionalidade, estado civil"
-    },
-    {
-        "icone": "📞",
-        "titulo": "Dados de Contato",
-        "itens": "Endereço residencial, e-mail, telefone fixo e celular, "
-    },
-    {
-        "icone": "🏢",
-        "titulo": "Dados Profissionais",
-        "itens": "Registro profissional, formação acadêmica, histórico funcional"
-    },
-    {
-        "icone": "🗂️",
-        "titulo": "Dados Sensíveis",
-        "itens": "Informações sobre saúde, deficiência, origem racial ou étnica, convicções religiosas, opiniões políticas, vida sexual"
-    }
-]
 
+# CSS para estilização de quadros
 st.markdown("""
-<div class="policy-container">
-    <h2 class="section-title"> Dados Coletados</h2>
-    <p>O IPEM-MG trata os seguintes tipos de dados pessoais:</p>
+<style>
+    .container-section {
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+    .finalidade-card {
+        border: 2px solid black; /* Borda Preta */
+        border-radius: 10px; /* Bordas arredondadas */
+        padding: 20px; /* Espaço interno */
+        background-color: #f9f9f9; /* Fundo claro */
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+        margin-bottom: 20px; /* Espaçamento entre os quadros */
+        flex: 1; /* Permite ajustar o tamanho */
+    }
+    .finalidade-title {
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 10px; /* Espaçamento abaixo do título */
+    }
+    .data-container {
+        display: flex; /* Layout horizontal */
+        gap: 20px; /* Espaçamento entre os quadros */
+        justify-content: space-between; /* Ajusta alinhamento horizontal */
+        flex-wrap: wrap; /* Ajusta automaticamente em telas menores */
+    }
+    .data-container ul {
+        list-style-type: none; /* Remove marcadores padrão */
+        padding-left: 0;
+    }
+    .data-container ul li {
+        margin-bottom: 10px; /* Espaçamento entre os itens */
+    }
+</style>
 """, unsafe_allow_html=True)
 
-for dado in dados_coletados:
-    st.markdown(f"""
+# CSS básico para estilização
+st.markdown("""
+    <style>
+        .finalidade-card {
+            border: 2px solid black; /* Borda Preta */
+            border-radius: 10px; /* Bordas arredondadas */
+            padding: 20px; /* Espaço interno */
+            background-color: #f9f9f9; /* Fundo claro */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+            margin-bottom: 20px; /* Espaçamento inferior */
+        }
+        .finalidade-title {
+            color: balck; /* Cor do título */
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px; /* Espaçamento abaixo do título */
+        }
+        ul {
+            list-style-type: none; /* Remove marcadores padrão */
+            padding-left: 0; /* Remove espaçamento à esquerda */
+        }
+        ul li {
+            margin-bottom: 10px; /* Espaçamento entre itens */
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Seção: Dados Coletados
+st.header("Dados Coletados")
+st.markdown("O IPEM-MG coleta os seguintes dados, organizados de acordo com sua natureza:")
+
+# Layout com colunas nativas para quadros
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("""
     <div class="finalidade-card">
-        <div class="finalidade-title">{dado['icone']} {dado['titulo']}</div>
-        <p>{dado['itens']}</p>
+        <div class="finalidade-title">📄 Dados Pessoais</div>
+        <ul>
+            <li><b>Nome</b></li>
+            <li><b>CPF</b></li>
+            <li><b>RG</b></li>
+            <li><b>Data de Nascimento</b></li>
+            <li><b>Gênero</b></li>
+            <li><b>Endereço</b></li>
+            <li><b>Telefone</b></li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
+with col2:
+    st.markdown("""
+    <div class="finalidade-card">
+        <div class="finalidade-title">📄 Dados Pessoais Sensíveis</div>
+        <ul>
+            <li><b>Origem racial ou étnica</b></li>
+            <li><b>Convicção religiosa</b></li>
+            <li><b>Opinião política</b></li>
+            <li><b>Dados referentes à saúde ou à vida sexual</b></li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
 #  Finalidades do Tratamento
 st.markdown("""
@@ -390,17 +450,6 @@ for direito in direitos:
     </div>
     """, unsafe_allow_html=True)
 
-# Box de contato do DPO
-st.markdown("""
-<div class="info-box">
-    <p>Para exercer seus direitos, entre em contato com nosso Encarregado de Dados:</p>
-    <p>📧 <strong>ouvidoria@ipem.mg.gov.br</strong> | 📞 <strong>(31) 3399-7100</strong></p>
-    <p>🕒 <strong>Horário de atendimento:</strong> Segunda a sexta, das 8h às 18h</p>
-</div>
-
-</div>  <!-- Fecha o policy-container -->
-""", unsafe_allow_html=True)
-
 #  Medidas de Segurança
 st.markdown("""
 <div class="policy-container">
@@ -510,13 +559,26 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# Box de contato do DPO
+st.markdown("""
+<div class="info-box">
+    <p>Para exercer seus direitos, entre em contato com nosso Encarregado de Dados:</p>
+    <p>📧 <strong>encarregado.data@ipem.mg.gov.br</strong> | 📞 <strong>(31) 3399-7100</strong></p>
+    <p>🕒 <strong>Horário de atendimento:</strong> Segunda a sexta, das 8h às 18h</p>
+</div>
 
+</div>  <!-- Fecha o policy-container -->
+""", unsafe_allow_html=True)
 
 # Rodapé
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #666;">
-    <p>Última atualização: 15/03/2023 - Versão 1.0</p>
+    <p>Última atualização: 16/04/2025 - Versão 1.0</p>
     <p>Instituto de Pesos e Medidas do Estado de Minas Gerais</p>
+    <p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os direitos reservados.
+</p>
 </div>
 """, unsafe_allow_html=True)
+

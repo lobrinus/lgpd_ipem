@@ -1,8 +1,8 @@
 import streamlit as st
 from PIL import Image
+import feedparser
 from datetime import datetime
 import pandas as pd
-import feedparser
 import base64
 import os
 
@@ -31,33 +31,6 @@ st.markdown("""
         font-size: 24px;
         font-weight: bold;
         margin-bottom: 20px;
-    }
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: white;
-        padding: 5px 0;
-        text-align: center;
-        border-top: 1px solid #e1e4e8;
-        z-index: 100;
-    }
-    .footer-columns {
-        display: flex;
-        justify-content: center;
-        gap: 50px;
-        margin: 0 auto;
-        max-width: 400px;
-    }
-    .footer-container {
-        display: flex;
-        justify-content: center;
-        gap: 50px;
-        margin: 0 auto;
-    }
-    .footer-img {
-        text-align: center;
     }
     .news-container {
         background-color: #f9f5e9;
@@ -162,9 +135,35 @@ st.markdown("""
         </style>
     """, unsafe_allow_html=True)
 
-# Conteúdo principal
-st.title("Bem-vindo ao Portal LGPD do IPEM-MG")
+
+# Testando a imagem centralizada
+try:
+    # Carregando a imagem
+    logo = Image.open('ipem_reduzido.png')
+
+    # Convertendo a imagem para base64 para uso em HTML
+    with open('ipem_reduzido.png', "rb") as image_file:
+        encoded_image = base64.b64encode(image_file.read()).decode()
+
+    # Exibindo a imagem centralizada com HTML e CSS
+    st.markdown(f"""
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <img src="data:image/png;base64,{encoded_image}" alt="Logo IPEM-MG" style="height: 100px;">
+    </div>
+    """, unsafe_allow_html=True)
+
+except FileNotFoundError:
+    st.error("Erro: Arquivo de imagem 'ipem_reduzido.png' não encontrado. Verifique o caminho.")
+
+# Conteúdo principal com título centralizado
+st.markdown("""
+<div style="text-align: center;">
+    <h1>Bem-vindo ao Portal LGPD do IPEM-MG</h1>
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown("---")
+
 
 # Destaques com hiperlinks
 st.subheader("Destaques:")
@@ -231,25 +230,34 @@ with st.container():
         </div>
         """, unsafe_allow_html=True)
 
-    # Controles de paginação
-    st.markdown("""
-    <div class="news-pagination">
-    """, unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
-        if st.button("◀ Notícias anteriores", 
-                    disabled=st.session_state.current_page == 0,
-                    key="prev_btn"):
-            st.session_state.current_page -= 1
-            st.rerun()
-        
-        if st.button("Próximas notícias ▶", 
-                    disabled=st.session_state.current_page >= total_pages - 1,
-                    key="next_btn"):
-            st.session_state.current_page += 1
-            st.rerun()
-    
+# Controles de paginação
+st.markdown("""
+<div class="news-pagination">
+</div>
+""", unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns([1,2,1])  # Definição das colunas com proporções
+
+# Botão "Notícias anteriores" na esquerda
+with col1:
+    if st.button("◀ Notícias anteriores", 
+                 disabled=st.session_state.current_page == 0,
+                 key="prev_btn"):
+        st.session_state.current_page -= 1
+        st.rerun()
+
+# Espaço no meio (coluna central - opcional para estética)
+with col2:
+    st.markdown("")  # Vazio, mas pode ser usado para mensagens ou instruções
+
+# Botão "Próximas notícias" na direita
+with col3:
+    if st.button("Próximas notícias ▶", 
+                 disabled=st.session_state.current_page >= total_pages - 1,
+                 key="next_btn"):
+        st.session_state.current_page += 1
+        st.rerun()
+
     st.markdown(f"""
     <div style="text-align: center; margin-top: 1rem; color: #666;">
         Página {st.session_state.current_page + 1} de {total_pages}
@@ -265,25 +273,37 @@ st.markdown("""
 A **Lei Geral de Proteção de Dados (LGPD)**, Lei nº 13.709/2018, estabelece normas sobre o tratamento de dados pessoais.
 """)
 
-try:
 # Convertendo imagens para base64
+try:
     icone_ipem = image_to_base64("icone_ipem.png")
     lgpd_logo = image_to_base64("lgpd_logo.png")
-    
+
+# CSS para o rodapé    
     st.markdown(f"""
+    <style>
+        .footer {{
+            position: fixed;
+            bottom: 10px; /* Posiciona no rodapé */
+            right: 50px; /* Encosta à direita */
+            display: flex; /* Organiza os ícones lado a lado */
+            gap: 10px; /* Espaço entre os ícones */
+        }}
+        .footer img {{
+            width: 50px; /* Define o tamanho dos ícones */
+            height: auto; /* Mantém proporções */
+            transition: transform 0.3s ease; /* Suavidade ao passar o mouse */
+        }}
+        .footer img:hover {{
+            transform: scale(1.2); /* Efeito de zoom no hover */
+        }}
+    </style>
+
     <div class="footer">
-        <div class="footer-container">
-            <div class="footer-img">
-                <img src="data:image/png;base64,{icone_ipem}" width="80">
-                <p style="margin:5px 0 0; font-size:0.8em">Instituto de Metrologia e Qualidade de Minas Gerais</p>
-            </div>
-            <div class="footer-img">
-                <img src="data:image/jpeg;base64,{lgpd_logo}" width="80">
-                <p style="margin:5px 0 0; font-size:0.8em">Proteção de Dados Pessoais no IPEM-MG</p>
-            </div>
-        </div>
+        <img src="data:image/png;base64,{icone_ipem}" alt="Ícone IPEM">
+        <img src="data:image/png;base64,{lgpd_logo}" alt="Logo LGPD">
     </div>
     """, unsafe_allow_html=True)
 
-except Exception as e:
-    st.error(f"Erro ao carregar imagens: {str(e)}")
+except FileNotFoundError:
+    st.error("Erro: Não foi possível carregar uma ou ambas as imagens. Verifique os caminhos e tente novamente.")
+

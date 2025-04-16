@@ -7,6 +7,7 @@ st.set_page_config(
     page_icon="🏠"
 )
 
+
 st.title("🏠 Página Principal")
 st.markdown("---")
 st.markdown("""
@@ -38,7 +39,15 @@ st.markdown("""
 
 st.subheader("Contato do Encarregado de Dados")
 st.markdown("""
-**E-mail:** ouvidoria@ipem.mg.gov.br  
+**E-mail:** encarregado.data@ipem.mg.gov.br  
 **Telefone:** (31) 3399-7100   
 **Horário de atendimento:** 8h às 18h (dias úteis)
 """)
+
+# Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
