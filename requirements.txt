@@ -1,5 +1,5 @@
 streamlit
-feedparser==6.0.8
+feedparser
 datetime
 pandas 
 base64
