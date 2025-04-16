@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image
 from datetime import datetime
 import pandas as pd
+import feedparser
 import base64
 import os
 
