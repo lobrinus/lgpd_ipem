@@ -69,5 +69,5 @@ st.markdown("""
 
 st.markdown("---")
 st.info("""
-**Contato do Encarregado:** dpo@ipem.mg.gov.br | (31) 99999-9999
-""")
+**Contato do Encarregado: encarregado.data@ipem.mg.gov.br | (31) 3399-7100
+Horário de atendimento: 08:00 às 17:00 (exceto feriados)**""")
