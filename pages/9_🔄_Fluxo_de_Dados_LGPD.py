@@ -78,3 +78,11 @@ st.markdown("""
 
 st.markdown("---")
 st.image("https://miro.medium.com/v2/resize:fit:1400/1*_NVB4dmR1Q0aJv2B1H_o3Q.png", caption="Exemplo de Fluxo de Dados Pessoais", width=600)
+
+# Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
