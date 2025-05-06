@@ -56,3 +56,11 @@ st.markdown("---")
 st.warning("""
 **Atenção:** Todo tratamento de dados pessoais no IPEM-MG deve ser registrado no Inventário de Dados Pessoais e ter base legal adequada.
 """)
+
+# Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
