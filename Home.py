@@ -307,3 +307,11 @@ try:
 except FileNotFoundError:
     st.error("Erro: Não foi possível carregar uma ou ambas as imagens. Verifique os caminhos e tente novamente.")
 
+    # Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
+
