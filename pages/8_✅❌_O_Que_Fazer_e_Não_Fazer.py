@@ -58,3 +58,11 @@ st.markdown("""
 ✅ Comunicar imediatamente ao DPO  
 ❌ Tentar resolver sem registro ou tentar esconder
 """)
+
+# Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
