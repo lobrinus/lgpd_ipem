@@ -61,6 +61,14 @@ st.markdown("""
 Demonstração pelo agente da adoção de medidas eficazes capazes de comprovar o cumprimento das normas de proteção de dados.
 """)
 
+# Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
+
 st.markdown("---")
 st.info("""
 Todos os processos do IPEM-MG que envolvem tratamento de dados pessoais devem observar estes princípios em todas as etapas.
