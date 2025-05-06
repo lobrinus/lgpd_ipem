@@ -48,6 +48,14 @@ Adotamos diversas medidas de segurança, incluindo:
 - Políticas e procedimentos claros
 """)
 
+# Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
+
 st.markdown("---")
 st.info("""
 **Não encontrou sua dúvida?** Entre em contato com nosso Encarregado de Dados: dpo@ipem.mg.gov.br
