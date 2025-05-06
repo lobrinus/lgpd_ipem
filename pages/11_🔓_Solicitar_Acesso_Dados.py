@@ -66,3 +66,11 @@ st.info("""
 **Dúvidas?** Entre em contato com nosso Encarregado de Dados:  
 📧 ouvidoria@ipem.mg.gov.br | 📞 (31) 3399-7100
 """)
+
+# Rodapé
+st.markdown("""
+<hr>
+<p style="text-align: center; color: gray;">
+    © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
+</p>
+""", unsafe_allow_html=True)
