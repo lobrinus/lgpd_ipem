@@ -55,6 +55,12 @@ st.markdown("""
 **Comunicação:** Notificação à ANPD e titulares quando necessário
 """)
 
+
+st.markdown("---")
+st.warning("""
+**Importante:** Todo incidente envolvendo dados pessoais deve ser imediatamente comunicado ao Encarregado de Dados.
+""")
+
 # Rodapé
 st.markdown("""
 <hr>
@@ -62,8 +68,3 @@ st.markdown("""
     © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
 </p>
 """, unsafe_allow_html=True)
-
-st.markdown("---")
-st.warning("""
-**Importante:** Todo incidente envolvendo dados pessoais deve ser imediatamente comunicado ao Encarregado de Dados.
-""")
