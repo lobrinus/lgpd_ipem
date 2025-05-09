@@ -67,6 +67,11 @@ st.markdown("""
 - Oposição a tratamentos
 """)
 
+st.markdown("---")
+st.info("""
+**Contato do Encarregado: encarregado.data@ipem.mg.gov.br | (31) 3399-7100
+Horário de atendimento: 08:00 às 17:00 (exceto feriados)**""")
+
 # Rodapé
 st.markdown("""
 <hr>
@@ -74,8 +79,3 @@ st.markdown("""
     © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
 </p>
 """, unsafe_allow_html=True)
-
-st.markdown("---")
-st.info("""
-**Contato do Encarregado: encarregado.data@ipem.mg.gov.br | (31) 3399-7100
-Horário de atendimento: 08:00 às 17:00 (exceto feriados)**""")
