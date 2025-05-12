@@ -30,7 +30,6 @@ st.markdown("""
 
 # Cabeçalho
 st.title("📨 Formulário de Solicitação - LGPD")
-st.markdown("---")
 
 # Formulário
 with st.form("formulario_lgpd"):
