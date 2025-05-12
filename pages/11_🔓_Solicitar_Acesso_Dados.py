@@ -43,7 +43,7 @@ De acordo com a LGPD, você tem direito a:
 
 ### 2. Formas de Solicitação
 Você pode fazer sua solicitação através de:
-- **E-mail:** ouvidoria@ipem.mg.gov.br
+- **E-mail:** ecarregado.data@ipem.mg.gov.br
 - **Formulário Online:** [Acesse aqui]()
 - **Presencialmente:** Na sede do IPEM-MG
 
