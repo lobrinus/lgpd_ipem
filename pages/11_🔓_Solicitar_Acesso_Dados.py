@@ -64,7 +64,7 @@ O IPEM-MG responderá sua solicitação em até **15 dias**, prorrogáveis por m
 st.markdown("---")
 st.info("""
 **Dúvidas?** Entre em contato com nosso Encarregado de Dados:  
-📧 ouvidoria@ipem.mg.gov.br | 📞 (31) 3399-7100
+📧 encarregado.data@ipem.mg.gov.br | 📞 (31) 3399-7100
 """)
 
 # Rodapé
