@@ -30,7 +30,7 @@ O prazo legal é de 15 dias, prorrogável por mais 15 dias mediante justificativ
 
 st.subheader("5. O que fazer em caso de vazamento de dados?")
 st.markdown("""
-Caso identifique ou suspeite de um vazamento de dados pessoais tratados pelo IPEM-MG, entre em contato imediatamente com o Encarregado de Dados pelo e-mail dpo@ipem.mg.gov.br ou pelo telefone (31) 99999-9999.
+Caso identifique ou suspeite de um vazamento de dados pessoais tratados pelo IPEM-MG, entre em contato imediatamente com o Encarregado de Dados pelo e-mail encarregado.data@ipem.mg.gov.br ou pelo telefone (31) 3399-7100
 """)
 
 st.subheader("6. Posso solicitar a exclusão dos meus dados?")
@@ -50,7 +50,7 @@ Adotamos diversas medidas de segurança, incluindo:
 
 st.markdown("---")
 st.info("""
-**Não encontrou sua dúvida?** Entre em contato com nosso Encarregado de Dados: dpo@ipem.mg.gov.br
+**Não encontrou sua dúvida?** Entre em contato com nosso Encarregado de Dados: encarregado.data@ipem.mg.gov.br
 """)
 # Rodapé
 st.markdown("""
