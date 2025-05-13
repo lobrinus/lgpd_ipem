@@ -13,7 +13,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
 st.set_page_config(
     page_title="Solicitação LGPD - IPEM-MG",
     page_icon="📨",
