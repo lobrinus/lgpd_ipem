@@ -2,8 +2,6 @@ import streamlit as st
 import smtplib
 from email.message import EmailMessage
 
-st.set_page_config(page_title="Formulário LGPD", page_icon="📨", layout="wide")
-
 st.set_page_config(
     page_title="Solicitação LGPD - IPEM-MG",
     page_icon="📨",
