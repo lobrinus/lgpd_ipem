@@ -48,10 +48,10 @@ with st.form("formulario_lgpd"):
     if enviado:
         if nome and telefone and email_contato and cpf and mensagem:
             try:
-                # Configurar envio de e-mail (ajuste conforme necessário)
+                # Ajuste conforme o Necessario
                 remetente = "seu_email@ipem.mg.gov.br"
                 senha = "sua_senha_de_aplicativo"
-                destinatario = "lgpd@ipem.mg.gov.br"
+                destinatario = "encarregado.data@ipem.mg.gov.br"
 
                 msg = EmailMessage()
                 msg['Subject'] = "Nova Solicitação LGPD - IPEM-MG"
