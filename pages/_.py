@@ -4,15 +4,6 @@ from email.message import EmailMessage
 
 st.set_page_config(page_title="Formulário LGPD", page_icon="📨", layout="wide")
 
-# Esconde a página do menu lateral
-st.markdown("""
-    <style>
-    section[data-testid="stSidebarNav"] ul li:nth-child(n):has(a[href*="formulario_lgpd"]) {
-        display: none;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 st.set_page_config(
     page_title="Solicitação LGPD - IPEM-MG",
     page_icon="📨",
