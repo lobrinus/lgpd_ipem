@@ -174,7 +174,10 @@ with st.sidebar:
             st.session_state["logado"] = False
             st.error("❌ Usuário ou senha inválidos.")
 
-
+if st.session_state.get("logado"):
+    st.sidebar.success("✅ Acesso de administrador ativo")
+else:
+    st.sidebar.info("ℹ️ Acesso público")
 
 # Testando a imagem centralizada
 try:
