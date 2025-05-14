@@ -7,6 +7,8 @@ import base64
 import os
 import firebase_admin
 from firebase_admin import credentials, firestore as fs
+from datetime import datetime
+import pytz
 
 st.set_page_config(page_title="LGPD - IPEM-MG", page_icon="🏠", layout="wide")
 
