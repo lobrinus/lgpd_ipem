@@ -3,13 +3,6 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime
 
-# Inicializa Firebase
-if not firebase_admin._apps:
-    cred = credentials.Certificate(st.secrets["firebase"])
-    firebase_admin.initialize_app(cred)
-
-db = firestore.client()
-
 st.set_page_config(page_title="Solicitação LGPD - IPEM-MG", page_icon="📨", layout="wide")
 
 # FORMULÁRIO (acessível a todos)
