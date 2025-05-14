@@ -47,7 +47,35 @@ with st.expander("🔐 Administrador"):
     if login_button:
         usuarios = st.secrets["auth"]
         if user in usuarios and usuarios[user] == password:
+            
             st.session_state["logado"] = True
             st.success("✅ Login realizado com sucesso.")
         else:
             st.error("❌ Usuário ou senha inválidos.")
+# ÁREA ADMINISTRATIVA - Exibe dados após login
+if st.session_state.get("logado"):
+    st.markdown("---")
+    st.subheader("📁 Solicitações Recebidas")
+
+    docs = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING).stream()
+    dados = []
+    for doc in docs:
+        registro = doc.to_dict()
+        registro["id"] = doc.id
+        dados.append(registro)
+
+    if dados:
+        import pandas as pd
+        df = pd.DataFrame(dados)
+        nome_filtro = st.text_input("🔍 Filtrar por nome")
+        cpf_filtro = st.text_input("🔍 Filtrar por CPF")
+
+        if nome_filtro:
+            df = df[df["nome"].str.contains(nome_filtro, case=False)]
+
+        if cpf_filtro:
+            df = df[df["cpf"].str.contains(cpf_filtro)]
+
+        st.dataframe(df[["nome", "cpf", "email", "mensagem", "data_envio"]])
+    else:
+        st.info("Nenhuma solicitação registrada ainda.")
