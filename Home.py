@@ -6,14 +6,23 @@ import pandas as pd
 import base64
 import os
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore as fs
 
-# Inicializa Firebase usando o conteúdo do secret
-if not firebase_admin._apps:
-    cred = credentials.Certificate(st.secrets["firebase"])
-    firebase_admin.initialize_app(cred)
+st.set_page_config(page_title="LGPD - IPEM-MG", page_icon="🏠", layout="wide")
 
-db = firestore.client()
+# Inicializa Firebase com segurança
+try:
+    if not firebase_admin._apps:
+        cred = credentials.Certificate(st.secrets["firebase"])
+        firebase_admin.initialize_app(cred)
+    db = fs.client()
+except Exception as e:
+    st.error(f"❌ Erro ao inicializar Firebase: {e}")
+    st.stop()
+
+if "firebase" not in st.secrets:
+    st.error("🚨 Configuração do Firebase ausente nos secrets.")
+    st.stop()
 
 def image_to_base64(img_path):
     with open(img_path, "rb") as img_file:
