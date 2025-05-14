@@ -1,56 +1,53 @@
 import streamlit as st
-import smtplib
-from email.message import EmailMessage
+import firebase_admin
+from firebase_admin import credentials, firestore
+from datetime import datetime
 
-# Cabeçalho
-st.title("📨 Formulário de Solicitação - LGPD")
+# Inicializa Firebase
+if not firebase_admin._apps:
+    cred = credentials.Certificate(st.secrets["firebase"])
+    firebase_admin.initialize_app(cred)
 
-# Formulário
+db = firestore.client()
+
+st.set_page_config(page_title="Solicitação LGPD - IPEM-MG", page_icon="📨", layout="wide")
+
+# FORMULÁRIO (acessível a todos)
+st.title("📨 Formulário de Solicitação a Dados Pessoais - LGPD")
+
 with st.form("formulario_lgpd"):
-    st.markdown('<div class="form-container">', unsafe_allow_html=True)
-    st.markdown('<div class="form-title">Preencha as informações abaixo:</div>', unsafe_allow_html=True)
-
     nome = st.text_input("Nome completo")
     telefone = st.text_input("Telefone de contato")
-    email_contato = st.text_input("E-mail de contato")
+    email = st.text_input("E-mail de contato")
     cpf = st.text_input("CPF")
     mensagem = st.text_area("Mensagem")
 
     enviado = st.form_submit_button("📩 Enviar Solicitação")
-    st.markdown('</div>', unsafe_allow_html=True)
 
     if enviado:
-        if nome and telefone and email_contato and cpf and mensagem:
-            try:
-                # Ajuste conforme o Necessario
-                remetente = "seu_email@ipem.mg.gov.br"
-                senha = "sua_senha_de_aplicativo"
-                destinatario = "encarregado.data@ipem.mg.gov.br"
-
-                msg = EmailMessage()
-                msg['Subject'] = "Nova Solicitação LGPD - IPEM-MG"
-                msg['From'] = remetente
-                msg['To'] = destinatario
-
-                conteudo = f"""
-                Nova solicitação recebida via portal LGPD:
-
-                Nome: {nome}
-                Telefone: {telefone}
-                E-mail: {email_contato}
-                CPF: {cpf}
-                Mensagem:
-                {mensagem}
-                """
-
-                msg.set_content(conteudo)
-
-                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                    smtp.login(remetente, senha)
-                    smtp.send_message(msg)
-
-                st.success("✅ Solicitação enviada com sucesso!")
-            except Exception as e:
-                st.error(f"Erro ao enviar o e-mail: {e}")
+        if nome and telefone and email and cpf and mensagem:
+            db.collection("solicitacoes").add({
+                "nome": nome,
+                "telefone": telefone,
+                "email": email,
+                "cpf": cpf,
+                "mensagem": mensagem,
+                "data_envio": datetime.now()
+            })
+            st.success("✅ Solicitação enviada com sucesso!")
         else:
             st.warning("⚠️ Por favor, preencha todos os campos.")
+
+# BOTÃO DE LOGIN (acesso restrito)
+with st.expander("🔐 Administrador"):
+    user = st.text_input("Usuário")
+    password = st.text_input("Senha", type="password")
+    login_button = st.button("Entrar como administrador")
+
+    if login_button:
+        usuarios = st.secrets["auth"]
+        if user in usuarios and usuarios[user] == password:
+            st.session_state["logado"] = True
+            st.success("✅ Login realizado com sucesso.")
+        else:
+            st.error("❌ Usuário ou senha inválidos.")
