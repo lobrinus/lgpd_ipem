@@ -24,7 +24,7 @@ with st.form("formulario_lgpd"):
 
     enviado = st.form_submit_button("📩 Enviar Solicitação")
 
-    if enviado:
+if enviado:
     if nome and telefone and email and cpf and mensagem:
         br_tz = pytz.timezone("America/Sao_Paulo")
         data_envio = datetime.now(br_tz)
