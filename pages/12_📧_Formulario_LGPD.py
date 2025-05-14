@@ -2,6 +2,16 @@ import streamlit as st
 import smtplib
 from email.message import EmailMessage
 
+
+    # Exibindo a imagem centralizada com HTML e CSS
+st.markdown(f"""
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <img src="data:image/png;base64,{encoded_image}" alt="Logo IPEM-MG" style="height: 100px;">
+</div>
+""", unsafe_allow_html=True)
+
+except FileNotFoundError:
+    st.error("Erro: Arquivo de imagem 'ipem_reduzido.png' não encontrado. Verifique o caminho.")
 st.set_page_config(page_title="Formulário LGPD", page_icon="📨", layout="wide")
 
 # Oculta esta página do menu lateral
