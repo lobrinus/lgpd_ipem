@@ -158,6 +158,7 @@ st.markdown("""
         </style>
     """, unsafe_allow_html=True)
 
+# ---------------- LOGIN ADMIN NA SIDEBAR ------------------
 with st.sidebar:
     st.markdown("## 🔐 Área Administrativa")
     user = st.text_input("Usuário", key="login_user")
@@ -170,7 +171,9 @@ with st.sidebar:
             st.session_state["logado"] = True
             st.success("✅ Login realizado com sucesso.")
         else:
+            st.session_state["logado"] = False
             st.error("❌ Usuário ou senha inválidos.")
+
 
 
 # Testando a imagem centralizada
