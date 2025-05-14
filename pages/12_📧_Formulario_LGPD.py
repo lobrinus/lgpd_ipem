@@ -2,6 +2,7 @@ import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime
+import pytz
 
 st.set_page_config(page_title="Solicitação LGPD - IPEM-MG", page_icon="📨", layout="wide")
 
@@ -24,18 +25,21 @@ with st.form("formulario_lgpd"):
     enviado = st.form_submit_button("📩 Enviar Solicitação")
 
     if enviado:
-        if nome and telefone and email and cpf and mensagem:
-            db.collection("solicitacoes").add({
-                "nome": nome,
-                "telefone": telefone,
-                "email": email,
-                "cpf": cpf,
-                "mensagem": mensagem,
-                "data_envio": datetime.now()
-            })
-            st.success("✅ Solicitação enviada com sucesso!")
-        else:
-            st.warning("⚠️ Por favor, preencha todos os campos.")
+    if nome and telefone and email and cpf and mensagem:
+        br_tz = pytz.timezone("America/Sao_Paulo")
+        data_envio = datetime.now(br_tz)
+        
+        db.collection("solicitacoes").add({
+            "nome": nome,
+            "telefone": telefone,
+            "email": email,
+            "cpf": cpf,
+            "mensagem": mensagem,
+            "data_envio": data_envio
+        })
+        st.success("✅ Solicitação enviada com sucesso!")
+    else:
+        st.warning("⚠️ Por favor, preencha todos os campos.")
 
 # SEÇÃO RESTRITA (apenas admins logados)
 if st.session_state.get("logado"):
