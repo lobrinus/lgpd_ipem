@@ -158,6 +158,20 @@ st.markdown("""
         </style>
     """, unsafe_allow_html=True)
 
+with st.sidebar:
+    st.markdown("## 🔐 Área Administrativa")
+    user = st.text_input("Usuário", key="login_user")
+    password = st.text_input("Senha", type="password", key="login_pass")
+    login_button = st.button("Entrar", key="login_btn")
+
+    if login_button:
+        usuarios = st.secrets["auth"]
+        if user in usuarios and usuarios[user] == password:
+            st.session_state["logado"] = True
+            st.success("✅ Login realizado com sucesso.")
+        else:
+            st.error("❌ Usuário ou senha inválidos.")
+
 
 # Testando a imagem centralizada
 try:
