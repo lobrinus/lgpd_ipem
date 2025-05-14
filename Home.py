@@ -5,10 +5,33 @@ from datetime import datetime
 import pandas as pd
 import base64
 import os
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+# Inicializa Firebase usando o conteúdo do secret
+if not firebase_admin._apps:
+    cred = credentials.Certificate(st.secrets["firebase"])
+    firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 def image_to_base64(img_path):
     with open(img_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
+
+
+from datetime import datetime
+
+def salvar_solicitacao(nome, telefone, email, cpf, mensagem):
+    db.collection("solicitacoes").add({
+        "nome": nome,
+        "telefone": telefone,
+        "email": email,
+        "cpf": cpf,
+        "mensagem": mensagem,
+        "data_envio": datetime.now()
+    })
+
 
 # Verificação SE as imagens existem
 if not os.path.exists("ipem_mg.png"):
