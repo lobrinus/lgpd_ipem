@@ -2,26 +2,6 @@ import streamlit as st
 import smtplib
 from email.message import EmailMessage
 
-# CSS de tema consistente
-st.markdown("""
-<style>
-.form-container {
-    background-color: #f9f9f9;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
-    border: 2px solid black;
-}
-.form-title {
-    color: #2b5876;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-</style>
-""", unsafe_allow_html=True)
-
 # Cabeçalho
 st.title("📨 Formulário de Solicitação - LGPD")
 
