@@ -5,6 +5,12 @@ from datetime import datetime
 
 st.set_page_config(page_title="Solicitação LGPD - IPEM-MG", page_icon="📨", layout="wide")
 
+# Inicializa Firebase
+if not firebase_admin._apps:
+    cred = credentials.Certificate(dict(st.secrets["firebase"]))
+    firebase_admin.initialize_app(cred)
+db = firestore.client()
+
 # FORMULÁRIO (acessível a todos)
 st.title("📨 Formulário de Solicitação a Dados Pessoais - LGPD")
 
@@ -31,10 +37,21 @@ with st.form("formulario_lgpd"):
         else:
             st.warning("⚠️ Por favor, preencha todos os campos.")
 
+# SEÇÃO RESTRITA (apenas admins logados)
 if st.session_state.get("logado"):
     st.markdown("---")
     st.subheader("📁 Solicitações Recebidas")
 
-    docs = db.collection("solicitacoes").order_by("data_envio", direction=fs.Query.DESCENDING).stream()
-    ...
+    solicitacoes = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING).stream()
 
+    for doc in solicitacoes:
+        dados = doc.to_dict()
+        st.markdown(f"**🧑 Nome:** {dados.get('nome')}")
+        st.markdown(f"**📧 E-mail:** {dados.get('email')}")
+        st.markdown(f"**📞 Telefone:** {dados.get('telefone')}")
+        st.markdown(f"**🆔 CPF:** {dados.get('cpf')}")
+        st.markdown(f"**💬 Mensagem:** {dados.get('mensagem')}")
+        st.markdown(f"**📅 Data de envio:** {dados.get('data_envio').strftime('%d/%m/%Y %H:%M')}")
+        st.markdown("---")
+else:
+    st.info("🔐 Área restrita. Faça login como administrador para visualizar as solicitações.")
