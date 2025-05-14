@@ -14,16 +14,6 @@ except FileNotFoundError:
     st.error("Erro: Arquivo de imagem 'ipem_reduzido.png' não encontrado. Verifique o caminho.")
 st.set_page_config(page_title="Formulário LGPD", page_icon="📨", layout="wide")
 
-# Oculta esta página do menu lateral
-st.markdown("""
-    <style>
-    [data-testid="stSidebarNav"] a[href$="formulario_lgpd"] {
-        display: none;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
 # CSS de tema consistente
 st.markdown("""
 <style>
