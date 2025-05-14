@@ -55,7 +55,19 @@ if st.session_state.get("logado"):
         st.markdown(f"**📞 Telefone:** {dados.get('telefone')}")
         st.markdown(f"**🆔 CPF:** {dados.get('cpf')}")
         st.markdown(f"**💬 Mensagem:** {dados.get('mensagem')}")
-        st.markdown(f"**📅 Data de envio:** {dados.get('data_envio').strftime('%d/%m/%Y %H:%M')}")
-        st.markdown("---")
+        
+    data_envio = dados.get("data_envio")
+    br_tz = pytz.timezone("America/Sao_Paulo")
+
+if isinstance(data_envio, datetime):
+    # Se o datetime estiver sem fuso (na maioria dos casos), assume que está em UTC
+    if data_envio.tzinfo is None:
+        data_envio = data_envio.replace(tzinfo=pytz.UTC)
+    
+    data_brasil = data_envio.astimezone(br_tz)
+    st.markdown(f"**📅 Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
+    else:
+        st.markdown("**📅 Data de envio:** Data inválida")
+            st.markdown("---")
 else:
     st.info("🔐 Área restrita. Faça login como administrador para visualizar as solicitações.")
