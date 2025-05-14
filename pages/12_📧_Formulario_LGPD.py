@@ -31,3 +31,10 @@ with st.form("formulario_lgpd"):
         else:
             st.warning("⚠️ Por favor, preencha todos os campos.")
 
+if st.session_state.get("logado"):
+    st.markdown("---")
+    st.subheader("📁 Solicitações Recebidas")
+
+    docs = db.collection("solicitacoes").order_by("data_envio", direction=fs.Query.DESCENDING).stream()
+    ...
+
