@@ -49,13 +49,6 @@ if not os.path.exists("ipem_mg.png"):
 if not os.path.exists("img_lgpd/privacy.jpg"):
     st.error("Erro: privacy.jpg não encontrado na pasta img_lgpd!")
 
-# Configuração da página
-st.set_page_config(
-    page_title="LGPD - IPEM-MG",
-    page_icon="🏠",
-    layout="wide"
-)
-
 
 # CSS personalizado
 st.markdown("""
