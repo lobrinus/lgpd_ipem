@@ -13,7 +13,8 @@ st.set_page_config(page_title="LGPD - IPEM-MG", page_icon="🏠", layout="wide")
 # Inicializa Firebase com segurança
 try:
     if not firebase_admin._apps:
-        cred = credentials.Certificate(st.secrets["firebase"])
+        import json
+        cred = credentials.Certificate(json.loads(str(st.secrets["firebase"])))
         firebase_admin.initialize_app(cred)
     db = fs.client()
 except Exception as e:
