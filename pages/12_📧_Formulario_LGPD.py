@@ -81,7 +81,7 @@ if st.session_state.get("logado"):
         if st.button(f"🗑️ Deletar mensagem de {dados.get('nome')}", key=f"del_{doc.id}"):
             db.collection("solicitacoes").document(doc.id).delete()
             st.success("✅ Mensagem deletada com sucesso.")
-                st.rerun()
+        st.rerun()
 
 else:
     st.info("🔐 Área restrita. Faça login como administrador para visualizar as solicitações.")
