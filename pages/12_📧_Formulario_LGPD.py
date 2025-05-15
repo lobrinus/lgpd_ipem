@@ -1,3 +1,8 @@
+import streamlit as st
+import firebase_admin
+from firebase_admin import credentials, firestore
+from datetime import datetime
+import pytz
 # SEÇÃO RESTRITA (apenas admins logados)
 if st.session_state.get("logado"):
     st.markdown("---")
