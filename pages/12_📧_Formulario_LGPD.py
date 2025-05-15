@@ -78,10 +78,10 @@ if st.session_state.get("logado"):
                 st.markdown(f"**💬 Mensagem:** {dados.get('mensagem')}")
                 st.markdown(f"**📅 Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
 
-                if st.button(f"🗑️ Deletar mensagem de {dados.get('nome')}", key=f"del_{doc.id}"):
-                    db.collection("solicitacoes").document(doc.id).delete()
-                    st.success("✅ Mensagem deletada com sucesso.")
-                        st.rerun()
+        if st.button(f"🗑️ Deletar mensagem de {dados.get('nome')}", key=f"del_{doc.id}"):
+            db.collection("solicitacoes").document(doc.id).delete()
+            st.success("✅ Mensagem deletada com sucesso.")
+                st.rerun()
 
 else:
     st.info("🔐 Área restrita. Faça login como administrador para visualizar as solicitações.")
