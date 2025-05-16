@@ -1,10 +1,11 @@
 import streamlit as st
+from login import exibir_login
 
 st.set_page_config(
     page_title="Orientação de Dados Pessoais - LGPD IPEM-MG",
     page_icon="🔍"
 )
-
+exibir_login()
 st.title("🔍 Orientação sobre Dados Pessoais")
 st.markdown("---")
 st.markdown("""
