@@ -5,7 +5,6 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 from login import exibir_login
-exibir_login()
 
 # Inicializar Firebase
 if not firebase_admin._apps:
