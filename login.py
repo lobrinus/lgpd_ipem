@@ -1,28 +1,40 @@
 import streamlit as st
 
 def exibir_login():
-    # Estilo fixo no canto superior esquerdo
     st.markdown("""
     <style>
         #login-container {
             position: fixed;
-            top: 10px;
-            left: 10px;
+            top: 0;
+            left: 0;
             background-color: #f0f2f6;
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-            z-index: 9999;
-            width: 250px;
+            padding: 8px 10px;
+            border-bottom-right-radius: 8px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+            z-index: 10000;
+            width: 220px;
+            font-size: 12px;
         }
-        #login-container input, #login-container button {
-            width: 100%;
-            margin-top: 5px;
+        #login-container label {
+            font-size: 11px;
+        }
+        #login-container input {
+            font-size: 12px !important;
+            height: 28px !important;
+            padding: 2px 6px !important;
+        }
+        #login-container button {
+            font-size: 12px !important;
+            padding: 4px 0 !important;
+            margin-top: 4px;
+        }
+        #login-container div.stAlert {
+            margin-top: 4px;
+            font-size: 12px;
         }
     </style>
     """, unsafe_allow_html=True)
 
-    # Renderiza os inputs como blocos invisíveis com CSS no topo
     with st.container():
         st.markdown('<div id="login-container">', unsafe_allow_html=True)
 
