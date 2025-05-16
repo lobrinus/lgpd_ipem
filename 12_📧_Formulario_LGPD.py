@@ -29,14 +29,17 @@ if enviado:
     if nome and telefone and email and cpf and mensagem:
         br_tz = pytz.timezone("America/Sao_Paulo")
         data_envio = datetime.now(br_tz)
-        db.collection("solicitacoes").add({
-            "nome": nome,
-            "telefone": telefone,
-            "email": email,
-            "cpf": cpf,
-            "mensagem": mensagem,
-            "data_envio": data_envio
-        })
+            db.collection("solicitacoes").add({
+                "nome": nome,
+                "telefone": telefone,
+                "email": st.session_state.get("cidadao_email", email),
+                "cpf": cpf,
+                "mensagem": mensagem,
+                "data_envio": data_envio,
+                "lido": False,
+                "resposta": None,
+                "data_resposta": None
+            })
         st.success("✅ Solicitação enviada com sucesso!")
     else:
         st.warning("⚠️ Preencha todos os campos.")
