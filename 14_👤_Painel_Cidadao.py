@@ -17,7 +17,7 @@ firebaseConfig = {
 
 # ✅ Inicializa Firebase Admin
 if not firebase_admin._apps:
-    cred = credentials.Certificate("lgpd-ipem-mg-9f1a5-firebase-adminsdk-fbsvc-28a802a601.json")  # caminho do JSON de credenciais admin
+    cred = credentials.Certificate("firebase_config.json")  # caminho do JSON de credenciais admin
     firebase_admin.initialize_app(cred)
 
 # ✅ Inicializa Pyrebase (Web)
