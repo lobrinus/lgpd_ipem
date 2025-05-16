@@ -17,6 +17,6 @@ def exibir_login():
                 st.error("❌ Usuário ou senha inválidos.")
 
         if st.session_state.get("logado"):
-            st.sidebar.success("✅ Acesso de administrador ativo")
+            st.sidebar.success("✅ Logado")
         else:
-            st.sidebar.info("ℹ️ Acesso público")
+            st.sidebar.info("ℹ️ Visitante")
