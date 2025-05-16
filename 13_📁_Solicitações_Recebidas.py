@@ -10,6 +10,8 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+# NÃO chamar exibir_login() aqui!
+
 st.title("📨 Solicitação de Acesso a Dados Pessoais")
 
 with st.form("formulario_lgpd"):
