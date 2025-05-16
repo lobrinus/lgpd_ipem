@@ -4,9 +4,6 @@ import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-from login import exibir_login
-exibir_login()
-
 # Inicializar Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate(dict(st.secrets["firebase"]))
@@ -54,7 +51,7 @@ if st.session_state.get("logado"):
                             "lido": False
                         })
                         st.success("✅ Resposta enviada.")
-                        st.experimental_rerun()
+                        st.rerun()
 
                 if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
                     db.collection("solicitacoes").document(doc.id).delete()
