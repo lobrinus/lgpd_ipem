@@ -1,5 +1,3 @@
-# painel_cidadao.py
-
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
@@ -11,8 +9,6 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
-
-st.set_page_config(page_title="Painel Cidadão - IPEM-MG")
 
 # -------------------- Funções Auxiliares --------------------
 def registrar_usuario(email, senha):
