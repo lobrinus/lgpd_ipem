@@ -23,7 +23,7 @@ exibir_login()
 paginas_publicas = {
     "🏠 Início": "Home",
     "🏠 Página Principal": "1_🏠_Página_Principal (1)"
-    "✅ Boas Práticas": "2_✅_Boas_Práticas"
+    "✅ Boas Práticas": "2_✅_Boas_Práticas (2)"
     "📜 Política de Privacidade": "3_📜_Política_de_Privacidade"
     "🔍 Orientação de Dados Pessoais": "4_🔍_Orientação_de_Dados_Pessoais"
     "👥 Quem Lida com os Dados": "5_👥_Quem_Lida_com_os_Dados"
