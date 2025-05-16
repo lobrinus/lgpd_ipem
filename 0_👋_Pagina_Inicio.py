@@ -1,5 +1,10 @@
 import streamlit as st
-from login import exibir_login
+import base64
+import os
+import feedparser
+from datetime import datetime
+from PIL import Image
+
 def image_to_base64(img_path):
     with open(img_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
