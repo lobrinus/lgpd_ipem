@@ -15,10 +15,13 @@ firebaseConfig = {
     "databaseURL": ""
 }
 
-# ✅ Inicializa Firebase Admin
 if not firebase_admin._apps:
-    cred = credentials.Certificate("firebase_config.json")  # caminho do JSON de credenciais admin
+    cred_json = os.getenv("FIREBASE_CREDENTIALS")  # pega a variável secreta do Streamlit Cloud
+    cred_dict = json.loads(cred_json)
+    cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 # ✅ Inicializa Pyrebase (Web)
 firebase = pyrebase.initialize_app(firebaseConfig)
