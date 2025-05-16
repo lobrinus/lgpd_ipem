@@ -35,7 +35,7 @@ def exibir_login():
     """, unsafe_allow_html=True)
 
     # Recupera os valores usando parâmetros GET (não 100% seguro, mas funcional para painel simples)
-    query_params = st.experimental_get_query_params()
+    query_params =  st.query_params
     user_input = st.text_input("Usuário", key="login_user", label_visibility="collapsed")
     pass_input = st.text_input("Senha", type="password", key="login_pass", label_visibility="collapsed")
 
