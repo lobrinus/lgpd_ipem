@@ -4,7 +4,8 @@ import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# ❌ Removido: from login import exibir_login
+from login import exibir_login
+exibir_login()
 
 # Inicializar Firebase
 if not firebase_admin._apps:
@@ -12,10 +13,9 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# ✅ Verifica login antes de mostrar qualquer coisa
-if st.session_state.get("logado"):
-    st.title("📁 Solicitações Recebidas")
+st.title("📁 Solicitações Recebidas")
 
+if st.session_state.get("logado"):
     br_tz = pytz.timezone("America/Sao_Paulo")
     data_inicio = st.date_input("Data inicial", value=datetime.now(br_tz).date())
     data_fim = st.date_input("Data final", value=datetime.now(br_tz).date())
@@ -27,6 +27,7 @@ if st.session_state.get("logado"):
     for doc in solicitacoes:
         dados = doc.to_dict()
         data_envio = dados.get("data_envio")
+
         if isinstance(data_envio, datetime):
             if data_envio.tzinfo is None:
                 data_envio = data_envio.replace(tzinfo=pytz.UTC)
@@ -34,25 +35,29 @@ if st.session_state.get("logado"):
             if not (dt_inicio <= data_brasil <= dt_fim):
                 continue
 
-with st.expander(f"{dados.get('nome')} - {data_brasil.strftime('%d/%m/%Y %H:%M')}"):
-    st.markdown(f"📧 **E-mail:** {dados.get('email')}")
-    st.markdown(f"📞 **Telefone:** {dados.get('telefone')}")
-    st.markdown(f"🆔 **CPF:** {dados.get('cpf')}")
-    st.markdown(f"💬 **Mensagem:** {dados.get('mensagem')}")
-    st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
+            with st.expander(f"{dados.get('nome')} - {data_brasil.strftime('%d/%m/%Y %H:%M')}"):
+                st.markdown(f"📧 **E-mail:** {dados.get('email')}")
+                st.markdown(f"📞 **Telefone:** {dados.get('telefone')}")
+                st.markdown(f"🆔 **CPF:** {dados.get('cpf')}")
+                st.markdown(f"💬 **Mensagem:** {dados.get('mensagem')}")
+                st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
 
-    if dados.get("resposta"):
-        st.success(f"💬 Resposta enviada: {dados.get('resposta')}")
-        st.caption(f"🕒 Respondido em: {dados.get('data_resposta')}")
-    else:
-        resposta = st.text_area("Responder", key=f"res_{doc.id}")
-        if st.button("Enviar Resposta", key=f"send_{doc.id}"):
-            db.collection("solicitacoes").document(doc.id).update({
-                "resposta": resposta,
-                "data_resposta": datetime.now(br_tz).strftime("%d/%m/%Y %H:%M"),
-                "lido": False
-            })
-            st.success("✅ Resposta enviada.")
-            st.rerun()
+                if dados.get("resposta"):
+                    st.success(f"💬 Resposta enviada: {dados.get('resposta')}")
+                    st.caption(f"🕒 Respondido em: {dados.get('data_resposta')}")
+                else:
+                    resposta = st.text_area("Responder", key=f"res_{doc.id}")
+                    if st.button("Enviar Resposta", key=f"send_{doc.id}"):
+                        db.collection("solicitacoes").document(doc.id).update({
+                            "resposta": resposta,
+                            "data_resposta": datetime.now(br_tz).strftime("%d/%m/%Y %H:%M"),
+                            "lido": False
+                        })
+                        st.success("✅ Resposta enviada.")
+                        st.experimental_rerun()
+
+                if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
+                    db.collection("solicitacoes").document(doc.id).delete()
+                    st.rerun()
 else:
     st.warning("🔐 Área restrita. Faça login para visualizar as solicitações.")
