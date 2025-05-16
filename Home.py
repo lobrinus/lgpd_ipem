@@ -33,6 +33,7 @@ with st.sidebar:
 
 # Define as páginas públicas
 paginas = {
+    "👤 Painel do Cidadão": "14_👤_Painel_Cidadao.py",
     "🏠 Início": "0_👋_Pagina_Inicio.py",
     "🏠 Página Principal": "1_🏠_Página_Principal.py",
     "✅ Boas Práticas": "2_✅_Boas_Práticas.py",
