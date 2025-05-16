@@ -8,8 +8,28 @@ st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
 
-# Exibe o login
-exibir_login()
+# Exibe o login ou identifica o usuário
+with st.sidebar:
+    st.markdown("## 🔐 Área Administrativa")
+    if st.session_state.get("logado"):
+        st.success("👤 Usuário administrador logado")
+        if st.button("Sair"):
+            st.session_state["logado"] = False
+            st.experimental_rerun()
+    else:
+        user = st.text_input("Usuário", key="login_user", label_visibility="visible")
+        password = st.text_input("Senha", type="password", key="login_pass", label_visibility="visible")
+        login_button = st.button("Entrar", key="login_btn")
+
+        if login_button:
+            usuarios = st.secrets["auth"]
+            if user in usuarios and usuarios[user] == password:
+                st.session_state["logado"] = True
+                st.success("✅ Login realizado com sucesso.")
+                st.experimental_rerun()
+            else:
+                st.session_state["logado"] = False
+                st.error("❌ Usuário ou senha inválidos.")
 
 # Define as páginas públicas
 paginas = {
@@ -27,7 +47,6 @@ paginas = {
     "🔓 Solicitar Acesso Dados": "11_🔓_Solicitar_Acesso_Dados.py",
     "📨 Formulário LGPD": "12_📧_Formulario_LGPD.py"
 }
-
 # Se estiver logado, adiciona a página privada
 if st.session_state["logado"]:
     paginas["📁 Solicitações Recebidas"] = "13_📁_Solicitações_Recebidas.py"
