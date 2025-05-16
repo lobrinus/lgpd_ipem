@@ -10,51 +10,35 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-st.title("📁 Solicitações Recebidas")
+st.title("📨 Solicitação de Acesso a Dados Pessoais")
 
-if st.session_state.get("logado"):
-    br_tz = pytz.timezone("America/Sao_Paulo")
-    data_inicio = st.date_input("Data inicial", value=datetime.now(br_tz).date())
-    data_fim = st.date_input("Data final", value=datetime.now(br_tz).date())
-    dt_inicio = datetime.combine(data_inicio, datetime.min.time()).astimezone(br_tz)
-    dt_fim = datetime.combine(data_fim, datetime.max.time()).astimezone(br_tz)
+with st.form("formulario_lgpd"):
+    nome = st.text_input("Nome completo")
+    telefone = st.text_input("Telefone de contato")
+    email = st.text_input("E-mail de contato")
+    cpf = st.text_input("CPF")
+    mensagem = st.text_area("Mensagem")
 
-    solicitacoes = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING).stream()
+    enviado = st.form_submit_button("📩 Enviar Solicitação")
 
-    for doc in solicitacoes:
-        dados = doc.to_dict()
-        data_envio = dados.get("data_envio")
+if enviado:
+    if nome and telefone and email and cpf and mensagem:
+        br_tz = pytz.timezone("America/Sao_Paulo")
+        data_envio = datetime.now(br_tz)
 
-        if isinstance(data_envio, datetime):
-            if data_envio.tzinfo is None:
-                data_envio = data_envio.replace(tzinfo=pytz.UTC)
-            data_brasil = data_envio.astimezone(br_tz)
-            if not (dt_inicio <= data_brasil <= dt_fim):
-                continue
+        email_autenticado = st.session_state.get("cidadao_email", email)
 
-            with st.expander(f"{dados.get('nome', 'Sem nome')} - {data_brasil.strftime('%d/%m/%Y %H:%M')}"):
-                st.markdown(f"📧 **E-mail:** {dados.get('email', '-')}")
-                st.markdown(f"📞 **Telefone:** {dados.get('telefone', '-')}")
-                st.markdown(f"🆔 **CPF:** {dados.get('cpf', '-')}")
-                st.markdown(f"💬 **Mensagem:** {dados.get('mensagem', '-')}")
-                st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
-
-                if dados.get("resposta"):
-                    st.success(f"💬 Resposta enviada: {dados.get('resposta')}")
-                    st.caption(f"🕒 Respondido em: {dados.get('data_resposta')}")
-                else:
-                    resposta = st.text_area("Responder", key=f"res_{doc.id}")
-                    if st.button("Enviar Resposta", key=f"send_{doc.id}"):
-                        db.collection("solicitacoes").document(doc.id).update({
-                            "resposta": resposta,
-                            "data_resposta": datetime.now(br_tz).strftime("%d/%m/%Y %H:%M"),
-                            "lido": False
-                        })
-                        st.success("✅ Resposta enviada.")
-                        st.rerun()
-
-                if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
-                    db.collection("solicitacoes").document(doc.id).delete()
-                    st.rerun()
-else:
-    st.warning("🔐 Área restrita. Faça login para visualizar as solicitações.")
+        db.collection("solicitacoes").add({
+            "nome": nome,
+            "telefone": telefone,
+            "email": email_autenticado,
+            "cpf": cpf,
+            "mensagem": mensagem,
+            "data_envio": data_envio,
+            "resposta": None,
+            "data_resposta": None,
+            "lido": False
+        })
+        st.success("✅ Solicitação enviada com sucesso!")
+    else:
+        st.warning("⚠️ Preencha todos os campos.")
