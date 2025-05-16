@@ -1,11 +1,13 @@
 import streamlit as st
 from PIL import Image
+from login import exibir_login
+
 
 st.set_page_config(
     page_title="Solicitar Acesso a Dados - LGPD IPEM-MG",
     page_icon="🔓"
 )
-
+exibir_login()
 # CSS e marca d'água
 st.markdown("""
     <style>
