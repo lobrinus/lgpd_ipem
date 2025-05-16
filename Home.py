@@ -22,17 +22,6 @@ exibir_login()
 # Definição de páginas
 paginas_publicas = {
     "🏠 Início": "Home",
-    "🏠 Página Principal": "1_🏠_Página_Principal (1)"
-    "✅ Boas Práticas": "2_✅_Boas_Práticas (2)"
-    "📜 Política de Privacidade": "3_📜_Política_de_Privacidade"
-    "🔍 Orientação de Dados Pessoais": "4_🔍_Orientação_de_Dados_Pessoais"
-    "👥 Quem Lida com os Dados": "5_👥_Quem_Lida_com_os_Dados"
-    "🛡️ Mitigação de Risco": "6_🛡️_Mitigação_de_Riscos"
-    "⚖️ Princípios Básicos": "7_⚖️_Princípios_Básicos"
-    "✅❌ O Que Fazer e Não Faze": "8_✅❌_O_Que_Fazer_e_Não_Fazer"
-    "🔄 Fluxo de Dados LGPD": "9_🔄_Fluxo_de_Dados_LGPD"
-    "❓ FAQ": "10_❓_FAQ"
-    "🔓 Solicitar Acesso Dados": "11_🔓_Solicitar_Acesso_Dados"
     "📨 Formulário LGPD": "12_📧_Formulario_LGPD (4)"
 }
 
