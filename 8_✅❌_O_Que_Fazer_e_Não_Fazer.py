@@ -5,7 +5,6 @@ st.set_page_config(
     page_title="O Que Fazer e Não Fazer - LGPD IPEM-MG",
     page_icon="✅❌"
 )
-exibir_login()
 st.title("✅❌ O Que Fazer e Não Fazer")
 st.markdown("---")
 st.markdown("""
