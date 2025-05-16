@@ -17,7 +17,7 @@ exibir_login()
 
 # Definição de páginas
 paginas_publicas = {
-    "🏠 Início": "home_conteudo",
+    "🏠 Início": "app",
     "🏠 Página Principal": "1_🏠_Página_Principal (1)"
     "✅ Boas Práticas": "2_✅_Boas_Práticas"
     "📜 Política de Privacidade": "3_📜_Política_de_Privacidade"
