@@ -8,8 +8,6 @@ st.set_page_config(
     page_icon="🏠"
 )
 
-exibir_login()
-
 st.title("🏠 Página Principal")
 st.markdown("---")
 st.markdown("""
