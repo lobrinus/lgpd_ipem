@@ -1,10 +1,4 @@
-import streamlit as st
-from PIL import Image
-import feedparser
-from datetime import datetime
-import pandas as pd
-import base64
-import os
+
 
 def image_to_base64(img_path):
     with open(img_path, "rb") as img_file:
@@ -15,14 +9,6 @@ if not os.path.exists("ipem_mg.png"):
     st.error("Erro: ipem_mg.png não encontrado!")
 if not os.path.exists("img_lgpd/privacy.jpg"):
     st.error("Erro: privacy.jpg não encontrado na pasta img_lgpd!")
-
-# Configuração da página
-st.set_page_config(
-    page_title="LGPD - IPEM-MG",
-    page_icon="🏠",
-    layout="wide"
-)
-
 
 # CSS personalizado
 st.markdown("""
