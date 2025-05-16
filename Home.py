@@ -39,6 +39,6 @@ pagina_escolhida = st.sidebar.radio("📄 Navegação", list(paginas.keys()))
 arquivo = paginas[pagina_escolhida]
 if os.path.exists(arquivo):
     with open(arquivo, "r", encoding="utf-8") as f:
-    exec(f.read(), globals())
+        exec(f.read(), globals())
 else:
     st.error(f"❌ Arquivo '{arquivo}' não encontrado. Verifique se ele está no diretório correto.")
