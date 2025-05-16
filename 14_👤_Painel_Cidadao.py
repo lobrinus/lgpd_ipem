@@ -1,51 +1,48 @@
 import streamlit as st
+import pyrebase
 import firebase_admin
-from firebase_admin import credentials, firestore, auth
+from firebase_admin import credentials, firestore
 import datetime
 
-# Inicializa o Firebase apenas uma vez
+# 🔐 Firebase Web Config (API Key)
+firebaseConfig = {
+    "apiKey": "AIzaSyB5chTFihZM_v-5bkVecmDDUvkOKG7C22Q",
+    "authDomain": "SEU_PROJETO.firebaseapp.com",
+    "projectId": "SEU_PROJETO",
+    "storageBucket": "SEU_PROJETO.appspot.com",
+    "messagingSenderId": "XXXXX",
+    "appId": "XXXXX",
+    "databaseURL": ""
+}
+
+# ✅ Inicializa Firebase Admin
 if not firebase_admin._apps:
-    cred = credentials.Certificate("firebase_config.json")  # Substitua pelo caminho do seu arquivo de credencial
+    cred = credentials.Certificate("lgpd-ipem-mg-9f1a5-firebase-adminsdk-fbsvc-28a802a601.json")  # caminho do JSON de credenciais admin
     firebase_admin.initialize_app(cred)
 
+# ✅ Inicializa Pyrebase (Web)
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
 db = firestore.client()
 
-# -------------------- Funções Auxiliares --------------------
-st.title("Registro de Usuário")
+# -------------------- Funções --------------------
+def registrar_usuario(email, senha):
+    try:
+        auth.create_user_with_email_and_password(email, senha)
+        return True, "✅ Registro realizado com sucesso."
+    except Exception as e:
+        return False, f"Erro no registro: {e}"
 
-email = st.text_input("E-mail")
-password = st.text_input("Senha", type="password")
-
-if st.button("Registrar"):
-    result = register_user(email, password)
-    if "error" in result:
-        st.error(result["error"]["message"])
-    else:
-        st.success("Usuário registrado com sucesso!")
-
-st.title("Login de Usuário")
-
-email = st.text_input("E-mail")
-password = st.text_input("Senha", type="password")
-
-if st.button("Entrar"):
-    result = login_user(email, password)
-    if "error" in result:
-        st.error(result["error"]["message"])
-    else:
-        st.success("Login realizado com sucesso!")
+def autenticar_usuario(email, senha):
+    try:
+        user = auth.sign_in_with_email_and_password(email, senha)
+        return True, user['email']
+    except Exception:
+        return False, "Erro no login: verifique o e-mail e senha."
 
 # -------------------- Login/Registro --------------------
-if "user" not in st.session_state:
-    st.session_state.user = None
-
-# Após login bem-sucedido
-st.session_state.user = result["idToken"]
-
-if st.session_state.user:
-    st.write("Conteúdo protegido")
-else:
-    st.warning("Por favor, faça login para acessar esta página.")
+if "cidadao_email" not in st.session_state:
+    st.session_state["cidadao_email"] = None
 
 st.header("👤 Acesso do Cidadão")
 col1, col2 = st.columns(2)
@@ -61,7 +58,7 @@ with col1:
             st.success("✅ Login realizado com sucesso.")
             st.rerun()
         else:
-            st.error("Erro no login. Verifique seus dados.")
+            st.error(usuario)
 
 with col2:
     st.subheader("🆕 Registro")
@@ -84,7 +81,6 @@ if st.session_state["cidadao_email"]:
 
     st.header("📬 Minhas Solicitações")
 
-    # Carrega as solicitações do Firestore
     solicitacoes_ref = db.collection("solicitacoes")
     query = solicitacoes_ref.where("email", "==", st.session_state["cidadao_email"])
     docs = query.stream()
@@ -93,8 +89,8 @@ if st.session_state["cidadao_email"]:
         data = doc.to_dict()
         with st.expander(f"📌 {data['mensagem']} ({data['data_envio']})"):
             if "resposta" in data:
-                st.success(f"💬 Resposta do IPEM:")
-                st.markdown(f"{data['resposta']}")
+                st.success("💬 Resposta do IPEM:")
+                st.markdown(data["resposta"])
                 st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
             else:
                 st.info("⏳ Ainda aguardando resposta do IPEM.")
