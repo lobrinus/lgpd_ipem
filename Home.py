@@ -13,7 +13,7 @@ exibir_login()
 # Páginas públicas e privadas
 paginas_publicas = {
     "📨 Formulário LGPD": "12_📧_Formulario_LGPD (4)",
-    "🏠 Início": "Home"
+    "🏠 Início": "1_🏠_Página_Principal"
 }
 
 paginas_privadas = {
