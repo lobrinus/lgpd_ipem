@@ -6,7 +6,7 @@ st.set_page_config(
     page_icon="✅",
     layout="wide"  # Layout amplo para melhor aproveitamento da tela
 )
-exibir_login()
+
 # CSS Geral e Reformulação de Estilo
 st.markdown("""
 <style>
