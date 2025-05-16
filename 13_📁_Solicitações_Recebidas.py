@@ -4,7 +4,7 @@ import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-from login import exibir_login
+# ❌ Removido: from login import exibir_login
 
 # Inicializar Firebase
 if not firebase_admin._apps:
@@ -12,9 +12,10 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-st.title("📁 Solicitações Recebidas")
+# ✅ Verifica login antes de mostrar qualquer coisa
+if st.session_state.get("logado"):
+    st.title("📁 Solicitações Recebidas")
 
-    # Conteúdo restrito
     br_tz = pytz.timezone("America/Sao_Paulo")
     data_inicio = st.date_input("Data inicial", value=datetime.now(br_tz).date())
     data_fim = st.date_input("Data final", value=datetime.now(br_tz).date())
@@ -39,8 +40,8 @@ st.title("📁 Solicitações Recebidas")
                 st.markdown(f"🆔 **CPF:** {dados.get('cpf')}")
                 st.markdown(f"💬 **Mensagem:** {dados.get('mensagem')}")
                 st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
-                
-            if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
+
+                if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
                     db.collection("solicitacoes").document(doc.id).delete()
                     st.rerun()
 else:
