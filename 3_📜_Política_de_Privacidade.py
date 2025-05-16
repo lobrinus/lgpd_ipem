@@ -8,7 +8,6 @@ st.set_page_config(
     page_icon="📜",
     layout="wide"
 )
-exibir_login()
 # CSS personalizado
 st.markdown("""
 <style>
