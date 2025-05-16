@@ -14,6 +14,17 @@ exibir_login()
 # Define as páginas públicas
 paginas = {
     "🏠 Início": "1_🏠_Página_Principal.py",
+    "🏠 Página Principal": "1_🏠_Página_Principal.py"
+    "✅ Boas Práticas": "2_✅_Boas_Práticas.py"
+    "📜 Política de Privacidade": "3_📜_Política_de_Privacidade.py"
+    "🔍 Orientação de Dados Pessoais": "4_🔍_Orientação_de_Dados_Pessoais.py"
+    "👥 Quem Lida com os Dados": "5_👥_Quem_Lida_com_os_Dados.py"
+    "🛡️ Mitigação de Riscos": "6_🛡️_Mitigação_de_Riscos.py"
+    "⚖️ Princípios Básicos": "7_⚖️_Princípios_Básicos.py"
+    "✅❌ O Que Fazer e Não_Fazer": "8_✅❌_O_Que_Fazer_e_Não_Fazer.py"
+    "🔄 Fluxo de Dados LGPD": "9_🔄_Fluxo_de_Dados_LGPD.py"
+    "❓ FAQ": "10 ❓ FAQ.py"
+    "🔓 Solicitar Acesso Dados": "11_🔓_Solicitar_Acesso_Dados.py"
     "📨 Formulário LGPD": "12_📧_Formulario_LGPD.py"
 }
 
