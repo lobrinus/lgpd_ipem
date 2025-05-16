@@ -5,16 +5,6 @@ from firebase_admin import credentials, firestore
 import datetime
 
 # 🔐 Firebase Web Config (API Key)
-firebaseConfig = {
-    "apiKey": "AIzaSyB5chTFihZM_v-5bkVecmDDUvkOKG7C22Q",
-    "authDomain": "SEU_PROJETO.firebaseapp.com",
-    "projectId": "SEU_PROJETO",
-    "storageBucket": "SEU_PROJETO.appspot.com",
-    "messagingSenderId": "XXXXX",
-    "appId": "XXXXX",
-    "databaseURL": ""
-}
-
 if not firebase_admin._apps:
     cred_json = os.getenv("FIREBASE_CREDENTIALS")  # pega a variável secreta do Streamlit Cloud
     cred_dict = json.loads(cred_json)
