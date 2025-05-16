@@ -1,10 +1,11 @@
 import streamlit as st
+from login import exibir_login
 
 st.set_page_config(
     page_title="Princípios Básicos - LGPD IPEM-MG",
     page_icon="⚖️"
 )
-
+exibir_login()
 st.title("⚖️ Princípios Básicos da LGPD")
 st.markdown("---")
 st.markdown("""
