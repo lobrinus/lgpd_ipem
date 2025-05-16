@@ -1,5 +1,6 @@
 import streamlit as st
 from login import exibir_login
+import os
 
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 
@@ -28,10 +29,10 @@ if st.session_state["logado"]:
 # Menu de navegação
 pagina_escolhida = st.sidebar.selectbox("Selecione a página:", list(paginas.keys()))
 
-# Executa a página selecionada
-if paginas[pagina_escolhida] == "1_🏠_Página_Principal":
-    with open("1_🏠_Página_Principal.py", "r", encoding="utf-8") as f:
+# Executa a página selecionada com verificação
+arquivo = paginas[pagina_escolhida] + ".py"
+if os.path.exists(arquivo):
+    with open(arquivo, "r", encoding="utf-8") as f:
         exec(f.read(), globals())
 else:
-    with open(paginas "1_🏠_Página_Principal.py", "r", encoding="utf-8") as f:
-        exec(f.read(), globals())
+    st.error(f"❌ Arquivo '{arquivo}' não encontrado. Verifique se ele está no diretório correto.")
