@@ -6,7 +6,7 @@ from firebase_admin import credentials, firestore
 
 # Login visível, mas não obrigatório nesta página
 from login import exibir_login
-exibir_login()
+
 
 # Inicializar Firebase
 if not firebase_admin._apps:
