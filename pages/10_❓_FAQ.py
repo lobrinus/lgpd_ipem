@@ -1,10 +1,12 @@
 import streamlit as st
+from login import exibir_login
+
 
 st.set_page_config(
     page_title="FAQ - LGPD IPEM-MG",
     page_icon="❓"
 )
-
+exibir_login()
 st.title("❓ Perguntas Frequentes")
 st.markdown("---")
 
