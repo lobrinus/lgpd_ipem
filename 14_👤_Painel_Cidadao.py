@@ -11,25 +11,41 @@ if not firebase_admin._apps:
 db = firestore.client()
 
 # -------------------- Funções Auxiliares --------------------
-def registrar_usuario(email, senha):
-    try:
-        user = auth.create_user(email=email, password=senha)
-        return True, "✅ Registro realizado com sucesso."
-    except Exception as e:
-        return False, f"Erro no registro: {e}"
+st.title("Registro de Usuário")
 
-def autenticar_usuario(email, senha):
-    try:
-        # Firebase Admin SDK não permite autenticação direta
-        # Sugestão: usar pyrebase para autenticar (caso queira autenticação real)
-        # Aqui vamos simular login simples (fictício)
-        return True, email
-    except Exception as e:
-        return False, str(e)
+email = st.text_input("E-mail")
+password = st.text_input("Senha", type="password")
+
+if st.button("Registrar"):
+    result = register_user(email, password)
+    if "error" in result:
+        st.error(result["error"]["message"])
+    else:
+        st.success("Usuário registrado com sucesso!")
+
+st.title("Login de Usuário")
+
+email = st.text_input("E-mail")
+password = st.text_input("Senha", type="password")
+
+if st.button("Entrar"):
+    result = login_user(email, password)
+    if "error" in result:
+        st.error(result["error"]["message"])
+    else:
+        st.success("Login realizado com sucesso!")
 
 # -------------------- Login/Registro --------------------
-if "cidadao_email" not in st.session_state:
-    st.session_state["cidadao_email"] = None
+if "user" not in st.session_state:
+    st.session_state.user = None
+
+# Após login bem-sucedido
+st.session_state.user = result["idToken"]
+
+if st.session_state.user:
+    st.write("Conteúdo protegido")
+else:
+    st.warning("Por favor, faça login para acessar esta página.")
 
 st.header("👤 Acesso do Cidadão")
 col1, col2 = st.columns(2)
