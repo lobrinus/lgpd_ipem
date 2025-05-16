@@ -1,7 +1,10 @@
 import streamlit as st
 
 def exibir_login():
-    with st.sidebar:
+    # Cria um container fixo no TOPO da sidebar
+    login_area = st.sidebar.container()
+
+    with login_area:
         st.markdown("## 🔐 Área Administrativa")
         user = st.text_input("Usuário", key="login_user")
         password = st.text_input("Senha", type="password", key="login_pass")
