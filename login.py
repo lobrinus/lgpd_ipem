@@ -1,54 +1,60 @@
 import streamlit as st
 
 def exibir_login():
-    # CSS fixo e compacto
     st.markdown("""
     <style>
-        #custom-login {
+        #login-container {
             position: fixed;
             top: 0;
             left: 0;
             background-color: #f0f2f6;
-            padding: 8px 12px;
+            padding: 8px 10px;
             border-bottom-right-radius: 8px;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
             z-index: 10000;
             width: 110px;
             font-size: 12px;
         }
-        #custom-login input, #custom-login button {
+        #login-container label {
+            font-size: 11px;
+        }
+        #login-container input {
+            font-size: 12px !important;
+            height: 28px !important;
+            padding: 2px 6px !important;
+        }
+        #login-container button {
+            font-size: 12px !important;
+            padding: 4px 0 !important;
+            margin-top: 4px;
+        }
+        #login-container div.stAlert {
+            margin-top: 4px;
             font-size: 12px;
-            width: 100%;
-            margin: 4px 0;
-            padding: 4px;
         }
     </style>
-    <div id="custom-login">
-        <form action="" method="post">
-            <label>Usuário</label><br>
-            <input type="text" name="usuario"><br>
-            <label>Senha</label><br>
-            <input type="password" name="senha"><br>
-            <button type="submit">Entrar</button>
-        </form>
-    </div>
     """, unsafe_allow_html=True)
 
-    # Recupera os valores usando parâmetros GET (não 100% seguro, mas funcional para painel simples)
-    query_params =  st.query_params
-    user_input = st.text_input("Usuário", key="login_user", label_visibility="collapsed")
-    pass_input = st.text_input("Senha", type="password", key="login_pass", label_visibility="collapsed")
+    with st.container():
+        st.markdown('<div id="login-container">', unsafe_allow_html=True)
 
-    if user_input and pass_input and not st.session_state.get("logado"):
-        usuarios = st.secrets["auth"]
-        if user_input in usuarios and usuarios[user_input] == pass_input:
-            st.session_state["logado"] = True
-            st.success("✅ Login realizado com sucesso.")
+        user = st.text_input("Usuário", key="login_user_top", label_visibility="visible")
+        password = st.text_input("Senha", type="password", key="login_pass_top", label_visibility="visible")
+        login_button = st.button("Entrar", key="login_btn_top")
+
+        if login_button:
+            usuarios = st.secrets["auth"]
+            if user in usuarios and usuarios[user] == password:
+                st.session_state["logado"] = True
+                st.success("✅ Login realizado com sucesso.")
+            else:
+                st.session_state["logado"] = False
+                st.error("❌ Usuário ou senha inválidos.")
+
+        if st.session_state.get("logado"):
+            st.markdown("✅ <strong>Admin logado</strong>", unsafe_allow_html=True)
         else:
-            st.session_state["logado"] = False
-            st.error("❌ Usuário ou senha inválidos.")
+            st.markdown("🔓 Visitante", unsafe_allow_html=True)
 
-    if st.session_state.get("logado"):
-        st.markdown("<div style='position:fixed; top:4px; left:230px;'>🔐 Logado</div>", unsafe_allow_html=True)
-    else:
-        st.markdown("<div style='position:fixed; top:4px; left:230px;'>🔓 Visitante</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
