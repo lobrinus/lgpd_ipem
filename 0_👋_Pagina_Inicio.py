@@ -261,7 +261,9 @@ with col3:
 st.markdown("---")
 st.subheader("Informações Básicas sobre a LGPD")
 st.markdown("""
-A **Lei Geral de Proteção de Dados (LGPD)**, Lei nº 13.709/2018, estabelece normas sobre o tratamento de dados pessoais.
+A **Lei Geral de Proteção de Dados (LGPD)**, Lei nº 13.709/2018, estabelece normas sobre o tratamento de dados pessoais. 
+A Lei Geral de Proteção de Dados Pessoais (LGPD), em vigor desde 2020, estabelece diretrizes para o tratamento de dados pessoais no Brasil, visando garantir a privacidade e a segurança das informações dos cidadãos.
+Para os cidadãos, a LGPD representa um avanço na garantia de seus direitos à privacidade e ao controle sobre suas informações pessoais. Para os servidores públicos, especialmente aqueles envolvidos no tratamento de dados, é essencial compreender e aplicar as diretrizes da LGPD para assegurar a conformidade legal e proteger os dados sob sua responsabilidade.
 """)
 
 # Convertendo imagens para base64
