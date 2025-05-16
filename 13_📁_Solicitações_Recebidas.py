@@ -34,15 +34,25 @@ if st.session_state.get("logado"):
             if not (dt_inicio <= data_brasil <= dt_fim):
                 continue
 
-            with st.expander(f"{dados.get('nome')} - {data_brasil.strftime('%d/%m/%Y %H:%M')}"):
-                st.markdown(f"📧 **E-mail:** {dados.get('email')}")
-                st.markdown(f"📞 **Telefone:** {dados.get('telefone')}")
-                st.markdown(f"🆔 **CPF:** {dados.get('cpf')}")
-                st.markdown(f"💬 **Mensagem:** {dados.get('mensagem')}")
-                st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
+with st.expander(f"{dados.get('nome')} - {data_brasil.strftime('%d/%m/%Y %H:%M')}"):
+    st.markdown(f"📧 **E-mail:** {dados.get('email')}")
+    st.markdown(f"📞 **Telefone:** {dados.get('telefone')}")
+    st.markdown(f"🆔 **CPF:** {dados.get('cpf')}")
+    st.markdown(f"💬 **Mensagem:** {dados.get('mensagem')}")
+    st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
 
-                if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
-                    db.collection("solicitacoes").document(doc.id).delete()
-                    st.rerun()
+    if dados.get("resposta"):
+        st.success(f"💬 Resposta enviada: {dados.get('resposta')}")
+        st.caption(f"🕒 Respondido em: {dados.get('data_resposta')}")
+    else:
+        resposta = st.text_area("Responder", key=f"res_{doc.id}")
+        if st.button("Enviar Resposta", key=f"send_{doc.id}"):
+            db.collection("solicitacoes").document(doc.id).update({
+                "resposta": resposta,
+                "data_resposta": datetime.now(br_tz).strftime("%d/%m/%Y %H:%M"),
+                "lido": False
+            })
+            st.success("✅ Resposta enviada.")
+            st.rerun()
 else:
     st.warning("🔐 Área restrita. Faça login para visualizar as solicitações.")
