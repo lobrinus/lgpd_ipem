@@ -13,6 +13,8 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+# Removido st.set_page_config()
+
 st.title("📁 Solicitações Recebidas")
 
 if st.session_state.get("logado"):
