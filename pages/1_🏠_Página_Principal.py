@@ -8,6 +8,7 @@ st.set_page_config(
     page_title="Página Principal - LGPD IPEM-MG",
     page_icon="🏠"
 )
+exibir_login()
 
 
 st.title("🏠 Página Principal")
