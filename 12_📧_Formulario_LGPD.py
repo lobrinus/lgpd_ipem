@@ -6,7 +6,7 @@ from firebase_admin import credentials, firestore
 
 # Login visível, mas não obrigatório nesta página
 from login import exibir_login
-
+exibir_login()
 
 # Inicializar Firebase
 if not firebase_admin._apps:
@@ -14,6 +14,7 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+st.set_page_config(page_title="Solicitação de Acesso - LGPD")
 st.title("📨 Solicitação de Acesso a Dados Pessoais")
 
 with st.form("formulario_lgpd"):
@@ -29,17 +30,21 @@ if enviado:
     if nome and telefone and email and cpf and mensagem:
         br_tz = pytz.timezone("America/Sao_Paulo")
         data_envio = datetime.now(br_tz)
-            db.collection("solicitacoes").add({
-                "nome": nome,
-                "telefone": telefone,
-                "email": st.session_state.get("cidadao_email", email),
-                "cpf": cpf,
-                "mensagem": mensagem,
-                "data_envio": data_envio,
-                "lido": False,
-                "resposta": None,
-                "data_resposta": None
-            })
+
+        # Pega e-mail do cidadão autenticado, se houver
+        email_autenticado = st.session_state.get("cidadao_email", email)
+
+        db.collection("solicitacoes").add({
+            "nome": nome,
+            "telefone": telefone,
+            "email": email_autenticado,
+            "cpf": cpf,
+            "mensagem": mensagem,
+            "data_envio": data_envio,
+            "resposta": None,
+            "data_resposta": None,
+            "lido": False
+        })
         st.success("✅ Solicitação enviada com sucesso!")
     else:
         st.warning("⚠️ Preencha todos os campos.")
