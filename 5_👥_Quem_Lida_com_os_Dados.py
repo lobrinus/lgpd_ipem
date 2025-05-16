@@ -1,10 +1,6 @@
 import streamlit as st
 from login import exibir_login
 
-st.set_page_config(
-    page_title="Quem Lida com os Dados - LGPD IPEM-MG",
-    page_icon="👥"
-)
 st.title("👥 Quem Lida com os Dados")
 st.markdown("---")
 st.markdown("""
