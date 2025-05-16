@@ -13,7 +13,7 @@ def exibir_login():
             border-bottom-right-radius: 8px;
             box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
             z-index: 10000;
-            width: 220px;
+            width: 110px;
             font-size: 12px;
         }
         #custom-login input, #custom-login button {
