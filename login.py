@@ -20,8 +20,8 @@ def exibir_login():
         }
         #login-container input {
             font-size: 12px !important;
-            height: 28px !important;
-            padding: 2px 6px !important;
+            height: 14px !important;
+            padding: 1px 3px !important;
         }
         #login-container button {
             font-size: 12px !important;
