@@ -23,7 +23,7 @@ paginas = {
     "⚖️ Princípios Básicos": "7_⚖️_Princípios_Básicos.py",
     "✅❌ O Que Fazer e Não_Fazer": "8_✅❌_O_Que_Fazer_e_Não_Fazer.py",
     "🔄 Fluxo de Dados LGPD": "9_🔄_Fluxo_de_Dados_LGPD.py",
-    "❓ FAQ": "10 ❓ FAQ.py",
+    "❓ FAQ": "10_❓_FAQ.py",
     "🔓 Solicitar Acesso Dados": "11_🔓_Solicitar_Acesso_Dados.py",
     "📨 Formulário LGPD": "12_📧_Formulario_LGPD.py"
 }
