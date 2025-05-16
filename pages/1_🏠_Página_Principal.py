@@ -3,7 +3,7 @@ from PIL import Image
 import feedparser
 from login import exibir_login
 
-
+exibir_login()
 st.set_page_config(
     page_title="Página Principal - LGPD IPEM-MG",
     page_icon="🏠"
@@ -17,7 +17,6 @@ st.markdown("""
 
 Este portal centraliza todas as informações sobre a implementação da Lei Geral de Proteção de Dados no âmbito do Instituto de Pesos e Medidas de Minas Gerais.
 """)
-exibir_login()
 
 st.markdown("""
 <div class="info-box">
