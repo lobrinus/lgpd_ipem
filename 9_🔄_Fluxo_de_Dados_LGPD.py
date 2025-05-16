@@ -1,10 +1,6 @@
 import streamlit as st
 from login import exibir_login
 
-st.set_page_config(
-    page_title="Fluxo de Dados - LGPD IPEM-MG",
-    page_icon="🔄"
-)
 st.title("🔄 Fluxo de Dados LGPD")
 st.markdown("---")
 st.markdown("""
