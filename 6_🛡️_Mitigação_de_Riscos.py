@@ -5,7 +5,6 @@ st.set_page_config(
     page_title="Mitigação de Riscos - LGPD IPEM-MG",
     page_icon="🛡️"
 )
-exibir_login()
 st.title("🛡️ Mitigação de Riscos")
 st.markdown("---")
 st.markdown("""
