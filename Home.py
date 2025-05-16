@@ -12,6 +12,10 @@ import pytz
 
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 
+if "logado" not in st.session_state:
+    st.session_state["logado"] = False
+
+
 # Exibe o login na sidebar
 exibir_login()
 
