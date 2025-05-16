@@ -5,7 +5,6 @@ st.set_page_config(
     page_title="Fluxo de Dados - LGPD IPEM-MG",
     page_icon="🔄"
 )
-exibir_login()
 st.title("🔄 Fluxo de Dados LGPD")
 st.markdown("---")
 st.markdown("""
