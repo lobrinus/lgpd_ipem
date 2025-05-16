@@ -1,13 +1,6 @@
 import streamlit as st
 from PIL import Image
 from login import exibir_login
-
-# Configuração da página
-st.set_page_config(
-    page_title="Política de Privacidade - IPEM-MG",
-    page_icon="📜",
-    layout="wide"
-)
 # CSS personalizado
 st.markdown("""
 <style>
