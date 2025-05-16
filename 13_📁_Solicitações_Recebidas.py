@@ -39,8 +39,8 @@ st.title("📁 Solicitações Recebidas")
                 st.markdown(f"🆔 **CPF:** {dados.get('cpf')}")
                 st.markdown(f"💬 **Mensagem:** {dados.get('mensagem')}")
                 st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
-
-                if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
+                
+            if st.button("🗑️ Deletar", key=f"del_{doc.id}"):
                     db.collection("solicitacoes").document(doc.id).delete()
                     st.rerun()
 else:
