@@ -16,6 +16,9 @@ db = firestore.client()
 st.title("📁 Solicitações Recebidas")
 
 if st.session_state.get("logado"):
+    st.title("📁 Solicitações Recebidas")
+
+    # Conteúdo restrito
     br_tz = pytz.timezone("America/Sao_Paulo")
     data_inicio = st.date_input("Data inicial", value=datetime.now(br_tz).date())
     data_fim = st.date_input("Data final", value=datetime.now(br_tz).date())
