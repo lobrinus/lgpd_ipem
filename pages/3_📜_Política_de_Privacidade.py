@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+from login import exibir_login
 
 # Configuração da página
 st.set_page_config(
@@ -7,7 +8,7 @@ st.set_page_config(
     page_icon="📜",
     layout="wide"
 )
-
+exibir_login()
 # CSS personalizado
 st.markdown("""
 <style>
