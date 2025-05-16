@@ -5,7 +5,6 @@ st.set_page_config(
     page_title="Quem Lida com os Dados - LGPD IPEM-MG",
     page_icon="👥"
 )
-exibir_login()
 st.title("👥 Quem Lida com os Dados")
 st.markdown("---")
 st.markdown("""
