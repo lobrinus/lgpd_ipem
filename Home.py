@@ -13,7 +13,7 @@ exibir_login()
 # Páginas públicas e privadas
 paginas_publicas = {
     "📨 Formulário LGPD": "12_📧_Formulario_LGPD (4)",
-    "🏠 Início": "1_🏠_Página_Principal.py"
+    "🏠 Início": "1_🏠_Página_Principal"
 }
 
 paginas_privadas = {
@@ -29,8 +29,8 @@ if st.session_state["logado"]:
 pagina_escolhida = st.sidebar.selectbox("Selecione a página:", list(paginas.keys()))
 
 # Executa a página selecionada
-if paginas[pagina_escolhida] == "Home":
-    with open("Home.py", "r", encoding="utf-8") as f:
+if paginas[pagina_escolhida] == "1_🏠_Página_Principal":
+    with open("1_🏠_Página_Principal.py", "r", encoding="utf-8") as f:
         exec(f.read(), globals())
 else:
     with open(paginas[pagina_escolhida] + ".py", "r", encoding="utf-8") as f:
