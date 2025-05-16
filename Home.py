@@ -1,5 +1,4 @@
 import streamlit as st
-from login import exibir_login
 import os
 
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
@@ -7,29 +6,6 @@ st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 # ✅ Garante que o estado 'logado' exista
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
-
-# Exibe o login ou identifica o usuário
-with st.sidebar:
-    st.markdown("## 🔐 Área Administrativa")
-    if st.session_state.get("logado"):
-        st.success("👤 Usuário administrador logado")
-        if st.button("Sair"):
-            st.session_state["logado"] = False
-            st.rerun()
-    else:
-        user = st.text_input("Usuário", key="login_user", label_visibility="visible")
-        password = st.text_input("Senha", type="password", key="login_pass", label_visibility="visible")
-        login_button = st.button("Entrar", key="login_btn")
-
-        if login_button:
-            usuarios = st.secrets["auth"]
-            if user in usuarios and usuarios[user] == password:
-                st.session_state["logado"] = True
-                st.success("✅ Login realizado com sucesso.")
-                st.rerun()
-            else:
-                st.session_state["logado"] = False
-                st.error("❌ Usuário ou senha inválidos.")
 
 # Define as páginas públicas
 paginas = {
@@ -48,12 +24,20 @@ paginas = {
     "🔓 Solicitar Acesso Dados": "11_🔓_Solicitar_Acesso_Dados.py",
     "📨 Formulário LGPD": "12_📧_Formulario_LGPD.py"
 }
+
 # Se estiver logado, adiciona a página privada
 if st.session_state["logado"]:
     paginas["📁 Solicitações Recebidas"] = "13_📁_Solicitações_Recebidas.py"
 
 # Menu lateral (sem mostrar página privada para não logado)
 pagina_escolhida = st.sidebar.radio("📄 Navegação", list(paginas.keys()))
+
+# Exibe o login de admin SOMENTE na área administrativa
+if pagina_escolhida == "📁 Solicitações Recebidas":
+    from login import exibir_login
+    with st.sidebar:
+        st.markdown("## 🔐 Área Administrativa")
+        exibir_login()
 
 # Executa a página escolhida
 arquivo = paginas[pagina_escolhida]
