@@ -13,8 +13,6 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# Removido st.set_page_config()
-
 st.title("📁 Solicitações Recebidas")
 
 if st.session_state.get("logado"):
@@ -37,11 +35,11 @@ if st.session_state.get("logado"):
             if not (dt_inicio <= data_brasil <= dt_fim):
                 continue
 
-            with st.expander(f"{dados.get('nome')} - {data_brasil.strftime('%d/%m/%Y %H:%M')}"):
-                st.markdown(f"📧 **E-mail:** {dados.get('email')}")
-                st.markdown(f"📞 **Telefone:** {dados.get('telefone')}")
-                st.markdown(f"🆔 **CPF:** {dados.get('cpf')}")
-                st.markdown(f"💬 **Mensagem:** {dados.get('mensagem')}")
+            with st.expander(f"{dados.get('nome', 'Sem nome')} - {data_brasil.strftime('%d/%m/%Y %H:%M')}"):
+                st.markdown(f"📧 **E-mail:** {dados.get('email', '-')}")
+                st.markdown(f"📞 **Telefone:** {dados.get('telefone', '-')}")
+                st.markdown(f"🆔 **CPF:** {dados.get('cpf', '-')}")
+                st.markdown(f"💬 **Mensagem:** {dados.get('mensagem', '-')}")
                 st.markdown(f"📅 **Data de envio:** {data_brasil.strftime('%d/%m/%Y %H:%M')}")
 
                 if dados.get("resposta"):
