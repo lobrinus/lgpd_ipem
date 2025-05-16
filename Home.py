@@ -15,7 +15,7 @@ with st.sidebar:
         st.success("👤 Usuário administrador logado")
         if st.button("Sair"):
             st.session_state["logado"] = False
-            st.experimental_rerun()
+            st.rerun()
     else:
         user = st.text_input("Usuário", key="login_user", label_visibility="visible")
         password = st.text_input("Senha", type="password", key="login_pass", label_visibility="visible")
@@ -26,7 +26,7 @@ with st.sidebar:
             if user in usuarios and usuarios[user] == password:
                 st.session_state["logado"] = True
                 st.success("✅ Login realizado com sucesso.")
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.session_state["logado"] = False
                 st.error("❌ Usuário ou senha inválidos.")
