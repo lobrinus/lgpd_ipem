@@ -33,5 +33,5 @@ if paginas[pagina_escolhida] == "1_🏠_Página_Principal":
     with open("1_🏠_Página_Principal.py", "r", encoding="utf-8") as f:
         exec(f.read(), globals())
 else:
-    with open(paginas[pagina_escolhida] + ".py", "r", encoding="utf-8") as f:
+    with open(paginas "1_🏠_Página_Principal.py", "r", encoding="utf-8") as f:
         exec(f.read(), globals())
