@@ -11,26 +11,15 @@ if "logado" not in st.session_state:
 # Exibe o login
 exibir_login()
 
-# Páginas públicas e privadas
-paginas_publicas = {
-    "📨 Formulário LGPD": "12_📧_Formulario_LGPD",
-    "🏠 Início": "1_🏠_Página_Principal"
-}
-
-paginas_privadas = {
-    "📁 Solicitações Recebidas": "13_📁_Solicitações_Recebidas"
-}
-
-# Junta as páginas disponíveis conforme login
-paginas = paginas_publicas.copy()
+# Executa diretamente a página conforme login
 if st.session_state["logado"]:
-    paginas.update(paginas_privadas)
+    # Usuário logado visualiza solicitações recebidas
+    arquivo = "13_📁_Solicitações_Recebidas.py"
+else:
+    # Usuário não logado visualiza o formulário
+    arquivo = "12_📧_Formulario_LGPD.py"
 
-# Menu de navegação
-pagina_escolhida = st.sidebar.selectbox("Selecione a página:", list(paginas.keys()))
-
-# Executa a página selecionada com verificação
-arquivo = paginas[pagina_escolhida] + ".py"
+# Executa a página correspondente com verificação
 if os.path.exists(arquivo):
     with open(arquivo, "r", encoding="utf-8") as f:
         exec(f.read(), globals())
