@@ -1,6 +1,9 @@
 import streamlit as st
 from PIL import Image
 import feedparser
+from login import exibir_login
+exibir_login()
+
 
 st.set_page_config(
     page_title="Página Principal - LGPD IPEM-MG",
