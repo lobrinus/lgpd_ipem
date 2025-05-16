@@ -43,11 +43,11 @@ if pagina_escolhida == "📁 Solicitações Recebidas":
 arquivo = paginas[pagina_escolhida]
 if os.path.exists(arquivo):
     with open(arquivo, "r", encoding="utf-8") as f:
-try:
-    exec(f.read(), globals())
-except Exception as e:
-    import traceback
-    st.error(f"Erro no exec: {e}")
-    st.text(traceback.format_exc())
+        try:
+            exec(f.read(), globals())
+        except Exception as e:
+            import traceback
+            st.error(f"Erro no exec: {e}")
+            st.text(traceback.format_exc())
 else:
     st.error(f"❌ Arquivo '{arquivo}' não encontrado. Verifique se ele está no diretório correto.")
