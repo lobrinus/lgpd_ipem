@@ -16,23 +16,19 @@ firebaseConfig = {
     "databaseURL": ""
 }
 
-# 🔐 Inicializa Firebase
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
-# 🔐 Firebase Admin (Firestore)
 if not firebase_admin._apps:
-    cred_json = os.getenv("FIREBASE_CREDENTIALS")  # variável de ambiente no Streamlit Cloud
+    cred_json = os.getenv("FIREBASE_CREDENTIALS")
     cred_dict = json.loads(cred_json)
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# ---------------------- Funções ----------------------
 def registrar_usuario(email, senha):
     try:
         auth.create_user_with_email_and_password(email, senha)
-        # Salva no Firestore com tipo "cidadao" por padrão
         db.collection("usuarios").document(email).set({
             "email": email,
             "tipo": "cidadao"
