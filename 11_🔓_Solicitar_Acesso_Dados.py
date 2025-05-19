@@ -38,7 +38,7 @@ De acordo com a LGPD, você tem direito a:
 - Revogar o consentimento desde que não haja outra base legal para o tratamento
 - Solicitar informações sobre o compartilhamento de seus dados com terceiros
 
-# Parte 2 — Formas de Solicitação
+# Seção 2 – Formas de Solicitação
 st.markdown("### 2. Formas de Solicitação")
 
 st.markdown("""
@@ -47,8 +47,8 @@ Você pode fazer sua solicitação através de:
 - **E-mail:** ecarregado.data@ipem.mg.gov.br
 """)
 
-# Botão estilo link para o formulário interno
-col1, col2 = st.columns([1, 2])
+# Linha com botão estilo link
+col1, col2 = st.columns([1, 4])
 with col1:
     st.markdown("**Formulário Online:**", unsafe_allow_html=True)
 with col2:
@@ -56,7 +56,10 @@ with col2:
         st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
         st.rerun()
 
-st.markdown("- **Presencialmente:** Na sede do IPEM-MG")
+st.markdown("""
+- **Presencialmente:** Na sede do IPEM-MG
+""")
+
 
 
 ### 3. Informações Necessárias
