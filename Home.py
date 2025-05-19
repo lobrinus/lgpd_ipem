@@ -10,7 +10,7 @@ if "logado" not in st.session_state:
 
 # Barra lateral fixa com login/admin
 with st.sidebar:
-    st.markdown("## 🔐 Acesso Administrador")
+    st.markdown("## 🔐 Acesso")
     if st.session_state.get("logado"):
         st.info("🛡️ Acesso Administrativo Ativo")
         if st.button("Sair"):
@@ -59,7 +59,12 @@ pagina_ativa = st.session_state.get("pagina_escolhida", pagina_padrao)
 if pagina_ativa not in paginas:
     pagina_ativa = pagina_padrao
 
-pagina_escolhida = st.sidebar.radio("📄 Navegação", list(paginas.keys()), index=list(paginas.keys()).index(pagina_ativa))
+pagina_escolhida = st.sidebar.radio(
+    "📄 Navegação",
+    list(paginas.keys()),
+    index=list(paginas.keys()).index(pagina_ativa),
+    key="pagina_escolhida"
+)
 
 # Executa a página escolhida
 arquivo = paginas[pagina_escolhida]
@@ -73,4 +78,3 @@ if os.path.exists(arquivo):
             st.text(traceback.format_exc())
 else:
     st.error(f"❌ Arquivo '{arquivo}' não encontrado. Verifique se ele está no diretório correto.")
-
