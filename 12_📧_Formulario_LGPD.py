@@ -47,3 +47,17 @@ if enviado:
         st.success("✅ Solicitação enviada com sucesso!")
     else:
         st.warning("⚠️ Preencha todos os campos.")
+
+# Mostrar resposta se houver
+doc_ref = db.collection("solicitacoes").where("email", "==", email_autenticado).order_by("data_envio", direction=firestore.Query.DESCENDING).limit(1)
+docs = doc_ref.stream()
+
+for doc in docs:
+    data = doc.to_dict()
+    if data.get("resposta"):
+        st.markdown("### 📬 Resposta do IPEM-MG")
+        st.success(data.get("resposta"))
+        data_resposta = data.get("data_resposta")
+        if isinstance(data_resposta, datetime):
+            data_resposta = data_resposta.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y às %H:%M')
+            st.caption(f"Enviado em: {data_resposta}")
