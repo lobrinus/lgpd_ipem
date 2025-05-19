@@ -4,7 +4,8 @@ import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# Garante que apenas admins vejam essa página
+
+# Verifica login do admin
 if not st.session_state.get("logado", False):
     st.error("🚫 Acesso restrito. Faça login para visualizar as solicitações.")
     st.stop()
@@ -17,16 +18,15 @@ db = firestore.client()
 
 st.title("📁 Solicitações Recebidas")
 
-# Buscar todas as solicitações
+# Consulta todas as solicitações ordenadas por data
 solicitacoes_ref = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING)
 solicitacoes = solicitacoes_ref.stream()
 
-count = 0
-for doc in solicitacoes:
+for i, doc in enumerate(solicitacoes, start=1):
     data = doc.to_dict()
-    count += 1
+    doc_id = doc.id
     st.markdown("---")
-    st.subheader(f"📨 Solicitação #{count}")
+    st.subheader(f"📨 Solicitação #{i}")
     st.write(f"**Nome:** {data.get('nome')}")
     st.write(f"**Telefone:** {data.get('telefone')}")
     st.write(f"**Email:** {data.get('email')}")
@@ -40,6 +40,17 @@ for doc in solicitacoes:
 
     resposta = data.get("resposta")
     if resposta:
-        st.success(f"📝 Resposta: {resposta}")
+        st.success(f"📝 Resposta enviada:\n\n{resposta}")
     else:
         st.warning("⏳ Ainda não respondido.")
+        with st.expander("✍️ Responder Solicitação"):
+            resposta_texto = st.text_area("Digite sua resposta", key=f"resposta_{doc_id}")
+            if st.button("📨 Enviar Resposta", key=f"btn_{doc_id}"):
+                data_resposta = datetime.now(pytz.timezone("America/Sao_Paulo"))
+                db.collection("solicitacoes").document(doc_id).update({
+                    "resposta": resposta_texto,
+                    "data_resposta": data_resposta,
+                    "respondido_por": st.session_state.get("admin_email", "funcionario@ipem.mg.gov.br")
+                })
+                st.success("✅ Resposta enviada com sucesso.")
+                st.rerun()
