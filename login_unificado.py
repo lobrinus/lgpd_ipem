@@ -50,7 +50,6 @@ def autenticar_usuario(email, senha):
         return False, "❌ E-mail ou senha incorretos."
 
 # ---------------------- Interface ----------------------
-st.set_page_config("Login LGPD - IPEM-MG", layout="centered")
 st.title("🔐 Acesso ao Portal LGPD")
 
 if "usuario" not in st.session_state:
