@@ -43,11 +43,13 @@ Você pode fazer sua solicitação através de:
 
 - **E-mail:** ecarregado.data@ipem.mg.gov.br
 
-st.markdown("**Formulário Online:**", unsafe_allow_html=True)
-
-if st.button("🔗 Acesse aqui"):
-    st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
-    st.rerun()
+col1, col2 = st.columns([1, 2])
+with col1:
+    st.markdown("**Formulário Online:**", unsafe_allow_html=True)
+with col2:
+    if st.button("🔗 Acesse aqui"):
+        st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
+        st.rerun()
     
 - **Presencialmente:** Na sede do IPEM-MG
 
