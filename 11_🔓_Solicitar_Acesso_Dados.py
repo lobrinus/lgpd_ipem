@@ -3,9 +3,10 @@ from PIL import Image
 from login import exibir_login
 import streamlit.components.v1 as components
 
-# CSS e marca d'água
+# CSS global e botão de login customizado
 st.markdown("""
     <style>
+    /* Marca d'água */
     .watermark {
         position: fixed;
         bottom: 10px;
@@ -13,8 +14,59 @@ st.markdown("""
         opacity: 0.2;
         z-index: -1;
     }
+
+    /* Botão de login no canto superior direito */
+    .login-button-container {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        z-index: 9999;
+    }
+
+    .login-button {
+        padding: 8px 16px;
+        background-color: #0e1117;
+        color: white;
+        border: 1px solid #4a4a4a;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .login-button:hover {
+        background-color: #4a4a4a;
+    }
+
+    .login-button:active {
+        background-color: #6a6a6a;
+    }
+
+    /* Botão estilo link */
+    .link-button {
+        background: none;
+        color: #0066cc;
+        border: none;
+        padding: 0;
+        font-size: 1em;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .link-button:hover {
+        color: #004080;
+    }
     </style>
-    <div class="watermark"><img src="ipem_mg.png" width="200"></div>
+
+    <!-- Botão de login -->
+    <div class="login-button-container">
+        <a href="/login" class="login-button">Login</a>
+    </div>
+
+    <!-- Marca d'água -->
+    <div class="watermark">
+        <img src="ipem_mg.png" width="200">
+    </div>
 """, unsafe_allow_html=True)
 
 # Logo e título
@@ -39,24 +91,6 @@ De acordo com a LGPD, você tem direito a:
 - Solicitar informações sobre o compartilhamento de seus dados com terceiros
 """)
 
-# Estiliza o botão para parecer link
-st.markdown("""
-<style>
-.link-button {
-    background: none;
-    color: #0066cc;
-    border: none;
-    padding: 0;
-    font-size: 1em;
-    text-decoration: underline;
-    cursor: pointer;
-}
-.link-button:hover {
-    color: #004080;
-}
-</style>
-""", unsafe_allow_html=True)
-
 st.markdown("### 2. Formas de Solicitação")
 st.markdown("- **E-mail:** [ecarregado.data@ipem.mg.gov.br](mailto:ecarregado.data@ipem.mg.gov.br)")
 
@@ -67,7 +101,6 @@ if st.button("🔗 Clique aqui para preencher o formulário", key="formulario_li
     st.rerun()
 
 st.markdown("- **Presencialmente:** Na sede do IPEM-MG")
-
 
 # Seção 3 — Informações necessárias
 st.markdown("""
