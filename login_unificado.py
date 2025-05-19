@@ -100,10 +100,3 @@ else:
     else:
         st.markdown("### 👤 Painel do Cidadão")
         st.info("Você pode acessar o formulário LGPD e acompanhar suas solicitações na aba 'Painel do Cidadão'.")
-"""
-
-file_path = "/mnt/data/00_Login_Unificado.py"
-with open(file_path, "w", encoding="utf-8") as f:
-    f.write(codigo_login_unificado)
-
-file_path
