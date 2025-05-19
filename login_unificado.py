@@ -1,5 +1,3 @@
-# Reexecutando após o reset para salvar novamente o arquivo da tela de login unificada
-codigo_login_unificado = """
 import streamlit as st
 import pyrebase
 import firebase_admin
