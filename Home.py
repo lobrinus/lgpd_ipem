@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+from firebase_config import auth
+
 
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 
