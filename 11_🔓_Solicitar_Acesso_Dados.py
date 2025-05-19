@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 from login import exibir_login
+import streamlit.components.v1 as components
 
 # CSS e marca d'água
 st.markdown("""
@@ -38,31 +39,35 @@ De acordo com a LGPD, você tem direito a:
 - Solicitar informações sobre o compartilhamento de seus dados com terceiros
 """)
 
-# Formas de Solicitação
+# Estiliza o botão para parecer link
 st.markdown("""
-- **E-mail:** [ecarregado.data@ipem.mg.gov.br](mailto:ecarregado.data@ipem.mg.gov.br)
-- **Formulário Online:** [🔗 Clique aqui para preencher o formulário](#)
-- **Presencialmente:** Na sede do IPEM-MG
-""")
+<style>
+.link-button {
+    background: none;
+    color: #0066cc;
+    border: none;
+    padding: 0;
+    font-size: 1em;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.link-button:hover {
+    color: #004080;
+}
+</style>
+""", unsafe_allow_html=True)
 
-# Se o estado for ativado por clique no link simulado
-if st.session_state.get("go_to_formulario", False):
+st.markdown("### 2. Formas de Solicitação")
+st.markdown("- **E-mail:** [ecarregado.data@ipem.mg.gov.br](mailto:ecarregado.data@ipem.mg.gov.br)")
+
+# Botão estilo link
+st.write("- **Formulário Online:**", end=" ")
+if st.button("🔗 Clique aqui para preencher o formulário", key="formulario_link", help="Abrir formulário"):
     st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
-    st.session_state["go_to_formulario"] = False
     st.rerun()
 
-# Script para simular clique em link interno
-st.markdown("""
-<script>
-const link = window.parent.document.querySelector('iframe')?.contentWindow.document.querySelector('a[href="#"]');
-if (link) {
-    link.addEventListener("click", function(e) {
-        e.preventDefault();
-        window.parent.postMessage({ type: "streamlit:setSessionState", key: "go_to_formulario", value: true }, "*");
-    });
-}
-</script>
-""", unsafe_allow_html=True)
+st.markdown("- **Presencialmente:** Na sede do IPEM-MG")
+
 
 # Seção 3 — Informações necessárias
 st.markdown("""
