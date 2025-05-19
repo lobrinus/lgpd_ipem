@@ -38,11 +38,6 @@ De acordo com a LGPD, você tem direito a:
 - Solicitar informações sobre o compartilhamento de seus dados com terceiros
 """)
 
-# Seção 2 — Formas de Solicitação
-st.markdown("### 2. Formas de Solicitação")
-st.markdown("- **E-mail:** ecarregado.data@ipem.mg.gov.br")
-
-# Link para o formulário (interno)
 # Formas de Solicitação
 st.markdown("""
 - **E-mail:** [ecarregado.data@ipem.mg.gov.br](mailto:ecarregado.data@ipem.mg.gov.br)
