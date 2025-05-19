@@ -93,7 +93,7 @@ st.markdown("""
                 <li>Confirmar a existência de tratamento</li>
                 <li>Acessar seus dados</li>
                 <li>Corrigir dados incompletos ou inexatos</li>
-                <li>Solicitar anonimização, bloqueio ou eliminação de dados</li>
+                <li>Solicitar anonimização, bloqueio ou eliminação de dados quando aplicável</li>
                 <li>Revogar consentimento quando aplicável</li>
                 <li>Obter informações sobre compartilhamento</li>
             </ul>
