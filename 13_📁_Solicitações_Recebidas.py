@@ -4,43 +4,42 @@ import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
 
+# Garante que apenas admins vejam essa página
+if not st.session_state.get("logado", False):
+    st.error("🚫 Acesso restrito. Faça login para visualizar as solicitações.")
+    st.stop()
+
 # Inicializar Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate(dict(st.secrets["firebase"]))
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# NÃO chamar exibir_login() aqui!
+st.title("📁 Solicitações Recebidas")
 
-st.title("📨 Solicitação de Acesso a Dados Pessoais")
+# Buscar todas as solicitações
+solicitacoes_ref = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING)
+solicitacoes = solicitacoes_ref.stream()
 
-with st.form("formulario_lgpd"):
-    nome = st.text_input("Nome completo")
-    telefone = st.text_input("Telefone de contato")
-    email = st.text_input("E-mail de contato")
-    cpf = st.text_input("CPF")
-    mensagem = st.text_area("Mensagem")
+count = 0
+for doc in solicitacoes:
+    data = doc.to_dict()
+    count += 1
+    st.markdown("---")
+    st.subheader(f"📨 Solicitação #{count}")
+    st.write(f"**Nome:** {data.get('nome')}")
+    st.write(f"**Telefone:** {data.get('telefone')}")
+    st.write(f"**Email:** {data.get('email')}")
+    st.write(f"**CPF:** {data.get('cpf')}")
+    st.write(f"**Mensagem:** {data.get('mensagem')}")
+    
+    data_envio = data.get("data_envio")
+    if isinstance(data_envio, datetime):
+        data_envio = data_envio.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y às %H:%M')
+    st.write(f"**Enviado em:** {data_envio}")
 
-    enviado = st.form_submit_button("📩 Enviar Solicitação")
-
-if enviado:
-    if nome and telefone and email and cpf and mensagem:
-        br_tz = pytz.timezone("America/Sao_Paulo")
-        data_envio = datetime.now(br_tz)
-
-        email_autenticado = st.session_state.get("cidadao_email", email)
-
-        db.collection("solicitacoes").add({
-            "nome": nome,
-            "telefone": telefone,
-            "email": email_autenticado,
-            "cpf": cpf,
-            "mensagem": mensagem,
-            "data_envio": data_envio,
-            "resposta": None,
-            "data_resposta": None,
-            "lido": False
-        })
-        st.success("✅ Solicitação enviada com sucesso!")
+    resposta = data.get("resposta")
+    if resposta:
+        st.success(f"📝 Resposta: {resposta}")
     else:
-        st.warning("⚠️ Preencha todos os campos.")
+        st.warning("⏳ Ainda não respondido.")
