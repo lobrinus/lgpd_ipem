@@ -77,14 +77,10 @@ st.markdown("""
     <p>Esta política poderá ser atualizada para refletir mudanças normativas ou operacionais. As alterações serão comunicadas:</p>
     <ul>
         <li>Através do nosso site institucional</li>
-        <li>Na seção de <a href="/Página_Principal#ultimas-atualizacoes" target="_self" style="color: #2b5876; font-weight: bold; text-decoration: underline;">
-           Últimas Atualizações
-           </a> da Página Principal
-        </li>
+        <li>Na seção <strong style="color: #2b5876; text-decoration: underline;">Últimas Atualizações</strong> da Página Principal</li>
     </ul>
 </div>
 """, unsafe_allow_html=True)
-
 
 #  Definições
 st.markdown("""
