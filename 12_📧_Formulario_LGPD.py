@@ -4,6 +4,17 @@ import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
 
+# Verifica se o usuário está autenticado
+if "cidadao_email" not in st.session_state or not st.session_state["cidadao_email"]:
+    st.warning("🔒 Você precisa estar logado para acessar o formulário de solicitação.")
+    st.stop()
+
+# Inicializar Firebase (se ainda não iniciado)
+if not firebase_admin._apps:
+    cred = credentials.Certificate(dict(st.secrets["firebase"]))
+    firebase_admin.initialize_app(cred)
+db = firestore.client()
+
 # Login visível, mas não obrigatório nesta página
 from login import exibir_login
 exibir_login()
