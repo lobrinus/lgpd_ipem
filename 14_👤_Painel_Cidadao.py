@@ -46,8 +46,8 @@ if "usuario" in st.session_state and st.session_state["usuario"] is not None:
 
         st.markdown("---")
         st.subheader("📨 Enviar Nova Solicitação")
-        nova_msg = st.text_area("Digite sua solicitação")
-        if st.button("Enviar Solicitação"):
+        nova_msg = st.text_area("Digite sua solicitação", key="txt_nova_solicitacao")
+        if st.button("Enviar Solicitação", key="btn_enviar_solicitacao"):
             if nova_msg.strip():
                 db.collection("solicitacoes").add({
                     "email": usuario["email"],
@@ -60,7 +60,7 @@ if "usuario" in st.session_state and st.session_state["usuario"] is not None:
             else:
                 st.warning("Por favor, digite a mensagem antes de enviar.")
         
-        if st.button("Sair"):
+        if st.button("Sair", key="btn_sair_painel"):
             st.session_state["usuario"] = None
             st.experimental_rerun()
 
