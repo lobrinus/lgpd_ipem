@@ -65,9 +65,6 @@ if enviado:
         })
         st.success("✅ Solicitação enviada com sucesso!")
 
-    else:
-        st.warning("⚠️ Preencha todos os campos.")
-
 # Mostrar resposta se houver
 doc_ref = db.collection("solicitacoes").where("email", "==", email_autenticado).order_by("data_envio", direction=firestore.Query.DESCENDING).limit(1)
 docs = doc_ref.stream()
