@@ -53,6 +53,9 @@ with st.sidebar:
             st.session_state["usuario"] = None
             st.rerun()
 
+from login_unificado import registrar_usuario, autenticar_usuario
+
+
 
 
 # Define as páginas públicas
