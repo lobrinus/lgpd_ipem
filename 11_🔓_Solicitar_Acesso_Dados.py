@@ -73,11 +73,11 @@ st.image(logo_ipem, width=150)
 st.title("🔓 Solicitar Acesso a Dados Pessoais")
 st.markdown("---")
 
-# Seção: Introdução
+# Introdução
 st.markdown("""
 <div class="policy-container">
     <h2 class="section-title"> Como solicitar acesso aos seus dados pessoais </h2>
-    <p> No IPEM-MG, você pode exercer seus direitos como titular de dados pessoais da seguinte forma: </p>
+    <p> No IPEM-MG, você pode exercer seus direitos como titular de dados pessoais através das opções a seguir: </p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -102,34 +102,61 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Formas de Solicitação
+# E-mail
 st.markdown("""
 <div class="finalidade-card">
-    <div class="finalidade-title">📬 Formas de Solicitação</div>
-    <ul>
-        <li><b>E-mail:</b> <a href="mailto:encarregado.data@ipem.mg.gov.br">encarregado.data@ipem.mg.gov.br</a></li>
-        <li><b>Presencialmente:</b> Na sede do IPEM-MG</li>
-        <li><b>Formulário Online:</b></li>
-    </ul>
+    <div class="finalidade-title">📧 Solicitação por E-mail</div>
+    <p>Você pode enviar sua solicitação diretamente por e-mail:</p>
+    <p><strong>encarregado.data@ipem.mg.gov.br</strong></p>
+    <details>
+        <summary style="cursor: pointer; color: #2b5876; font-weight: 500;">📌 Como fazer</summary>
+        <div class="details-content">
+            <p>Envie um e-mail com as seguintes informações:</p>
+            <ul>
+                <li>Nome completo</li>
+                <li>CPF ou CNPJ</li>
+                <li>Telefone de contato</li>
+                <li>Descrição clara do direito que deseja exercer</li>
+                <li>Período ou contexto dos dados solicitados</li>
+            </ul>
+            <p>Você receberá uma resposta dentro do prazo legal.</p>
+        </div>
+    </details>
+</div>
 """, unsafe_allow_html=True)
 
-if st.button("🔗 Clique aqui para preencher o formulário", key="formulario_link", help="Abrir formulário"):
-    st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
-    st.rerun()
-
-st.markdown("</div>", unsafe_allow_html=True)
-
-# Informações Necessárias
+# Formulário Online
 st.markdown("""
 <div class="finalidade-card">
-    <div class="finalidade-title">📝 Informações Necessárias</div>
-    <p>Para agilizar seu atendimento, inclua na solicitação:</p>
-    <ul>
-        <li>Nome completo</li>
-        <li>CPF</li>
-        <li>Direito que deseja exercer</li>
-        <li>Período ou contexto dos dados</li>
-    </ul>
+    <div class="finalidade-title">🌐 Solicitação pelo Formulário Online</div>
+    <p>Você também pode utilizar o Painel do Cidadão.</p>
+    <details>
+        <summary style="cursor: pointer; color: #2b5876; font-weight: 500;">📌 Como fazer</summary>
+        <div class="details-content">
+            <ol>
+                <li>Acesse o site e clique na aba <strong>Painel do Cidadão</strong></li>
+                <li>Crie sua conta e faça o login</li>
+                <li>Após o login, clique na aba <strong>Formulário LGPD</strong></li>
+                <li>Preencha os dados solicitados e envie</li>
+            </ol>
+            <p>A resposta será enviada dentro do prazo legal e poderá ser visualizada diretamente no Painel do Cidadão.</p>
+        </div>
+    </details>
+</div>
+""", unsafe_allow_html=True)
+
+# Presencial
+st.markdown("""
+<div class="finalidade-card">
+    <div class="finalidade-title">🏢 Solicitação Presencial</div>
+    <p>Você pode comparecer pessoalmente à sede do IPEM-MG.</p>
+    <details>
+        <summary style="cursor: pointer; color: #2b5876; font-weight: 500;">📌 Como fazer</summary>
+        <div class="details-content">
+            <p>Leve um documento oficial com foto e informe sua solicitação diretamente ao atendente responsável.</p>
+            <p>O atendimento será registrado e processado conforme a LGPD.</p>
+        </div>
+    </details>
 </div>
 """, unsafe_allow_html=True)
 
