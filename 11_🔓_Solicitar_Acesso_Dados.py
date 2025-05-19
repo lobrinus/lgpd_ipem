@@ -43,7 +43,8 @@ Você pode fazer sua solicitação através de:
 
 - **E-mail:** ecarregado.data@ipem.mg.gov.br
 
-- st.markdown("**Formulário Online:**", unsafe_allow_html=True)
+st.markdown("**Formulário Online:**", unsafe_allow_html=True)
+
 if st.button("🔗 Acesse aqui"):
     st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
     st.rerun()
