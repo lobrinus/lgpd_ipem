@@ -3,7 +3,7 @@ import pyrebase
 import firebase_admin
 from firebase_admin import credentials, firestore
 import datetime
-
+import json
 # 🔐 Firebase Web Config (API Key)
 if not firebase_admin._apps:
     cred_json = os.getenv("FIREBASE_CREDENTIALS")  # pega a variável secreta do Streamlit Cloud
