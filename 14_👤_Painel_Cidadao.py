@@ -1,126 +1,70 @@
 import streamlit as st
-import pyrebase
-import firebase_admin
-from firebase_admin import credentials, firestore
 import datetime
+from firebase_admin import firestore
 import json
-from firebase_config import auth
-import pyrebase
+import os
+import firebase_admin
+from firebase_admin import credentials
 
-firebaseConfig = {
-    "apiKey": "AIzaSyB5chTFihZM_v-5bkVecmDDUvkOKG7C22Q",
-    "authDomain": "lgpd-ipem-mg-9f1a5.firebaseapp.com",
-    "projectId": "lgpd-ipem-mg-9f1a5",
-    "storageBucket": "lgpd-ipem-mg-9f1a5.appspot.com",
-    "messagingSenderId": "XXXXXXXXXXXX",
-    "appId": "1:XXXXXXXXXXXX:web:XXXXXXXXXXXX",
-    "databaseURL": ""
-}
-
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
-
-# 🔐 Firebase Web Config (API Key)
+# Inicialização Firebase Admin (se já não tiver sido feito)
 if not firebase_admin._apps:
-    cred_json = os.getenv("FIREBASE_CREDENTIALS")  # pega a variável secreta do Streamlit Cloud
+    cred_json = os.getenv("FIREBASE_CREDENTIALS")  # pegar do ambiente
     cred_dict = json.loads(cred_json)
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-# ✅ Inicializa Pyrebase (Web)
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
-db = firestore.client()
+# Aqui você não coloca o login/registro, só exibe o painel se estiver logado
 
-# -------------------- Funções --------------------
-def registrar_usuario(email, senha):
-    try:
-        auth.create_user_with_email_and_password(email, senha)
-        return True, "✅ Registro realizado com sucesso."
-    except Exception as e:
-        return False, f"Erro no registro: {e}"
+if "usuario" in st.session_state and st.session_state["usuario"] is not None:
+    usuario = st.session_state["usuario"]
+    
+    if usuario.get("tipo") == "cidadao":
+        st.sidebar.success(f"👤 Logado como: {usuario['email']}")
+        
+        st.header("📬 Minhas Solicitações")
 
-def autenticar_usuario(email, senha):
-    try:
-        user = auth.sign_in_with_email_and_password(email, senha)
-        return True, user['email']
-    except Exception:
-        return False, "Erro no login: verifique o e-mail e senha."
+        solicitacoes_ref = db.collection("solicitacoes")
+        query = solicitacoes_ref.where("email", "==", usuario["email"])
+        docs = query.stream()
 
-# -------------------- Login/Registro --------------------
-if "cidadao_email" not in st.session_state:
-    st.session_state["cidadao_email"] = None
-
-if st.session_state["cidadao_email"] is None:
-    st.header("👤 Acesso do Cidadão")
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.subheader("🔐 Login")
-        email = st.text_input("E-mail", key="login_email")
-        senha = st.text_input("Senha", type="password", key="login_senha")
-        if st.button("Entrar"):
-            sucesso, usuario = autenticar_usuario(email, senha)
-            if sucesso:
-                st.session_state["cidadao_email"] = usuario
-                st.success("✅ Login realizado com sucesso.")
-                st.rerun()
-            else:
-                st.error(usuario)
-
-    with col2:
-        st.subheader("🆕 Registro")
-        email_r = st.text_input("E-mail", key="reg_email")
-        senha_r = st.text_input("Senha", type="password", key="reg_senha")
-        senha2_r = st.text_input("Confirme a senha", type="password", key="reg_senha2")
-        if st.button("Registrar"):
-            if senha_r != senha2_r:
-                st.error("❌ As senhas não coincidem.")
-            else:
-                sucesso, msg = registrar_usuario(email_r, senha_r)
-                if sucesso:
-                    st.success(msg)
+        tem_solicitacoes = False
+        for doc in docs:
+            tem_solicitacoes = True
+            data = doc.to_dict()
+            with st.expander(f"📌 {data['mensagem']} ({data['data_envio']})"):
+                if "resposta" in data:
+                    st.success("💬 Resposta do IPEM:")
+                    st.markdown(data["resposta"])
+                    st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
                 else:
-                    st.error(msg)
+                    st.info("⏳ Ainda aguardando resposta do IPEM.")
+        
+        if not tem_solicitacoes:
+            st.info("Nenhuma solicitação encontrada.")
 
-# -------------------- Painel do Cidadão --------------------
-if st.session_state["cidadao_email"]:
-    st.sidebar.success(f"👤 Logado como: {st.session_state['cidadao_email']}")
-
-    st.header("📬 Minhas Solicitações")
-
-    solicitacoes_ref = db.collection("solicitacoes")
-    query = solicitacoes_ref.where("email", "==", st.session_state["cidadao_email"])
-    docs = query.stream()
-
-    for doc in docs:
-        data = doc.to_dict()
-        with st.expander(f"📌 {data['mensagem']} ({data['data_envio']})"):
-            if "resposta" in data:
-                st.success("💬 Resposta do IPEM:")
-                st.markdown(data["resposta"])
-                st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
+        st.markdown("---")
+        st.subheader("📨 Enviar Nova Solicitação")
+        nova_msg = st.text_area("Digite sua solicitação")
+        if st.button("Enviar Solicitação"):
+            if nova_msg.strip():
+                db.collection("solicitacoes").add({
+                    "email": usuario["email"],
+                    "mensagem": nova_msg.strip(),
+                    "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "lido": False
+                })
+                st.success("✅ Solicitação enviada com sucesso!")
+                st.experimental_rerun()
             else:
-                st.info("⏳ Ainda aguardando resposta do IPEM.")
+                st.warning("Por favor, digite a mensagem antes de enviar.")
+        
+        if st.button("Sair"):
+            st.session_state["usuario"] = None
+            st.experimental_rerun()
 
-    st.markdown("---")
-    st.subheader("📨 Enviar Nova Solicitação")
-    nova_msg = st.text_area("Digite sua solicitação")
-    if st.button("Enviar Solicitação"):
-        if nova_msg.strip():
-            db.collection("solicitacoes").add({
-                "email": st.session_state["cidadao_email"],
-                "mensagem": nova_msg.strip(),
-                "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                "lido": False
-            })
-            st.success("✅ Solicitação enviada com sucesso!")
-            st.rerun()
-        else:
-            st.warning("Por favor, digite a mensagem antes de enviar.")
-
-    if st.button("Sair"):
-        st.session_state["cidadao_email"] = None
-        st.rerun()
+    else:
+        st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
+else:
+    st.warning("⚠️ Você precisa estar logado para acessar o painel cidadão. Por favor, faça login primeiro.")
