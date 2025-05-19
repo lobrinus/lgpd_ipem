@@ -43,13 +43,32 @@ st.markdown("### 2. Formas de Solicitação")
 st.markdown("- **E-mail:** ecarregado.data@ipem.mg.gov.br")
 
 # Link para o formulário (interno)
-col1, col2 = st.columns([1, 4])
-with col1:
-    st.markdown("**Formulário Online:**", unsafe_allow_html=True)
-with col2:
-    if st.button("🔗 Acesse aqui"):
-        st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
-        st.rerun()
+# Formas de Solicitação
+st.markdown("""
+- **E-mail:** [ecarregado.data@ipem.mg.gov.br](mailto:ecarregado.data@ipem.mg.gov.br)
+- **Formulário Online:** [🔗 Clique aqui para preencher o formulário](#)
+- **Presencialmente:** Na sede do IPEM-MG
+""")
+
+# Se o estado for ativado por clique no link simulado
+if st.session_state.get("go_to_formulario", False):
+    st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
+    st.session_state["go_to_formulario"] = False
+    st.rerun()
+
+# Script para simular clique em link interno
+st.markdown("""
+<script>
+const link = window.parent.document.querySelector('iframe')?.contentWindow.document.querySelector('a[href="#"]');
+if (link) {
+    link.addEventListener("click", function(e) {
+        e.preventDefault();
+        window.parent.postMessage({ type: "streamlit:setSessionState", key: "go_to_formulario", value: true }, "*");
+    });
+}
+</script>
+""", unsafe_allow_html=True)
+
 
 st.markdown("- **Presencialmente:** Na sede do IPEM-MG")
 
