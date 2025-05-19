@@ -17,34 +17,54 @@ db = firestore.client()
 st.title("📨 Solicitação de Acesso a Dados Pessoais")
 
 with st.form("formulario_lgpd"):
-    nome = st.text_input("Nome completo")
-    telefone = st.text_input("Telefone de contato")
-    email = st.text_input("E-mail de contato")
-    cpf = st.text_input("CPF")
-    mensagem = st.text_area("Mensagem")
+    nome = st.text_input("Nome completo", placeholder="Digite seu nome completo")
+    telefone = st.text_input("Telefone de contato", placeholder="(xx) xxxxx-xxxx")
+    email = st.text_input("E-mail de contato", placeholder="seuemail@exemplo.com")
+    cpf = st.text_input("CPF", placeholder="Apenas números")
+    mensagem = st.text_area("Mensagem", placeholder="Descreva sua solicitação")
 
     enviado = st.form_submit_button("📩 Enviar Solicitação")
 
+# Validação
 if enviado:
-    if nome and telefone and email and cpf and mensagem:
+    erros = []
+    if not nome.strip():
+        erros.append("⚠️ O campo **Nome** é obrigatório.")
+    if not telefone.strip():
+        erros.append("⚠️ O campo **Telefone** é obrigatório.")
+    if not email.strip():
+        erros.append("⚠️ O campo **E-mail** é obrigatório.")
+    elif "@" not in email or "." not in email:
+        erros.append("❌ E-mail inválido.")
+    if not cpf.strip():
+        erros.append("⚠️ O campo **CPF** é obrigatório.")
+    elif not cpf.isdigit() or len(cpf) != 11:
+        erros.append("❌ CPF inválido. Deve conter 11 dígitos numéricos.")
+    if not mensagem.strip():
+        erros.append("⚠️ O campo **Mensagem** é obrigatório.")
+
+    if erros:
+        for erro in erros:
+            st.error(erro)
+    else:
+        # Salva solicitação no Firestore
         br_tz = pytz.timezone("America/Sao_Paulo")
         data_envio = datetime.now(br_tz)
-
-        # Pega e-mail do cidadão autenticado, se houver
         email_autenticado = st.session_state.get("cidadao_email", email)
 
         db.collection("solicitacoes").add({
-            "nome": nome,
-            "telefone": telefone,
-            "email": email_autenticado,
-            "cpf": cpf,
-            "mensagem": mensagem,
+            "nome": nome.strip(),
+            "telefone": telefone.strip(),
+            "email": email_autenticado.strip(),
+            "cpf": cpf.strip(),
+            "mensagem": mensagem.strip(),
             "data_envio": data_envio,
             "resposta": None,
             "data_resposta": None,
             "lido": False
         })
         st.success("✅ Solicitação enviada com sucesso!")
+
     else:
         st.warning("⚠️ Preencha todos os campos.")
 
