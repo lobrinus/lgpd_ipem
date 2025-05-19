@@ -32,7 +32,12 @@ if st.session_state["logado"]:
     paginas["📁 Solicitações Recebidas"] = "13_📁_Solicitações_Recebidas.py"
 
 # Menu lateral (sem mostrar página privada para não logado)
-pagina_escolhida = st.sidebar.radio("📄 Navegação", list(paginas.keys()))
+pagina_escolhida = st.sidebar.radio(
+    "📄 Navegação", 
+    list(paginas.keys()), 
+    index=list(paginas.keys()).index(st.session_state.get("pagina_escolhida", "🏠 Início"))
+)
+
 
 # Exibe o login de admin SOMENTE na área administrativa
 if pagina_escolhida == "📁 Solicitações Recebidas":
