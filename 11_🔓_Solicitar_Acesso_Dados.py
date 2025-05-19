@@ -2,7 +2,6 @@ import streamlit as st
 from PIL import Image
 from login import exibir_login
 
-
 # CSS e marca d'água
 st.markdown("""
     <style>
@@ -23,7 +22,7 @@ st.image(logo_ipem, width=150)
 st.title("🔓 Solicitar Acesso a Dados Pessoais")
 st.markdown("---")
 
-# Conteúdo
+# Seção 1 — Direitos
 st.markdown("""
 ## Como solicitar acesso aos seus dados pessoais
 
@@ -37,17 +36,13 @@ De acordo com a LGPD, você tem direito a:
 - Solicitar anonimização, bloqueio ou eliminação de dados desde que não sejam necessários para o tratamento
 - Revogar o consentimento desde que não haja outra base legal para o tratamento
 - Solicitar informações sobre o compartilhamento de seus dados com terceiros
-
-# Seção 2 – Formas de Solicitação
-st.markdown("### 2. Formas de Solicitação")
-
-st.markdown("""
-Você pode fazer sua solicitação através de:
-
-- **E-mail:** ecarregado.data@ipem.mg.gov.br
 """)
 
-# Linha com botão estilo link
+# Seção 2 — Formas de Solicitação
+st.markdown("### 2. Formas de Solicitação")
+st.markdown("- **E-mail:** ecarregado.data@ipem.mg.gov.br")
+
+# Link para o formulário (interno)
 col1, col2 = st.columns([1, 4])
 with col1:
     st.markdown("**Formulário Online:**", unsafe_allow_html=True)
@@ -56,12 +51,10 @@ with col2:
         st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
         st.rerun()
 
+st.markdown("- **Presencialmente:** Na sede do IPEM-MG")
+
+# Seção 3 — Informações necessárias
 st.markdown("""
-- **Presencialmente:** Na sede do IPEM-MG
-""")
-
-
-
 ### 3. Informações Necessárias
 Para agilizar seu atendimento, inclua na solicitação:
 - Seu nome completo
@@ -70,12 +63,14 @@ Para agilizar seu atendimento, inclua na solicitação:
 - Período ou contexto dos dados solicitados
 """)
 
+# Prazo
 st.markdown("---")
 st.subheader("Prazo de Resposta")
 st.markdown("""
 O IPEM-MG responderá sua solicitação em até **15 dias**, prorrogáveis por mais 15 dias mediante justificativa, conforme determina a LGPD.
 """)
 
+# Contato
 st.markdown("---")
 st.info("""
 **Dúvidas?** Entre em contato com nosso Encarregado de Dados:  
