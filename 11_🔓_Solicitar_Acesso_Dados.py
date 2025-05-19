@@ -41,7 +41,10 @@ De acordo com a LGPD, você tem direito a:
 ### 2. Formas de Solicitação
 Você pode fazer sua solicitação através de:
 - **E-mail:** ecarregado.data@ipem.mg.gov.br
-- **Formulário Online:** [Acesse aqui](https://lgpd-ipem-mg.streamlit.app/Formulario_de_Solicita%C3%A7%C3%A3o)
+st.markdown("**Formulário Online:**", unsafe_allow_html=True)
+if st.button("🔗 Acesse aqui"):
+    st.session_state["pagina_escolhida"] = "📧 Formulário LGPD"
+    st.rerun()
 - **Presencialmente:** Na sede do IPEM-MG
 
 ### 3. Informações Necessárias
