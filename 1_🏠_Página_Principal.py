@@ -2,24 +2,24 @@ import streamlit as st
 from PIL import Image
 from login import exibir_login
 
-# Título e introdução
 st.title("🏠 Página Principal")
 st.markdown("---")
+
 st.markdown("""
 **Bem-vindo ao Portal LGPD do IPEM-MG**
 
 Este portal centraliza todas as informações sobre a aplicação da Lei Geral de Proteção de Dados no Instituto de Pesos e Medidas do Estado de Minas Gerais.
 """)
 
-# Bloco com destaques
+# Bloco com acesso rápido sem links clicáveis
 st.markdown("""
 <div class="info-box">
     <h4>📌 Acesso Rápido:</h4>
     <ul>
-        <li><a href="/Política_de_Privacidade" target="_self">📜 Política de Privacidade</a></li>
-        <li><a href="/Solicitar_Acesso_Dados" target="_self">🔓 Solicitar Acesso a Dados</a></li>
-        <li><a href="/Princípios_Básicos" target="_self">⚖️ Princípios da LGPD</a></li>
-        <li><a href="/Boas_Práticas" target="_self">✅ Boas Práticas no IPEM-MG</a></li>
+        <li>📜 Política de Privacidade — disponível no menu lateral</li>
+        <li>🔓 Solicitar Acesso a Dados — disponível no menu lateral</li>
+        <li>⚖️ Princípios da LGPD — disponível no menu lateral</li>
+        <li>✅ Boas Práticas no IPEM-MG — disponível no menu lateral</li>
     </ul>
 </div>
 """, unsafe_allow_html=True)
