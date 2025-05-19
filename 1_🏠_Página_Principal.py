@@ -38,6 +38,26 @@ st.markdown("""
 **Telefone:** (31) 3399-7100   
 **Horário de atendimento:** 8h às 18h (dias úteis)
 """)
+st.markdown("---")
+st.subheader("🔐 Acesso Administrativo")
+
+if not st.session_state.get("logado"):
+    user = st.text_input("Usuário", key="login_user")
+    password = st.text_input("Senha", type="password", key="login_pass")
+    if st.button("Entrar"):
+        usuarios = st.secrets["auth"]
+        if user in usuarios and usuarios[user] == password:
+            st.session_state["logado"] = True
+            st.success("✅ Login realizado com sucesso.")
+            st.experimental_rerun()
+        else:
+            st.error("❌ Usuário ou senha inválidos.")
+else:
+    st.success("👤 Usuário administrador logado")
+    if st.button("Sair"):
+        st.session_state["logado"] = False
+        st.experimental_rerun()
+
 
 # Rodapé
 st.markdown("""
