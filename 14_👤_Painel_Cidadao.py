@@ -53,36 +53,37 @@ def autenticar_usuario(email, senha):
 if "cidadao_email" not in st.session_state:
     st.session_state["cidadao_email"] = None
 
-st.header("👤 Acesso do Cidadão")
-col1, col2 = st.columns(2)
+if st.session_state["cidadao_email"] is None:
+    st.header("👤 Acesso do Cidadão")
+    col1, col2 = st.columns(2)
 
-with col1:
-    st.subheader("🔐 Login")
-    email = st.text_input("E-mail", key="login_email")
-    senha = st.text_input("Senha", type="password", key="login_senha")
-    if st.button("Entrar"):
-        sucesso, usuario = autenticar_usuario(email, senha)
-        if sucesso:
-            st.session_state["cidadao_email"] = usuario
-            st.success("✅ Login realizado com sucesso.")
-            st.rerun()
-        else:
-            st.error(usuario)
-
-with col2:
-    st.subheader("🆕 Registro")
-    email_r = st.text_input("E-mail", key="reg_email")
-    senha_r = st.text_input("Senha", type="password", key="reg_senha")
-    senha2_r = st.text_input("Confirme a senha", type="password", key="reg_senha2")
-    if st.button("Registrar"):
-        if senha_r != senha2_r:
-            st.error("❌ As senhas não coincidem.")
-        else:
-            sucesso, msg = registrar_usuario(email_r, senha_r)
+    with col1:
+        st.subheader("🔐 Login")
+        email = st.text_input("E-mail", key="login_email")
+        senha = st.text_input("Senha", type="password", key="login_senha")
+        if st.button("Entrar"):
+            sucesso, usuario = autenticar_usuario(email, senha)
             if sucesso:
-                st.success(msg)
+                st.session_state["cidadao_email"] = usuario
+                st.success("✅ Login realizado com sucesso.")
+                st.rerun()
             else:
-                st.error(msg)
+                st.error(usuario)
+
+    with col2:
+        st.subheader("🆕 Registro")
+        email_r = st.text_input("E-mail", key="reg_email")
+        senha_r = st.text_input("Senha", type="password", key="reg_senha")
+        senha2_r = st.text_input("Confirme a senha", type="password", key="reg_senha2")
+        if st.button("Registrar"):
+            if senha_r != senha2_r:
+                st.error("❌ As senhas não coincidem.")
+            else:
+                sucesso, msg = registrar_usuario(email_r, senha_r)
+                if sucesso:
+                    st.success(msg)
+                else:
+                    st.error(msg)
 
 # -------------------- Painel do Cidadão --------------------
 if st.session_state["cidadao_email"]:
