@@ -8,17 +8,51 @@ st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
 
-# Login centralizado via Login Unificado (usuário = admin ou cidadao)
+# Login unificado direto na barra lateral
 with st.sidebar:
     st.markdown("## 🔐 Acesso")
-    if "usuario" in st.session_state and st.session_state["usuario"]:
+
+    if "usuario" not in st.session_state:
+        st.session_state["usuario"] = None
+
+    if st.session_state["usuario"] is None:
+        aba = st.radio("Escolha uma opção:", ["Entrar", "Registrar"], horizontal=True)
+
+        if aba == "Entrar":
+            email = st.text_input("E-mail")
+            senha = st.text_input("Senha", type="password")
+            if st.button("Entrar"):
+                from login_unificado import autenticar_usuario
+                sucesso, resultado = autenticar_usuario(email, senha)
+                if sucesso:
+                    st.session_state["usuario"] = resultado
+                    st.rerun()
+                else:
+                    st.error(resultado)
+
+        elif aba == "Registrar":
+            email_r = st.text_input("Novo E-mail")
+            senha_r = st.text_input("Senha", type="password")
+            senha2_r = st.text_input("Confirmar Senha", type="password")
+            if st.button("Registrar"):
+                if senha_r != senha2_r:
+                    st.error("❌ As senhas não coincidem.")
+                else:
+                    from login_unificado import registrar_usuario
+                    sucesso, msg = registrar_usuario(email_r, senha_r)
+                    if sucesso:
+                        st.success(msg)
+                        st.info("Agora você pode fazer login.")
+                    else:
+                        st.error(msg)
+
+    else:
         user = st.session_state["usuario"]
         st.success(f"🔓 Logado como: {user['email']} ({user['tipo']})")
         if st.button("Sair"):
             st.session_state["usuario"] = None
             st.rerun()
-    else:
-        st.info("Acesse a página 🔐 Login Unificado para entrar.")
+
 
 
 # Define as páginas públicas
