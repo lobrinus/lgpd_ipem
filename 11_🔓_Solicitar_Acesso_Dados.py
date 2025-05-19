@@ -64,9 +64,6 @@ if (link) {
 </script>
 """, unsafe_allow_html=True)
 
-
-st.markdown("- **Presencialmente:** Na sede do IPEM-MG")
-
 # Seção 3 — Informações necessárias
 st.markdown("""
 ### 3. Informações Necessárias
