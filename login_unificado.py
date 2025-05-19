@@ -35,7 +35,10 @@ def registrar_usuario(email, senha):
         })
         return True, "✅ Registro realizado com sucesso."
     except Exception as e:
-        return False, f"Erro no registro: {e}"
+        error_str = str(e)
+        if "EMAIL_EXISTS" in error_str:
+            return False, "❌ Este e-mail já está cadastrado."
+        return False, f"Erro no registro: {error_str}"
 
 def autenticar_usuario(email, senha):
     try:
