@@ -8,10 +8,10 @@ st.markdown("---")
 st.markdown("""
 **Bem-vindo ao Portal LGPD do IPEM-MG**
 
-Este portal centraliza todas as informações sobre a aplicação da Lei Geral de Proteção de Dados no Instituto de Pesos e Medidas do Estado de Minas Gerais.
+Este portal centraliza todas as informações sobre a aplicação da Lei Geral de Proteção de Dados no Instituto de Metrologia e Qualidade do Estado de Minas Gerais (IPEM-MG).
 """)
 
-# Bloco com acesso rápido sem links clicáveis
+# Acesso rápido (sem links)
 st.markdown("""
 <div class="info-box">
     <h4>📌 Acesso Rápido:</h4>
@@ -24,7 +24,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Bloco: O que é a LGPD
+# O que é LGPD
 st.markdown("""
 <div class="finalidade-card">
     <div class="finalidade-title">📖 O que é a LGPD?</div>
@@ -32,15 +32,31 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Bloco: Compromisso do IPEM-MG
+# Objetivo do Portal
 st.markdown("""
 <div class="finalidade-card">
-    <div class="finalidade-title">🔐 Compromisso com a Privacidade</div>
-    <p>O IPEM-MG está comprometido com a proteção dos dados pessoais tratados em suas atividades. Implementamos medidas administrativas, técnicas e organizacionais para garantir segurança, transparência e respeito à legislação.</p>
+    <div class="finalidade-title">🎯 Objetivo do Portal</div>
+    <p>O Portal LGPD foi criado para garantir transparência e facilitar o exercício dos direitos dos titulares de dados no âmbito do IPEM-MG. Aqui, você encontrará informações, orientações e ferramentas para interagir com segurança e clareza com a administração pública.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Bloco: Painel do Cidadão
+# Sobre o IPEM-MG
+st.markdown("""
+<div class="finalidade-card">
+    <div class="finalidade-title">🏛️ Sobre o IPEM-MG</div>
+    <p>O Instituto de Metrologia e Qualidade do Estado de Minas Gerais (IPEM-MG) é responsável pela execução das atividades de metrologia legal, fiscalização de produtos regulamentados e certificações no Estado, sempre com foco na proteção do consumidor e da livre concorrência.</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Responsabilidades LGPD
+st.markdown("""
+<div class="finalidade-card">
+    <div class="finalidade-title">📂 Responsabilidades na Proteção de Dados</div>
+    <p>O IPEM-MG realiza o tratamento de dados pessoais apenas quando necessário para o cumprimento de suas funções legais. Todas as operações seguem os princípios da LGPD, com especial atenção à segurança, finalidade e necessidade dos dados tratados.</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Painel do Cidadão
 st.markdown("""
 <div class="finalidade-card">
     <div class="finalidade-title">👥 Painel do Cidadão</div>
@@ -54,7 +70,34 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Bloco: Últimas Atualizações
+# Transparência Ativa
+st.markdown("""
+<div class="finalidade-card">
+    <div class="finalidade-title">📢 Transparência Ativa</div>
+    <p>Documentos e informações públicas sobre a LGPD no IPEM-MG:</p>
+    <ul>
+        <li>📄 Política de Privacidade</li>
+        <li>📋 Relatório de Impacto à Proteção de Dados (quando disponível)</li>
+        <li>📚 Registros de atividades de tratamento</li>
+        <li>🧑‍🏫 Treinamentos internos sobre LGPD</li>
+    </ul>
+</div>
+""", unsafe_allow_html=True)
+
+# Canal de Reclamações
+st.markdown("""
+<div class="finalidade-card">
+    <div class="finalidade-title">🚨 Canal para Reclamações</div>
+    <p>Se você acredita que seus dados foram utilizados indevidamente, entre em contato:</p>
+    <ul>
+        <li>📧 <strong>E-mail:</strong> encarregado.data@ipem.mg.gov.br</li>
+        <li>📞 <strong>Telefone:</strong> (31) 3399-7100</li>
+        <li>🧾 Também disponível no Painel do Cidadão</li>
+    </ul>
+</div>
+""", unsafe_allow_html=True)
+
+# Últimas atualizações
 st.subheader("🕓 Últimas Atualizações")
 st.markdown("""
 - **15/03/2025:** Atualização da Política de Privacidade  
@@ -62,7 +105,7 @@ st.markdown("""
 - **19/08/2020:** Nomeação do Encarregado de Dados  
 """)
 
-# Bloco: Contato do Encarregado
+# Contato
 st.subheader("📞 Contato do Encarregado de Dados")
 st.markdown("""
 **E-mail:** encarregado.data@ipem.mg.gov.br  
