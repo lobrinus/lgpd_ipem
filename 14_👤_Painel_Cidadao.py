@@ -56,7 +56,7 @@ if "usuario" in st.session_state and st.session_state["usuario"] is not None:
                     "lido": False
                 })
                 st.success("✅ Solicitação enviada com sucesso!")
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.warning("Por favor, digite a mensagem antes de enviar.")
         
