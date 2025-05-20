@@ -20,11 +20,11 @@ def render():
             CEP: 32010-130
             """)
         with col2:
-            st.subheader("🚨 Canal de Denúncias")
+            st.subheader("🚨 Canal de Denúncias LGPD")
             st.markdown("""
-            **Para reportar incidentes ou irregularidades:**  
-            - 📧 [ouvidoria@ipem.mg.gov.br](mailto:ouvidoria@ipem.mg.gov.br)  
-            - 📞 0800 335 335  
+            **Para reportar incidentes ou irregularidades relacionados a LGPD:**  
+            - 📧 [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)  
+            - 📞 (31) 3399-7100 / 0800 335 335  
             - 🌐 [Formulário Online](https://www.ipem.mg.gov.br/fale-conosco)
             """)
     st.markdown("---")
@@ -48,7 +48,8 @@ def render():
         st.markdown("""
         - Nova funcionalidade de acompanhamento de solicitações
         - Atualização da Política de Privacidade (versão 2.1)
-        - Treinamento LGPD para servidores em 25/05
+        - Integração com notícias sobre a LGPD diretamente dos sites oficiais
+        - Treinamento LGPD para servidores em 
         """)
     # Recursos
     st.subheader("📚 Recursos Importantes")
@@ -68,18 +69,6 @@ def render():
         3. Atualização regular de sistemas
         4. Treinamento anual de colaboradores
         5. Auditorias trimestrais de segurança
-        """)
-    with tab3:
-        st.markdown("""
-        **Perguntas Frequentes:**
-        Q: Como solicitar exclusão de dados?  
-        R: Através do Painel do Cidadão ou formulário específico[21]
-
-        Q: Quanto tempo demora uma resposta?  
-        R: Prazo máximo de 15 dias úteis[14]
-
-        Q: Posso acessar dados de terceiros?  
-        R: Somente com autorização judicial expressa[19]
         """)
     # Rodapé
     st.markdown("---")
