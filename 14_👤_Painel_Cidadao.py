@@ -62,7 +62,7 @@ if "usuario" in st.session_state and st.session_state["usuario"] is not None:
         
         if st.button("Sair", key="btn_sair_painel"):
             st.session_state["usuario"] = None
-            st.experimental_rerun()
+            st.rerun()
 
     else:
         st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
