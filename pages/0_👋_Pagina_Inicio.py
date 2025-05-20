@@ -8,6 +8,8 @@ from PIL import Image
 def image_to_base64(img_path):
     with open(img_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
+        
+from login_unificado import registrar_usuario, autenticar_usuario
 
 def render():
     st.title("🔄 Fluxo de Dados LGPD")
