@@ -3,6 +3,7 @@ from datetime import datetime
 import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
+from login_unificado import autenticar_usuario, registrar_usuario
 
 
 # Verifica login do admin
