@@ -61,12 +61,23 @@ if st.session_state["usuario"] is None:
                     else:
                         st.error(msg)
 
-    else:
-        user = st.session_state["usuario"]
+else:
+    user = st.session_state.get("usuario", None)
+
+    if isinstance(user, dict) and "email" in user and "tipo" in user:
         st.success(f"🔓 Logado como: {user['email']} ({user['tipo']})")
         if st.button("Sair"):
-            st.session_state["usuario"] = None
+            # Limpa todas as variáveis relacionadas ao login
+            for key in ["usuario", "logado", "tipo_usuario", "email", "admin_email"]:
+                st.session_state.pop(key, None)
             st.rerun()
+    else:
+        st.warning("⚠️ Sessão iniciada, mas os dados do usuário estão incompletos. Tente sair e entrar novamente.")
+        if st.button("Forçar logout"):
+            for key in ["usuario", "logado", "tipo_usuario", "email", "admin_email"]:
+                st.session_state.pop(key, None)
+            st.rerun()
+
 
 
 # Define as páginas públicas
