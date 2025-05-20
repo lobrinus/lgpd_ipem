@@ -1,7 +1,7 @@
 import streamlit as st
 
 def render():
-    st.title("🏠 Portal LGPD - IPEM-MG")
+    st.title("🏠 ***Bem Vindo*** ao Portal LGPD - IPEM-MG")
     st.markdown("---")
     
     # Seção de Contato
