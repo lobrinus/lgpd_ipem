@@ -275,8 +275,8 @@ def render():
         try:
             icone_ipem = image_to_base64("icone_ipem.png")
             lgpd_logo = image_to_base64("lgpd_logo.png")
-        
-        # CSS para o rodapé    
+    
+            # CSS para o rodapé    
             st.markdown(f"""
             <style>
                 .footer {{
@@ -295,13 +295,13 @@ def render():
                     transform: scale(1.2); /* Efeito de zoom no hover */
                 }}
             </style>
-        
+    
             <div class="footer">
                 <img src="data:image/png;base64,{icone_ipem}" alt="Ícone IPEM">
                 <img src="data:image/png;base64,{lgpd_logo}" alt="Logo LGPD">
             </div>
             """, unsafe_allow_html=True)
     
-    except FileNotFoundError:
-        st.error("Erro: Não foi possível carregar uma ou ambas as imagens. Verifique os caminhos e tente novamente.")
-
+        except FileNotFoundError:
+            st.error("Erro: Não foi possível carregar uma ou ambas as imagens. Verifique os caminhos e tente novamente.")
+    
