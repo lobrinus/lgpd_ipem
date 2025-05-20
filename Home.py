@@ -1,9 +1,9 @@
 import streamlit as st
-from login_unificado import registrar_usuario, autenticar_usuario
 
 # Deve ser o PRIMEIRO comando Streamlit
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 
+from login_unificado import registrar_usuario, autenticar_usuario
 # Inicializa estados
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
