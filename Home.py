@@ -1,6 +1,6 @@
 import streamlit as st
-from login import exibir_login
 import os
+from login_unificado import registrar_usuario, autenticar_usuario
 
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 
