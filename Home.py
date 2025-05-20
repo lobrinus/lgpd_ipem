@@ -1,68 +1,59 @@
 import streamlit as st
 from login_unificado import registrar_usuario, autenticar_usuario
 
-
 # Configuração da página
-st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
+st.set_page_config(
+    page_title="LGPD - IPEM-MG",
+    page_icon="🏠",
+    layout="wide"
+)
 
-# Inicializa estados de sessão
+# Estado da sessão
 if "logado" not in st.session_state:
-    st.session_state["logado"] = False
+    st.session_state.logado = False
 if "usuario" not in st.session_state:
-    st.session_state["usuario"] = None
+    st.session_state.usuario = None
 
 # Barra lateral - Login/Registro
 with st.sidebar:
     st.markdown("## 🔐 Acesso")
-
-    if st.session_state["usuario"] is None:
-        aba = st.radio("Escolha uma opção:", ["Entrar", "Registrar"], horizontal=True, key="aba_login")
-
+    
+    if not st.session_state.logado:
+        aba = st.radio("Escolha:", ["Entrar", "Registrar"], horizontal=True)
+        
         if aba == "Entrar":
             email = st.text_input("E-mail")
             senha = st.text_input("Senha", type="password")
             if st.button("Entrar"):
                 sucesso, resultado = autenticar_usuario(email, senha)
                 if sucesso:
-                    st.session_state["usuario"] = resultado
-                    st.session_state["logado"] = True
-                    st.session_state["tipo_usuario"] = resultado["tipo"]
-                    st.session_state["email"] = resultado["email"]
-                    if resultado["tipo"] == "admin":
-                        st.session_state["admin_email"] = resultado["email"]
+                    st.session_state.logado = True
+                    st.session_state.usuario = resultado
                     st.rerun()
-                else:
-                    st.error(resultado)
+        
         elif aba == "Registrar":
             email_r = st.text_input("Novo E-mail")
             senha_r = st.text_input("Senha", type="password")
             senha2_r = st.text_input("Confirmar Senha", type="password")
-            if st.button("Registrar"):
-                if senha_r != senha2_r:
-                    st.error("❌ As senhas não coincidem.")
-                else:
-                    sucesso, msg = registrar_usuario(email_r, senha_r)
-                    if sucesso:
-                        st.success(msg)
-                        st.info("Agora você pode fazer login.")
-                        st.session_state["aba_login"] = "Entrar"
-                        st.rerun()
-                    else:
-                        st.error(msg)
+            if st.button("Registrar") and senha_r == senha2_r:
+                sucesso, msg = registrar_usuario(email_r, senha_r)
+                if sucesso:
+                    st.success("Registro realizado! Faça login.")
+    
     else:
-        user = st.session_state.get("usuario", None)
-        if isinstance(user, dict) and "email" in user and "tipo" in user:
-            st.success(f"🔓 Logado como: {user['email']} ({user['tipo']})")
-            if st.button("Sair"):
-                for key in ["usuario", "logado", "tipo_usuario", "email", "admin_email"]:
-                    st.session_state.pop(key, None)
-                st.rerun()
-        else:
-            st.warning("⚠️ Sessão iniciada, mas os dados do usuário estão incompletos. Tente sair e entrar novamente.")
-            if st.button("Forçar logout"):
-                for key in ["usuario", "logado", "tipo_usuario", "email", "admin_email"]:
-                    st.session_state.pop(key, None)
-                st.rerun()
+        st.success(f"🔓 Logado como: {st.session_state.usuario['email']}")
+        if st.button("Sair"):
+            st.session_state.logado = False
+            st.session_state.usuario = None
+            st.rerun()
 
-from pages import pagina_principal
-render()
+# Conteúdo da Página Principal
+if st.session_state.logado:
+    from pages._1_🏠_Pagina_Principal import render
+    render()
+else:
+    st.title("📘 Sistema LGPD - IPEM-MG")
+    st.markdown("""
+    Bem-vindo ao sistema de apoio à adequação à Lei Geral de Proteção de Dados (LGPD) do IPEM-MG.
+    Faça login para acessar o sistema.
+    """)
