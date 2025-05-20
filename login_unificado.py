@@ -53,3 +53,22 @@ def autenticar_usuario(email, senha):
         return True, {"email": email, "tipo": tipo}
     except:
         return False, "❌ E-mail ou senha incorretos."
+
+email = st.text_input("Email")
+senha = st.text_input("Senha", type="password")
+
+if st.button("Entrar"):
+    sucesso, dados = autenticar_usuario(email, senha)
+
+    if sucesso:
+        st.session_state["logado"] = True
+        st.session_state["email"] = dados["email"]
+        st.session_state["tipo_usuario"] = dados["tipo"]  # ← ESSENCIAL!!!
+        
+        if dados["tipo"] == "admin":
+            st.session_state["admin_email"] = dados["email"]
+
+        st.success(f"✅ Bem-vindo, {dados['tipo']}")
+        st.rerun()
+    else:
+        st.error(dados)
