@@ -4,12 +4,11 @@ import os
 import feedparser
 from datetime import datetime
 from PIL import Image
+from login_unificado import registrar_usuario, autenticar_usuario
 
 def image_to_base64(img_path):
     with open(img_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
-        
-from login_unificado import registrar_usuario, autenticar_usuario
 
 def render():
     st.title("🔄 Fluxo de Dados LGPD")
@@ -123,3 +122,6 @@ def render():
         © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
     </p>
     """, unsafe_allow_html=True)
+
+# 🔽 Esta chamada garante que a página seja exibida quando o arquivo for executado
+render()
