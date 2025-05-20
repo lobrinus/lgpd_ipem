@@ -49,7 +49,7 @@ with st.sidebar:
 
 # Conteúdo da Página Principal
 if st.session_state.logado:
-    from pages._1_🏠_Pagina_Principal import render
+    from pages.pagina_principal import render
     render()
 else:
     st.title("📘 Sistema LGPD - IPEM-MG")
