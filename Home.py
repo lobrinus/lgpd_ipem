@@ -16,7 +16,6 @@ if "usuario" not in st.session_state:
 
 # Barra lateral - Login/Registro
 with st.sidebar:
-    st.page_link("pages/1_pagina_principal.py", label="🏠 Página Principal")
     st.markdown("## 🔐 Acesso")
 
     if st.session_state["usuario"] is None:
