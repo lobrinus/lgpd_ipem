@@ -35,7 +35,7 @@ if st.button("Entrar"):
     if sucesso:
         st.session_state["logado"] = True
         st.session_state["email"] = dados["email"]
-        st.session_state["tipo_usuario"] = dados["tipo"]  # ← ESSENCIAL!!!
+        st.session_state["tipo_usuario"] = dados["tipo"] 
         
         if dados["tipo"] == "admin":
             st.session_state["admin_email"] = dados["email"]
