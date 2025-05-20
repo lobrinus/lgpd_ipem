@@ -1,10 +1,10 @@
 import streamlit as st
+from login_unificado import registrar_usuario, autenticar_usuario
 
-# Deve ser o PRIMEIRO comando Streamlit
+# Configuração da página
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 
-from login_unificado import registrar_usuario, autenticar_usuario
-# Inicializa estados
+# Inicializa estados de sessão
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
 if "usuario" not in st.session_state:
@@ -32,7 +32,6 @@ with st.sidebar:
                     st.rerun()
                 else:
                     st.error(resultado)
-
         elif aba == "Registrar":
             email_r = st.text_input("Novo E-mail")
             senha_r = st.text_input("Senha", type="password")
@@ -64,9 +63,8 @@ with st.sidebar:
                     st.session_state.pop(key, None)
                 st.rerun()
 
-# Corpo da página inicial
-st.title("📘 Sistema LGPD - IPEM-MG")
-st.markdown("""
-Bem-vindo ao sistema de apoio à adequação à Lei Geral de Proteção de Dados (LGPD) do IPEM-MG.
-Use o menu lateral para navegar pelas seções do sistema.
-""")
+# --- INTEGRAÇÃO DA PÁGINA INICIAL ---
+# Importa e executa o render() da sua página inicial
+from pages._0_pagina_inicio import render  # O underline é necessário para importar arquivos iniciados por número
+
+render()
