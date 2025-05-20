@@ -55,7 +55,6 @@ exibir_login()
 if st.session_state.get("logado"):
     # Importa e chama a render() da sua página principal
     from pages.pagina_principal import render
-    from pages.painel_cidadao import render
     render()
 else:
     # Página de boas-vindas
