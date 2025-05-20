@@ -16,10 +16,6 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# Login visível, mas não obrigatório nesta página
-from login import exibir_login
-exibir_login()
-
 # Inicializar Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate(dict(st.secrets["firebase"]))
