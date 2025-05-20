@@ -3,6 +3,7 @@ from datetime import datetime
 import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
+from login_unificado import autenticar_usuario, registrar_usuario
 
 # Verifica se o usuário está autenticado
 if "cidadao_email" not in st.session_state or not st.session_state["cidadao_email"]:
