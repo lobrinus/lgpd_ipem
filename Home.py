@@ -63,8 +63,7 @@ with st.sidebar:
                     st.session_state.pop(key, None)
                 st.rerun()
 
-# --- INTEGRAÇÃO DA PÁGINA INICIAL ---
-# Importa e executa o render() da sua página inicial
-from pages._0_pagina_inicio import render  # O underline é necessário para importar arquivos iniciados por número
+from pages import 0_pagina_inicio
+
 
 render()
