@@ -50,6 +50,14 @@ if st.session_state["usuario"] is None:
                     if sucesso:
                         st.success(msg)
                         st.info("Agora você pode fazer login.")
+                        st.session_state["usuario"] = {
+                            "email": email_r.lower(),
+                            "tipo": "cidadao"
+                        }
+                        st.session_state["logado"] = True
+                        st.session_state["tipo_usuario"] = "cidadao"
+                        st.session_state["email"] = email_r.lower()
+                        st.rerun()
                     else:
                         st.error(msg)
 
