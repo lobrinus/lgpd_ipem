@@ -1,6 +1,6 @@
 import streamlit as st
 from login_unificado import registrar_usuario, autenticar_usuario
-from pages import 0_pagina_inicio
+from pages import pagina_inicio
 
 
 # Configuração da página
