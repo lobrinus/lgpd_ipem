@@ -6,7 +6,7 @@ def render():
     
     # Seção de Contato
     with st.container():
-        col1, col2 = st.columns([2, ])
+        col1, col2 = st.columns([2, 3])
         with col1:
             st.subheader("📞 Contato do Encarregado de Dados")
             st.markdown("""
