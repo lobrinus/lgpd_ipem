@@ -27,11 +27,12 @@ if not firebase_admin._apps:
 db = firestore.client()
 
 def registrar_usuario(email, senha):
+    email = email.lower()  # Normaliza para letras minúsculas
     try:
         auth.create_user_with_email_and_password(email, senha)
         db.collection("usuarios").document(email).set({
             "email": email,
-            "tipo": "cidadao"
+            "tipo": "cidadao"  # padrão ao registrar
         })
         return True, "✅ Registro realizado com sucesso."
     except Exception as e:
@@ -41,6 +42,7 @@ def registrar_usuario(email, senha):
         return False, f"Erro no registro: {error_str}"
 
 def autenticar_usuario(email, senha):
+    email = email.lower()  # Normaliza para letras minúsculas
     try:
         user = auth.sign_in_with_email_and_password(email, senha)
         doc = db.collection("usuarios").document(email).get()
