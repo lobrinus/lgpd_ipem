@@ -11,7 +11,7 @@ def image_to_base64(img_path):
         return base64.b64encode(img_file.read()).decode()
 
 def render():
-    st.title("🔄 Fluxo de Dados LGPD")
+    st.title("👋 Página Principal")
     st.markdown("---")
     st.markdown("""
     Visualização dos principais fluxos de dados pessoais no IPEM-MG e as medidas de proteção em cada etapa:
