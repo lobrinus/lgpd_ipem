@@ -37,25 +37,25 @@ if st.session_state["usuario"] is None:
                 st.error(resultado)
 
 
-elif aba == "Registrar":
-    email_r = st.text_input("Novo E-mail")
-    senha_r = st.text_input("Senha", type="password")
-    senha2_r = st.text_input("Confirmar Senha", type="password")
-
-    if st.button("Registrar"):
-        if senha_r != senha2_r:
-            st.error("❌ As senhas não coincidem.")
-        else:
-            from login_unificado import registrar_usuario
-            sucesso, msg = registrar_usuario(email_r, senha_r)
-            if sucesso:
-                st.success(msg)
-                st.info("Agora você pode fazer login.")
-                # Volta para aba de login
-                st.session_state["aba_login"] = "Entrar"
-                st.rerun()
+    elif aba == "Registrar":
+        email_r = st.text_input("Novo E-mail")
+        senha_r = st.text_input("Senha", type="password")
+        senha2_r = st.text_input("Confirmar Senha", type="password")
+    
+        if st.button("Registrar"):
+            if senha_r != senha2_r:
+                st.error("❌ As senhas não coincidem.")
             else:
-                st.error(msg)
+                from login_unificado import registrar_usuario
+                sucesso, msg = registrar_usuario(email_r, senha_r)
+                if sucesso:
+                    st.success(msg)
+                    st.info("Agora você pode fazer login.")
+                    # Volta para aba de login
+                    st.session_state["aba_login"] = "Entrar"
+                    st.rerun()
+                else:
+                    st.error(msg)
 
 
 else:
