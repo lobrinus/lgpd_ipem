@@ -5,6 +5,7 @@ import json
 import os
 import firebase_admin
 from firebase_admin import credentials
+from login_unificado import autenticar_usuario, registrar_usuario
 
 # Inicialização Firebase Admin (se já não tiver sido feito)
 if not firebase_admin._apps:
