@@ -5,7 +5,7 @@ import feedparser
 from datetime import datetime
 from PIL import Image
 
-st.set_page_config(page_title="Pagina Inicio - LGPD IPEM-MG", layout="wide")
+st.set_page_config(page_title="Solicitações Recebidas - LGPD IPEM-MG", layout="wide")
 
 def image_to_base64(img_path):
     with open(img_path, "rb") as img_file:
