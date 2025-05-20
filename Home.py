@@ -2,37 +2,40 @@ import streamlit as st
 import os
 from login_unificado import registrar_usuario, autenticar_usuario
 
+# ⚠️ set_page_config deve ser a primeira coisa relacionada ao Streamlit
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
 
-# ✅ Garante que o estado 'logado' exista
+# Inicializa variáveis de estado
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
+if "usuario" not in st.session_state:
+    st.session_state["usuario"] = None
 
-# Login unificado direto na barra lateral
+# Login unificado na barra lateral
 with st.sidebar:
     st.markdown("## 🔐 Acesso")
 
-    if "usuario" not in st.session_state:
-        st.session_state["usuario"] = None
-
 if st.session_state["usuario"] is None:
-    aba = st.radio("Escolha uma opção:", ["Entrar", "Registrar"], horizontal=True, key="aba_login")
-    
+    aba = st.radio(
+        "Escolha uma opção:",
+        ["Entrar", "Registrar"],
+        horizontal=True,
+        key="aba_login"
+    )
+
     if aba == "Entrar":
         email = st.text_input("E-mail")
         senha = st.text_input("Senha", type="password")
         if st.button("Entrar"):
-            from login_unificado import autenticar_usuario
             sucesso, resultado = autenticar_usuario(email, senha)
             if sucesso:
                 st.session_state["usuario"] = resultado
                 st.session_state["logado"] = True
                 st.session_state["tipo_usuario"] = resultado["tipo"]
                 st.session_state["email"] = resultado["email"]
-
                 if resultado["tipo"] == "admin":
                     st.session_state["admin_email"] = resultado["email"]
-                st.rerun()
+                st.experimental_rerun()
             else:
                 st.error(resultado)
 
@@ -40,44 +43,36 @@ if st.session_state["usuario"] is None:
         email_r = st.text_input("Novo E-mail")
         senha_r = st.text_input("Senha", type="password")
         senha2_r = st.text_input("Confirmar Senha", type="password")
-    
+
         if st.button("Registrar"):
             if senha_r != senha2_r:
                 st.error("❌ As senhas não coincidem.")
             else:
-                from login_unificado import registrar_usuario
                 sucesso, msg = registrar_usuario(email_r, senha_r)
                 if sucesso:
                     st.success(msg)
                     st.info("Agora você pode fazer login.")
-                    # Volta para aba de login
                     st.session_state["aba_login"] = "Entrar"
-                    st.rerun()
+                    st.experimental_rerun()
                 else:
                     st.error(msg)
 
-
-
 else:
-    user = st.session_state.get("usuario", None)
-
+    user = st.session_state["usuario"]
     if isinstance(user, dict) and "email" in user and "tipo" in user:
         st.success(f"🔓 Logado como: {user['email']} ({user['tipo']})")
         if st.button("Sair"):
-            # Limpa todas as variáveis relacionadas ao login
             for key in ["usuario", "logado", "tipo_usuario", "email", "admin_email"]:
                 st.session_state.pop(key, None)
-            st.rerun()
+            st.experimental_rerun()
     else:
         st.warning("⚠️ Sessão iniciada, mas os dados do usuário estão incompletos. Tente sair e entrar novamente.")
         if st.button("Forçar logout"):
             for key in ["usuario", "logado", "tipo_usuario", "email", "admin_email"]:
                 st.session_state.pop(key, None)
-            st.rerun()
+            st.experimental_rerun()
 
-
-
-# Define as páginas públicas
+# Define páginas públicas
 paginas = {
     "👤 Painel do Cidadão": "14_👤_Painel_Cidadao.py",
     "👋 Bem-vindo": "0_👋_Pagina_Inicio.py",
@@ -95,14 +90,13 @@ paginas = {
     "🔓 Solicitar Acesso Dados": "11_🔓_Solicitar_Acesso_Dados.py"
 }
 
-# Se logado como admin, mostra página privada
-if "usuario" in st.session_state and st.session_state["usuario"]:
-    tipo = st.session_state["usuario"]["tipo"]
+# Se admin logado, adiciona páginas privadas
+if st.session_state.get("usuario"):
+    tipo = st.session_state["usuario"].get("tipo")
     if tipo == "admin":
         paginas["📁 Solicitações Recebidas"] = "13_📁_Solicitações_Recebidas.py"
 
-
-# Menu lateral
+# Menu lateral para navegação
 pagina_padrao = "👋 Bem-vindo"
 pagina_ativa = st.session_state.get("pagina_escolhida", pagina_padrao)
 if pagina_ativa not in paginas:
@@ -115,7 +109,7 @@ pagina_escolhida = st.sidebar.radio(
     key="pagina_escolhida"
 )
 
-# Executa a página escolhida
+# Executa a página escolhida via exec()
 arquivo = paginas[pagina_escolhida]
 if os.path.exists(arquivo):
     with open(arquivo, "r", encoding="utf-8") as f:
@@ -126,4 +120,4 @@ if os.path.exists(arquivo):
             st.error(f"Erro no exec: {e}")
             st.text(traceback.format_exc())
 else:
-    st.error(f"❌ Arquivo '{arquivo}' não encontrado. Verifique se ele está no diretório correto.")
+    st.error(f"❌ Arquivo '{arquivo}' não encontrado. Verifique se está no diretório correto.")
