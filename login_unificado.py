@@ -26,33 +26,25 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-email = st.text_input("Email")
-senha = st.text_input("Senha", type="password")
 
-if st.button("Entrar"):
-    sucesso, dados = autenticar_usuario(email, senha)
-
-    if sucesso:
-        st.session_state["logado"] = True
-        st.session_state["email"] = dados["email"]
-        st.session_state["tipo_usuario"] = dados["tipo"] 
-        
-        if dados["tipo"] == "admin":
-            st.session_state["admin_email"] = dados["email"]
-
-        st.success(f"✅ Bem-vindo, {dados['tipo']}")
-        st.rerun()
-    else:
-        st.error(dados)
+def autenticar_usuario(email, senha):
+    email = email.lower()
+    try:
+        user = auth.sign_in_with_email_and_password(email, senha)
+        doc = db.collection("usuarios").document(email).get()
+        tipo = doc.to_dict().get("tipo", "cidadao") if doc.exists else "cidadao"
+        return True, {"email": email, "tipo": tipo}
+    except:
+        return False, "❌ E-mail ou senha incorretos."
 
 
 def registrar_usuario(email, senha):
-    email = email.lower()  # Normaliza para letras minúsculas
+    email = email.lower()
     try:
         auth.create_user_with_email_and_password(email, senha)
         db.collection("usuarios").document(email).set({
             "email": email,
-            "tipo": "cidadao"  # padrão ao registrar
+            "tipo": "cidadao"
         })
         return True, "✅ Registro realizado com sucesso."
     except Exception as e:
@@ -61,16 +53,25 @@ def registrar_usuario(email, senha):
             return False, "❌ Este e-mail já está cadastrado."
         return False, f"Erro no registro: {error_str}"
 
-def autenticar_usuario(email, senha):
-    email = email.lower()  # Normaliza para letras minúsculas
-    try:
-        user = auth.sign_in_with_email_and_password(email, senha)
-        doc = db.collection("usuarios").document(email).get()
-        if doc.exists:
-            tipo = doc.to_dict().get("tipo", "cidadao")
-        else:
-            tipo = "cidadao"
-        return True, {"email": email, "tipo": tipo}
-    except:
-        return False, "❌ E-mail ou senha incorretos."
 
+# 🔹 Função principal da interface de login
+def render():
+    st.subheader("🔐 Login LGPD")
+    email = st.text_input("Email")
+    senha = st.text_input("Senha", type="password")
+
+    if st.button("Entrar"):
+        sucesso, dados = autenticar_usuario(email, senha)
+
+        if sucesso:
+            st.session_state["logado"] = True
+            st.session_state["email"] = dados["email"]
+            st.session_state["tipo_usuario"] = dados["tipo"]
+
+            if dados["tipo"] == "admin":
+                st.session_state["admin_email"] = dados["email"]
+
+            st.success(f"✅ Bem-vindo, {dados['tipo']}")
+            st.rerun()
+        else:
+            st.error(dados)
