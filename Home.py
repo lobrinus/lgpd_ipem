@@ -64,5 +64,5 @@ with st.sidebar:
                     st.session_state.pop(key, None)
                 st.rerun()
 
-from pages import pagina_inicio
+from pages import pagina_principal
 render()
