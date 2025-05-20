@@ -1,6 +1,5 @@
 import streamlit as st
 from login_unificado import registrar_usuario, autenticar_usuario
-from pages import pagina_inicio
 
 
 # Configuração da página
@@ -65,5 +64,5 @@ with st.sidebar:
                     st.session_state.pop(key, None)
                 st.rerun()
 
-
+from pages import pagina_inicio
 render()
