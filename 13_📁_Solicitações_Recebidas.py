@@ -1,17 +1,16 @@
-import streamlit as st
 from datetime import datetime
 import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
 from login_unificado import autenticar_usuario, registrar_usuario
+import streamlit as st  # Caso esteja faltando a importação
 
-
-# Verifica login do admin
-if not st.session_state.get("logado", False):
-    st.error("🚫 Acesso restrito. Faça login para visualizar as solicitações.")
+# 🔒 Verifica login e tipo de usuário
+if not st.session_state.get("logado", False) or st.session_state.get("tipo_usuario") != "admin":
+    st.error("🚫 Acesso restrito. Faça login como administrador para visualizar as solicitações.")
     st.stop()
 
-# Inicializar Firebase
+# ✅ Inicializar Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate(dict(st.secrets["firebase"]))
     firebase_admin.initialize_app(cred)
@@ -19,7 +18,7 @@ db = firestore.client()
 
 st.title("📁 Solicitações Recebidas")
 
-# Consulta todas as solicitações ordenadas por data
+# 🔍 Consulta todas as solicitações ordenadas por data
 solicitacoes_ref = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING)
 solicitacoes = solicitacoes_ref.stream()
 
@@ -33,7 +32,7 @@ for i, doc in enumerate(solicitacoes, start=1):
     st.write(f"**Email:** {data.get('email')}")
     st.write(f"**CPF:** {data.get('cpf')}")
     st.write(f"**Mensagem:** {data.get('mensagem')}")
-    
+
     data_envio = data.get("data_envio")
     if isinstance(data_envio, datetime):
         data_envio = data_envio.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y às %H:%M')
