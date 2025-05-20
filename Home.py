@@ -1,5 +1,7 @@
 import streamlit as st
 from login_unificado import registrar_usuario, autenticar_usuario
+from pages import 0_pagina_inicio
+
 
 # Configuração da página
 st.set_page_config(page_title="LGPD - IPEM-MG", layout="wide")
@@ -62,8 +64,6 @@ with st.sidebar:
                 for key in ["usuario", "logado", "tipo_usuario", "email", "admin_email"]:
                     st.session_state.pop(key, None)
                 st.rerun()
-
-from pages import 0_pagina_inicio
 
 
 render()
