@@ -15,20 +15,27 @@ with st.sidebar:
     if "usuario" not in st.session_state:
         st.session_state["usuario"] = None
 
-    if st.session_state["usuario"] is None:
-        aba = st.radio("Escolha uma opção:", ["Entrar", "Registrar"], horizontal=True)
+if st.session_state["usuario"] is None:
+    aba = st.radio("Escolha uma opção:", ["Entrar", "Registrar"], horizontal=True)
 
-        if aba == "Entrar":
-            email = st.text_input("E-mail")
-            senha = st.text_input("Senha", type="password")
-            if st.button("Entrar"):
-                from login_unificado import autenticar_usuario
-                sucesso, resultado = autenticar_usuario(email, senha)
-                if sucesso:
-                    st.session_state["usuario"] = resultado
-                    st.rerun()
-                else:
-                    st.error(resultado)
+    if aba == "Entrar":
+        email = st.text_input("E-mail")
+        senha = st.text_input("Senha", type="password")
+        if st.button("Entrar"):
+            from login_unificado import autenticar_usuario
+            sucesso, resultado = autenticar_usuario(email, senha)
+            if sucesso:
+                st.session_state["usuario"] = resultado
+                st.session_state["logado"] = True
+                st.session_state["tipo_usuario"] = resultado["tipo"]
+                st.session_state["email"] = resultado["email"]
+
+                if resultado["tipo"] == "admin":
+                    st.session_state["admin_email"] = resultado["email"]
+                st.rerun()
+            else:
+                st.error(resultado)
+
 
         elif aba == "Registrar":
             email_r = st.text_input("Novo E-mail")
