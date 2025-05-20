@@ -54,7 +54,7 @@ exibir_login()
 # Conteúdo principal após login
 if st.session_state.get("logado"):
     # Importa e chama a render() da sua página principal
-    from pages._1_🏠_Pagina_Principal import render
+    from pages.1_pagina_principal.py import render
     render()
 else:
     # Página de boas-vindas
