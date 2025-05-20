@@ -16,12 +16,11 @@ if not firebase_admin._apps:
 
 db = firestore.client()
 
-# Aqui você não coloca o login/registro, só exibe o painel se estiver logado
-
+# Exibe o painel somente se o usuário estiver logado
 if "usuario" in st.session_state and st.session_state["usuario"] is not None:
     usuario = st.session_state["usuario"]
     
-    if usuario.get("tipo") == "cidadao":
+    if usuario.get("tipo") in ["cidadao", "admin"]:
         st.sidebar.success(f"👤 Logado como: {usuario['email']}")
         
         st.header("📬 Minhas Solicitações")
