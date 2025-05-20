@@ -36,9 +36,6 @@ if st.session_state["usuario"] is None:
             else:
                 st.error(resultado)
 
-            if sucesso:
-                st.write("DEBUG:", resultado) 
-
 
         elif aba == "Registrar":
             email_r = st.text_input("Novo E-mail")
