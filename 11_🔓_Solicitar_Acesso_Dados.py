@@ -57,15 +57,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Marca d'água e botão de login
-st.markdown("""
-    <div style="position: absolute; top: 20px; right: 30px; z-index: 9999;">
-        <a href="/login" style="padding: 8px 16px; background-color: #0e1117; color: white; border: 1px solid #4a4a4a; border-radius: 5px; text-decoration: none; font-weight: bold;">Login</a>
-    </div>
-    <div style="position: fixed; bottom: 10px; right: 10px; opacity: 0.2; z-index: -1;">
-        <img src="ipem_mg.png" width="200">
-    </div>
-""", unsafe_allow_html=True)
 
 # Logo e título
 logo_ipem = Image.open('ipem_mg.png')
