@@ -6,17 +6,17 @@ def render():
 
 # Seção de Acesso Rápido
 st.subheader("⚡ Acesso Rápido")
-# Ajuste as proporções para melhorar o alinhamento
-cols = st.columns([1, 1, 1, 1])  # 4 colunas iguais
+    # Ajuste as proporções para melhorar o alinhamento
+    cols = st.columns([1, 1, 1, 1])  # 4 colunas iguais
 
-with cols[0]:
-    st.markdown("📜 [Política de Privacidade](https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais)")
-with cols[1]:
-    st.markdown("📋 [Formulário de Solicitação de Dados](https://www.ipem.mg.gov.br/fale-conosco)")
-with cols[2]:
-    st.markdown("⚖️ [Guia LGPD para Cidadãos](https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao)")
-with cols[3]:
-    st.markdown("🔒 [Painel do Cidadão](#)")
+        with cols[0]:
+            st.markdown("📜 [Política de Privacidade](https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais)")
+        with cols[1]:
+            st.markdown("📋 [Formulário de Solicitação de Dados](https://www.ipem.mg.gov.br/fale-conosco)")
+        with cols[2]:
+            st.markdown("⚖️ [Guia LGPD para Cidadãos](https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao)")
+        with cols[3]:
+            st.markdown("🔒 [Painel do Cidadão](#)")
 
 st.markdown("---")
 
