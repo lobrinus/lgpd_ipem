@@ -238,15 +238,16 @@ def render():
     st.subheader("❓ Perguntas Frequentes")
     with st.expander("O que fazer se não receber resposta?"):
         st.markdown("""
-        1. Verifique sua caixa de spam
-        2. Entre em contato via telefone
-        3. Encaminhe reclamação para ANPD
+        1. Entre em contato via telefone
+        2. Encaminhe reclamação para ANPD ("https://falabr.cgu.gov.br/web/home")
+        3. Cheque sua caixa de E-mail ( Em alguns casos o IPEM-MG ***Instituto de Metrologia e Qualidade do Estado de Minas Gerais*** pode responder via E-mail
         """)
     with st.expander("Posso solicitar dados de terceiros?"):
         st.markdown("""
         ❌ Não. Você só pode solicitar informações sobre seus próprios dados pessoais, exceto:
         - Com autorização judicial
         - Em casos de tutela coletiva
+        - Para qualquer solicitação é necessário um documento comprovatório para que seja analisado se os dados solicitados são do titular
         """)
 
     # Rodapé
