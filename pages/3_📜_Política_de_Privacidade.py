@@ -61,7 +61,7 @@ st.markdown("<h1 style='text-align: center; color: #4CAF50;'>📜 Política de P
 st.markdown("---")
 
 # ABAS
-aba1, aba2, aba3, aba4 = st.tabs(["📑 Base Legal", "📖 Glossário", "⏳ Linha do Tempo", "📥 Download"])
+aba1, aba2, aba3 = st.tabs(["📑 Base Legal", "📖 Glossário", "⏳ Linha do Tempo"])
 
 ########################
 # ABA 1 - BASE LEGAL
@@ -248,22 +248,6 @@ with aba3:
     </div>
     """, unsafe_allow_html=True)
 
-
-########################
-# ABA 4 - DOWNLOAD
-########################
-with aba4:
-    st.subheader("📥 Download da Política de Privacidade")
-
-    st.markdown("Você pode baixar uma cópia da nossa política de privacidade no formato PDF para consulta offline:")
-
-    with open("politica_de_privacidade.pdf", "rb") as file:
-        btn = st.download_button(
-            label="📄 Baixar Política de Privacidade (PDF)",
-            data=file,
-            file_name="politica_de_privacidade.pdf",
-            mime="application/pdf"
-        )
 
 
 #  Introdução
