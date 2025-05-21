@@ -86,10 +86,10 @@ def render():
         - Documento comprobatório da correção
         - Identificação válida
         """)
-        
-     with st.expander("ℹ️ Informativa "):
+    
+    with st.expander("ℹ️ Informativa "):
         st.markdown("""
-        **Qualquer** informação relacionado a **Lei de Proteção de Dados**
+        - **Qualquer** informação relacionado a **Lei de Proteção de Dados**
         deverá ser solicitada pelo Formulario abaixo
         """)
     
@@ -115,12 +115,11 @@ def render():
         - 📊 **Pesquisas Científicas:**  
           Estudos realizados por órgãos de pesquisa com dados anonimizados
 
-          **Base Legal:**  
+        **Base Legal:**  
         *"Nos termos do Artigo 4º, III da LGPD, esses tratamentos são regidos por legislação específica que garante medidas proporcionais e necessárias ao interesse público, com total observância dos direitos fundamentais."*
         
         **⚠️ Atenção:**  
         A retenção nestes casos segue protocolos rigorosos de segurança e é periodicamente auditada pela Autoridade Nacional de Proteção de Dados (ANPD).
-      
         """)
     
     # Seção de Processo de Solicitação
@@ -138,113 +137,3 @@ def render():
                 "Portabilidade",
                 "Outros"
             ])
-            
-            descricao = st.text_area("Descreva sua solicitação em detalhes")
-            anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
-            
-            if st.form_submit_button("Enviar Solicitação"):
-                data_prevista = datetime.now() + timedelta(days=15)
-                st.success(f"""
-                ✅ Solicitação registrada com sucesso!  
-                **Protocolo:** LGPD-{datetime.now().strftime('%Y%m%d%H%M%S')}  
-                **Previsão de resposta:** {data_prevista.strftime('%d/%m/%Y')}
-                """)
-    
-    with col2:
-        st.subheader("📌 Orientações Importantes")
-        st.markdown("""
-        1. Preencha todos os campos obrigatórios
-        2. Anexe documentos legíveis
-        3. Verifique seu e-mail regularmente
-        4. Mantenha seu protocolo de atendimento
-        5. Respeite os prazos legais
-        
-        ⚠️ Solicitações fraudulentas serão investigadas
-        """)
-    
-    # Seção de Prazos e Multas
-    st.markdown("---")
-    st.subheader("⏳ Prazos e Consequências Legais")
-    st.markdown("""
-    | Situação | Prazo | Consequência |
-    |----------|-------|--------------|
-    | Resposta inicial | 15 dias | - |
-    | Prorrogação | +15 dias | Notificação obrigatória |
-    | Descumprimento | - | Multa de até 2% do faturamento |
-    """, unsafe_allow_html=True)
-    
-    # FAQ
-    st.markdown("---")
-    st.subheader("❓ Perguntas Frequentes")
-    
-    with st.expander("O que fazer se não receber resposta?"):
-        st.markdown("""
-        1. Verifique sua caixa de spam
-        2. Entre em contato via telefone
-        3. Encaminhe reclamação para ANPD
-        """)
-    
-    with st.expander("Posso solicitar dados de terceiros?"):
-        st.markdown("""
-        ❌ Não. Você só pode solicitar informações sobre seus próprios dados pessoais, exceto:
-        - Com autorização judicial
-        - Em casos de tutela coletiva
-        """)
-    
-    # Rodapé
-    st.markdown("---")
-    st.markdown("""
-    <div style="text-align: center; color: gray;">
-        ℹ️ Atendimento regulamentado pela Lei nº 13.709/2018 (LGPD)<br>
-        Última atualização: {date}
-    </div>
-    """.format(date=datetime.now().strftime("%d/%m/%Y")), unsafe_allow_html=True)
-
-    # Se estiver logado, mostra mensagem de usuário logado
-    usuario = st.session_state["usuario"]
-    if usuario.get("tipo") in ["cidadao", "admin"]:
-        st.sidebar.success(f"👤 Logado como: {usuario['email']}")
-        st.header("📬 Minhas Solicitações")
-        solicitacoes_ref = db.collection("solicitacoes")
-        query = solicitacoes_ref.where("email", "==", usuario["email"])
-        docs = query.stream()
-
-        tem_solicitacoes = False
-        for doc in docs:
-            tem_solicitacoes = True
-            data = doc.to_dict()
-            with st.expander(f"📌 {data['mensagem']} ({data['data_envio']})"):
-                if "resposta" in data:
-                    st.success("💬 Resposta do IPEM:")
-                    st.markdown(data["resposta"])
-                    st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
-                else:
-                    st.info("⏳ Ainda aguardando resposta do IPEM.")
-        if not tem_solicitacoes:
-            st.info("Nenhuma solicitação encontrada.")
-        
-        st.markdown("---")
-        st.subheader("📨 Enviar Nova Solicitação")
-        nova_msg = st.text_area("Digite sua solicitação", key="txt_nova_solicitacao")
-        if st.button("Enviar Solicitação", key="btn_enviar_solicitacao"):
-            if nova_msg.strip():
-                db.collection("solicitacoes").add({
-                    "email": usuario["email"],
-                    "mensagem": nova_msg.strip(),
-                    "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                    "lido": False
-                })
-                st.success("✅ Solicitação enviada com sucesso!")
-                st.rerun()
-            else:
-                st.warning("Por favor, digite a mensagem antes de enviar.")
-        # Botão de Sair
-        if st.button("Sair", key="btn_sair_painel"):
-            st.session_state["usuario"] = None
-            st.rerun()
-    else:
-        st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
-
-# Chamada padrão
-if __name__ == "__main__":
-    render()
