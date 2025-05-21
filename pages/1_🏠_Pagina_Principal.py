@@ -4,35 +4,32 @@ def render():
     st.title("🏠 **Bem Vindo** ao Portal LGPD - IPEM-MG")
     st.markdown("---")
 
-# Seção de Acesso Rápido
+    # Seção de Acesso Rápido
     st.subheader("⚡ Acesso Rápido")
-        cols = st.columns([1, 1, 1, 1], gap="small")
-        with cols[0]:
-            st.link_button(
-                label="📜 Política de Privacidade",
-                url="https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais",
-                use_container_width=True
-            )
-        with cols[1]:
-            st.link_button(
-                label="📋 Solicitação de Dados",
-                url="https://www.ipem.mg.gov.br/fale-conosco",
-                use_container_width=True
-            )
-        with cols[2]:
-            st.link_button(
-                label="⚖️ Guia LGPD",
-                url="https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao",
-                use_container_width=True
-            )
-        with cols[3]:
-            if st.button("🔒 Painel do Cidadão", use_container_width=True):
-                st.page_link("pages/painel_cidadao.py", label="Ir para o Painel")
-    
+    cols = st.columns([1, 1, 1, 1], gap="small")
+    with cols[0]:
+        st.link_button(
+            label="📜 Política de Privacidade",
+            url="https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais",
+            use_container_width=True
+        )
+    with cols[1]:
+        st.link_button(
+            label="📋 Solicitação de Dados",
+            url="https://www.ipem.mg.gov.br/fale-conosco",
+            use_container_width=True
+        )
+    with cols[2]:
+        st.link_button(
+            label="⚖️ Guia LGPD",
+            url="https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao",
+            use_container_width=True
+        )
+    with cols[3]:
+        if st.button("🔒 Painel do Cidadão", use_container_width=True):
+            st.page_link("pages/painel_cidadao.py", label="Ir para o Painel")
     st.markdown("---")
 
-
-    
     # Seção de Contato
     with st.container():
         col1, col2 = st.columns([2, 3])
@@ -57,7 +54,7 @@ def render():
             - 🌐 [Formulário Online](https://www.ipem.mg.gov.br/fale-conosco)
             """)
     st.markdown("---")
-    
+
     # Últimas Notícias
     st.subheader("📢 Últimas Notícias")
     with st.expander("🔔 Novidades do Sistema (Atualizado em 20/05/2025)"):
@@ -85,6 +82,18 @@ def render():
         3. Atualização regular de sistemas
         4. Treinamento anual de colaboradores
         5. Auditorias trimestrais de segurança
+        """)
+    with tab3:
+        st.markdown("""
+        **Perguntas Frequentes:**
+        Q: Como solicitar exclusão de dados?  
+        R: Através do Painel do Cidadão ou formulário específico[21]
+
+        Q: Quanto tempo demora uma resposta?  
+        R: Prazo máximo de 15 dias úteis[14]
+
+        Q: Posso acessar dados de terceiros?  
+        R: Somente com autorização judicial expressa[19]
         """)
     # Rodapé
     st.markdown("---")
