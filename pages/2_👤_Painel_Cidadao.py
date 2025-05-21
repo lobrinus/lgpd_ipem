@@ -39,64 +39,64 @@ def render():
     # ==============================================
     # TUDO ABAIXO SÓ É EXECUTADO SE O USUÁRIO ESTIVER LOGADO
     # ==============================================
-    
+
     # Sidebar com informações rápidas
     with st.sidebar:
         st.subheader("ℹ️ Informações Rápidas")
         st.markdown("""
         **Prazo Máximo de Resposta:**  
         ⏱️ 15 dias úteis  
-        
+
         **Canais de Atendimento:**  
         📞 (31) 3399-7100  
         📧 lgpd@ipem.mg.gov.br  
-        
+
         **Horário de Atendimento:**  
         🕒 Seg-Sex: 8h às 18h
         """)
 
     # Seção de Tipos de Solicitações
     st.header("📋 Tipos de Solicitações")
-    
+
     with st.expander("🔍 Confirmar Existência de Dados (Artigo 18-I)"):
         st.markdown("""
         **O que você pode solicitar:**
         - Verificação se o IPEM-MG possui seus dados cadastrais
-        
+
         **Documentação necessária:**
         - Cópia do documento de identificação
-        
+
         **Prazo máximo:** 24 horas (resposta simplificada)
         """)
-    
+
     with st.expander("📂 Acesso aos Dados (Artigo 18-II)"):
         st.markdown("""
         **O que você pode solicitar:**
         - Cópia completa de todos seus dados armazenados
         - Histórico de uso dos dados
         - Informação sobre o compartilhamento dos dados
-        
+
         **Prazo máximo:** 15 dias úteis
         """)
-    
+
     with st.expander("✏️ Correção de Dados (Artigo 18-III)"):
         st.markdown("""
         **Quando solicitar:**
         - Dados desatualizados
         - Informações incorretas
         - Registros incompletos
-        
+
         **Anexos obrigatórios:**
         - Documento comprobatório da correção
         - Identificação válida
         """)
-    
+
     with st.expander("ℹ️ Informativa"):
         st.markdown("""
         - **Qualquer** informação relacionada à **Lei de Proteção de Dados**
         deverá ser solicitada pelo formulário abaixo.
         """)
-    
+
     with st.expander("🗑️ Exclusão de Dados (Artigo 18-VI)"):
         st.markdown("""
         **Condições para exclusão:**
@@ -106,22 +106,22 @@ def render():
 
         **Exceções Legais (Artigo 4º da LGPD):**  
         O IPEM-MG poderá reter dados pessoais mesmo após o cumprimento da finalidade original nos seguintes casos:
-        
+
         - 🔒 **Segurança Nacional e Defesa:**  
           Para proteção do território nacional e atividades estratégicas de Estado
-        
+
         - 🛡️ **Investigação Criminal:**  
           Em procedimentos de apuração de infrações penais sob tutela judicial
-        
+
         - 🚨 **Emergências de Saúde Pública:**  
           Para controle de epidemias e proteção coletiva (ex: pandemias)
-        
+
         - 📊 **Pesquisas Científicas:**  
           Estudos realizados por órgãos de pesquisa com dados anonimizados
 
         **Base Legal:**  
         *"Nos termos do Artigo 4º, III da LGPD, esses tratamentos são regidos por legislação específica que garante medidas proporcionais e necessárias ao interesse público, com total observância dos direitos fundamentais."*
-        
+
         **⚠️ Atenção:**  
         A retenção nestes casos segue protocolos rigorosos de segurança e é periodicamente auditada pela Autoridade Nacional de Proteção de Dados (ANPD).
         """)
@@ -130,7 +130,6 @@ def render():
     st.markdown("---")
     st.header("📨 Como Fazer uma Solicitação")
 
-    # Orientações Importantes acima do formulário
     st.subheader("📌 Orientações Importantes")
     st.markdown("""
     1. Preencha todos os campos obrigatórios  
@@ -142,94 +141,49 @@ def render():
     ⚠️ Solicitações fraudulentas serão investigadas
     """)
 
-        # Dentro do bloco with st.form("nova_solicitacao"):
-        with st.form("nova_solicitacao"):
-            st.subheader("Nova Solicitação")
-            
-            # Novos campos obrigatórios
-            email_solicitante = st.text_input("E-mail para contato*")
-            telefone = st.text_input("Telefone para contato*")
-            
-            tipo = st.selectbox("Tipo de Solicitação*", [
-                "Acesso aos Dados",
-                "Correção de Dados", 
-                "Exclusão de Dados",
-                "Portabilidade",
-                "Outros"
-            ])
-            
-            descricao = st.text_area("Descreva sua solicitação em detalhes*")
-            anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
-        
-            if st.form_submit_button("Enviar Solicitação"):
-                # Validação dos campos obrigatórios
-                if not all([email_solicitante, telefone, tipo, descricao]):
-                    st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
-                else:
-                    protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
-                    
-                    try:
-                        # Salvar no Firestore
-                        doc_ref = db.collection("solicitacoes").document()
-                        doc_ref.set({
-                            "protocolo": protocolo,
-                            "email_solicitante": email_solicitante,
-                            "telefone": telefone,
-                            "tipo": tipo,
-                            "descricao": descricao,
-                            "anexos": [file.name for file in anexos],
-                            "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                            "status": "Recebido",
-                            "responsavel": None,
-                            "resposta": None,
-                            "usuario_id": st.session_state.usuario['email']
-                        })
-    anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
+    # Formulário de nova solicitação
+    with st.form("nova_solicitacao"):
+        st.subheader("Nova Solicitação")
 
-                        st.success(f"""
-                        ✅ Solicitação registrada com sucesso!  
-                        **Protocolo:** {protocolo}  
-                        **Previsão de resposta:** {(datetime.datetime.now() + datetime.timedelta(days=15)).strftime('%d/%m/%Y')}
-                        """)
-                        
-                    except Exception as e:
-                        st.error(f"Erro ao enviar solicitação: {str(e)}")
-
-    
-    descricao = st.text_area("Descreva sua solicitação em detalhes*")
-    if st.form_submit_button("Enviar Solicitação"):
-        # Validação dos campos obrigatórios
-        if not all([email_solicitante, telefone, tipo, descricao]):
-            st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
-        else:
-            protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
-            
-            try:
-                # Salvar no Firestore
-                doc_ref = db.collection("solicitacoes").document()
-                doc_ref.set({
-                    "protocolo": protocolo,
-                    "email_solicitante": email_solicitante,
-                    "telefone": telefone,
-                    "tipo": tipo,
-                    "descricao": descricao,
-                    "anexos": [file.name for file in anexos],
-                    "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                    "status": "Recebido",
-                    "responsavel": None,
-                    "resposta": None,
-                    "usuario_id": st.session_state.usuario['email']
-                })
-        descricao = st.text_area("Descreva sua solicitação em detalhes")
+        email_solicitante = st.text_input("E-mail para contato*")
+        telefone = st.text_input("Telefone para contato*")
+        tipo = st.selectbox("Tipo de Solicitação*", [
+            "Acesso aos Dados",
+            "Correção de Dados",
+            "Exclusão de Dados",
+            "Portabilidade",
+            "Outros"
+        ])
+        descricao = st.text_area("Descreva sua solicitação em detalhes*")
         anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
 
         if st.form_submit_button("Enviar Solicitação"):
-            data_prevista = datetime.datetime.now() + datetime.timedelta(days=15)
-            st.success(f"""
-            ✅ Solicitação registrada com sucesso!  
-            **Protocolo:** LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}  
-            **Previsão de resposta:** {data_prevista.strftime('%d/%m/%Y')}
-            """)
+            if not all([email_solicitante, telefone, tipo, descricao]):
+                st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
+            else:
+                protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
+                try:
+                    doc_ref = db.collection("solicitacoes").document()
+                    doc_ref.set({
+                        "protocolo": protocolo,
+                        "email_solicitante": email_solicitante,
+                        "telefone": telefone,
+                        "tipo": tipo,
+                        "descricao": descricao,
+                        "anexos": [file.name for file in anexos] if anexos else [],
+                        "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                        "status": "Recebido",
+                        "responsavel": None,
+                        "resposta": None,
+                        "usuario_id": st.session_state.usuario['email']
+                    })
+                    st.success(f"""
+                    ✅ Solicitação registrada com sucesso!  
+                    **Protocolo:** {protocolo}  
+                    **Previsão de resposta:** {(datetime.datetime.now() + datetime.timedelta(days=15)).strftime('%d/%m/%Y')}
+                    """)
+                except Exception as e:
+                    st.error(f"Erro ao enviar solicitação: {str(e)}")
 
     # Seção de Prazos e Multas
     st.markdown("---")
@@ -248,8 +202,8 @@ def render():
 
     with st.expander("O que fazer se não receber resposta?"):
         st.markdown("""
-        1. Verifique sua caixa de spam
-        2. Entre em contato via telefone
+        1. Verifique sua caixa de spam  
+        2. Entre em contato via telefone  
         3. Encaminhe reclamação para ANPD
         """)
 
@@ -282,14 +236,14 @@ def render():
         for doc in docs:
             tem_solicitacoes = True
             data = doc.to_dict()
-            with st.expander(f"📌 {data['mensagem']} ({data['data_envio']})"):
-                if "resposta" in data:
+            with st.expander(f"📌 {data.get('mensagem', 'Solicitação')} ({data['data_envio']})"):
+                if "resposta" in data and data["resposta"]:
                     st.success("💬 Resposta do IPEM:")
                     st.markdown(data["resposta"])
                     st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
                 else:
                     st.info("⏳ Ainda aguardando resposta do IPEM.")
-        
+
         if not tem_solicitacoes:
             st.info("Nenhuma solicitação encontrada.")
 
@@ -308,8 +262,7 @@ def render():
                 st.rerun()
             else:
                 st.warning("Por favor, digite a mensagem antes de enviar.")
-        
-        # Botão de Sair
+
         if st.button("Sair", key="btn_sair_painel"):
             st.session_state["usuario"] = None
             st.rerun()
