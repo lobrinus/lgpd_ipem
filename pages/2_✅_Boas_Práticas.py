@@ -3,54 +3,53 @@ from login_unificado import autenticar_usuario, registrar_usuario
 
 
 def render():
-    # CSS Geral e Reformulação de Estilo
     st.markdown("""
-        <style>
-        .main .block-container {
-            padding-left: 2rem;
-            padding-right: 2rem;
-            max-width: 100%;
-        }
-            body {
-            font-family: 'Arial', sans-serif;
-        }
-        .section, .sidebar-section {
-            border: 2px solid black;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar-section {
-            background-color: #e8f5e9;
-        }
-        .section h3, .sidebar-section h3 {
-            color: black;
-            font-weight: bold;
-        }
-        .section ul, .sidebar-section ul {
-            padding-left: 20px;
-        }
-        .highlight {
-            font-weight: bold;
-            color: black;
-            background-color: #ffeb3b;
-        }
-        .faq-section {
-            border: 2px solid #FF9800;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #FFF3E0;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .faq-title {
-            color: #FF9800;
-            font-weight: bold;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+    }
+    .main .block-container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+        max-width: 100%;
+    }
+    .section, .sidebar-section {
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-section {
+        background-color: #e8f5e9;
+    }
+    .section h3, .sidebar-section h3 {
+        color: black;
+        font-weight: bold;
+    }
+    .section ul, .sidebar-section ul {
+        padding-left: 20px;
+    }
+    .highlight {
+        font-weight: bold;
+        color: black;
+        background-color: #ffeb3b;
+    }
+    .faq-section {
+        border: 2px solid #FF9800;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #FFF3E0;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .faq-title {
+        color: #FF9800;
+        font-weight: bold;
+    }
+</style>
+""", unsafe_allow_html=True)
 
     # Título Principal e Introdução
     st.title("✅ Boas Práticas no IPEM-MG")
