@@ -83,20 +83,16 @@ def render():
  #CONTEÚDO VISÍVEL APÓS LOGIN
     usuario = st.session_state["usuario"]
 
-    # Sidebar com informações rápidas
-    with st.sidebar:
-        st.subheader("ℹ️ Informações Rápidas")
-        st.markdown("""
-        **Prazo Máximo de Resposta:**  
-        ⏱️ 15 dias úteis  
 
-        **Canais de Atendimento:**  
-        📞 (31) 3399-7100  
-        📧 lgpd@ipem.mg.gov.br  
-
-        **Horário de Atendimento:**  
-        🕒 Seg-Sex: 8h às 18h
-        """)
+   col1, col2 = st.columns([4, 1])
+with col1:
+    st.success(f"👤 Logado como: {usuario['email']} ({usuario['tipo']})")
+with col2:
+    if st.button("🚪 Sair"):
+        # Limpa sessão e volta para login
+        st.session_state["usuario"] = None
+        st.session_state["modo_auth"] = "login"
+        st.rerun()
 
     # Seção de Tipos de Solicitações
     st.header("📋 Tipos de Solicitações")
