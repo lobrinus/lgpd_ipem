@@ -6,19 +6,36 @@ def render():
 
 # Seção de Acesso Rápido
 st.subheader("⚡ Acesso Rápido")
-    # Ajuste as proporções para melhorar o alinhamento
-    cols = st.columns([1, 1, 1, 1])  # 4 colunas iguais
 
-        with cols[0]:
-            st.markdown("📜 [Política de Privacidade](https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais)")
-        with cols[1]:
-            st.markdown("📋 [Formulário de Solicitação de Dados](https://www.ipem.mg.gov.br/fale-conosco)")
-        with cols[2]:
-            st.markdown("⚖️ [Guia LGPD para Cidadãos](https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao)")
-        with cols[3]:
-            st.markdown("🔒 [Painel do Cidadão](#)")
+cols = st.columns([1, 1, 1, 1], gap="small")
+
+with cols[0]:
+    st.link_button(
+        label="📜 Política de Privacidade",
+        url="https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais",
+        use_container_width=True
+    )
+
+with cols[1]:
+    st.link_button(
+        label="📋 Solicitação de Dados",
+        url="https://www.ipem.mg.gov.br/fale-conosco",
+        use_container_width=True
+    )
+
+with cols[2]:
+    st.link_button(
+        label="⚖️ Guia LGPD",
+        url="https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao",
+        use_container_width=True
+    )
+
+with cols[3]:
+    if st.button("🔒 Painel do Cidadão", use_container_width=True):
+        st.page_link("pages/painel_cidadao.py", label="Ir para o Painel")
 
 st.markdown("---")
+
 
     
     # Seção de Contato
