@@ -240,7 +240,8 @@ def render():
         st.markdown("""
         1. Entre em contato via telefone
         2. Encaminhe reclamação para ANPD [**Clicando Aqui**](https://falabr.cgu.gov.br/web/home)
-        3. Cheque sua caixa de E-mail. Em alguns casos o IPEM-MG ***Instituto de Metrologia e Qualidade do Estado de Minas Gerais*** pode responder via E-mail
+        3. Cheque sua caixa de E-mail. Em alguns casos o IPEM-MG 
+***Instituto de Metrologia e Qualidade do Estado de Minas Gerais*** pode responder via E-mail
         """)
     with st.expander("Posso solicitar dados de terceiros?"):
         st.markdown("""
