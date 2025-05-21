@@ -56,14 +56,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Cabeçalho
-st.title("📜 Política de Privacidade do IPEM-MG")
-st.markdown("---")
-
-import streamlit as st
-
-st.set_page_config(page_title="Política de Privacidade", page_icon="📜", layout="wide")
-
 # HEADER
 st.markdown("<h1 style='text-align: center; color: #4CAF50;'>📜 Política de Privacidade</h1>", unsafe_allow_html=True)
 st.markdown("---")
