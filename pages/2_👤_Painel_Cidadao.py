@@ -15,76 +15,73 @@ def render():
         firebase_admin.initialize_app(cred)
     db = firestore.client()
 
-    # Controla o estado de login na sessão
+    st.title("🔐 Painel do Cidadão")
+
+    # Inicializa variáveis de sessão
+    if "modo_auth" not in st.session_state:
+        st.session_state["modo_auth"] = "login"
+
     if "usuario" not in st.session_state:
         st.session_state["usuario"] = None
 
-st.title("🔐 Painel do Cidadão")
+    # === SE NÃO ESTIVER LOGADO ===
+    if st.session_state["usuario"] is None:
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔑 Login"):
+                st.session_state["modo_auth"] = "login"
+        with col2:
+            if st.button("📝 Registro"):
+                st.session_state["modo_auth"] = "registro"
 
-# Inicializa variáveis de sessão, se necessário
-if "modo_auth" not in st.session_state:
-    st.session_state["modo_auth"] = "login"
+        st.markdown("---")
 
-if "usuario" not in st.session_state:
-    st.session_state["usuario"] = None
+        if st.session_state["modo_auth"] == "login":
+            with st.form("login_form"):
+                email = st.text_input("E-mail")
+                senha = st.text_input("Senha", type="password")
+                if st.form_submit_button("Entrar"):
+                    sucesso, resultado = autenticar_usuario(email, senha)
+                    if sucesso:
+                        st.session_state["usuario"] = resultado
+                        st.success(f"Logado como: {resultado['email']}")
+                        st.rerun()
+                    else:
+                        st.error(resultado)
 
-# === SE NÃO ESTIVER LOGADO ===
-if st.session_state["usuario"] is None:
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🔑 Login"):
-            st.session_state["modo_auth"] = "login"
-    with col2:
-        if st.button("📝 Registro"):
-            st.session_state["modo_auth"] = "registro"
+        elif st.session_state["modo_auth"] == "registro":
+            with st.form("registro_form"):
+                nome = st.text_input("Nome completo*")
+                telefone = st.text_input("Telefone*")
+                email_reg = st.text_input("E-mail*")
+                senha_reg = st.text_input("Senha*", type="password")
+                senha_conf = st.text_input("Confirme a senha*", type="password")
+                registrar_btn = st.form_submit_button("Registrar")
 
-    st.markdown("---")
+                if registrar_btn:
+                    if not all([nome.strip(), telefone.strip(), email_reg.strip(), senha_reg.strip(), senha_conf.strip()]):
+                        st.warning("Preencha todos os campos obrigatórios.")
+                    elif senha_reg != senha_conf:
+                        st.error("As senhas não coincidem.")
+                    elif len(senha_reg) < 6:
+                        st.error("A senha deve ter pelo menos 6 caracteres.")
+                    else:
+                        try:
+                            sucesso, msg = registrar_usuario(email_reg, senha_reg, nome, telefone, tipo="cidadao")
+                            if sucesso:
+                                st.success("✅ Registro realizado com sucesso! Agora você pode fazer login.")
+                                st.session_state["modo_auth"] = "login"
+                                st.rerun()
+                            else:
+                                st.error(f"Erro no registro: {msg}")
+                        except Exception as e:
+                            st.error(f"Erro inesperado: {str(e)}")
 
-    if st.session_state["modo_auth"] == "login":
-        with st.form("login_form"):
-            email = st.text_input("E-mail")
-            senha = st.text_input("Senha", type="password")
-            if st.form_submit_button("Entrar"):
-                sucesso, resultado = autenticar_usuario(email, senha)
-                if sucesso:
-                    st.session_state["usuario"] = resultado
-                    st.success(f"Logado como: {resultado['email']}")
-                    st.rerun()
-                else:
-                    st.error(resultado)
+        # ⚠️Impede que o resto do app seja carregado antes do login
+        st.stop()
 
-    elif st.session_state["modo_auth"] == "registro":
-        with st.form("registro_form"):
-            nome = st.text_input("Nome completo*")
-            telefone = st.text_input("Telefone*")
-            email_reg = st.text_input("E-mail*")
-            senha_reg = st.text_input("Senha*", type="password")
-            senha_conf = st.text_input("Confirme a senha*", type="password")
-            registrar_btn = st.form_submit_button("Registrar")
-
-            if registrar_btn:
-                if not all([nome.strip(), telefone.strip(), email_reg.strip(), senha_reg.strip(), senha_conf.strip()]):
-                    st.warning("Preencha todos os campos obrigatórios.")
-                elif senha_reg != senha_conf:
-                    st.error("As senhas não coincidem.")
-                elif len(senha_reg) < 6:
-                    st.error("A senha deve ter pelo menos 6 caracteres.")
-                else:
-                    try:
-                        sucesso, msg = registrar_usuario(email_reg, senha_reg, nome, telefone, tipo="cidadao")
-                        if sucesso:
-                            st.success("✅ Registro realizado com sucesso! Agora você pode fazer login.")
-                            st.session_state["modo_auth"] = "login"
-                        else:
-                            st.error(f"Erro no registro: {msg}")
-                    except Exception as e:
-                        st.error(f"Erro inesperado: {str(e)}")
-
-    # ⚠️ Impede que o resto da página carregue
-    st.stop()
-    # ==============================================
-    # TUDO ABAIXO SÓ É EXECUTADO SE O USUÁRIO ESTIVER LOGADO
-    # ==============================================
+ #CONTEÚDO VISÍVEL APÓS LOGIN
+    usuario = st.session_state["usuario"]
 
     # Sidebar com informações rápidas
     with st.sidebar:
