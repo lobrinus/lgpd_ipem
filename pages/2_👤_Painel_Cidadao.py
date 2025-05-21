@@ -141,7 +141,7 @@ def render():
     ⚠️ Solicitações fraudulentas serão investigadas
     """)
 
-    # Formulário de nova solicitação
+
     with st.form("nova_solicitacao"):
         st.subheader("Nova Solicitação")
 
@@ -156,14 +156,19 @@ def render():
         ])
         descricao = st.text_area("Descreva sua solicitação em detalhes*")
         anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
-
-        if st.form_submit_button("Enviar Solicitação"):
-            if not all([email_solicitante, telefone, tipo, descricao]):
+    
+        submitted = st.form_submit_button("Enviar Solicitação")
+    
+        if submitted:
+            # Validação dos campos obrigatórios
+            if not all([email_solicitante.strip(), telefone.strip(), tipo.strip(), descricao.strip()]):
                 st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
             else:
-                protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
+                # Geração de protocolo único
+                protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')}"
                 try:
-                    doc_ref = db.collection("solicitacoes").document()
+                    # Salva na coleção 'solicitacoes' com o protocolo como ID do documento
+                    doc_ref = db.collection("solicitacoes").document(protocolo)
                     doc_ref.set({
                         "protocolo": protocolo,
                         "email_solicitante": email_solicitante,
@@ -184,6 +189,7 @@ def render():
                     """)
                 except Exception as e:
                     st.error(f"Erro ao enviar solicitação: {str(e)}")
+                    
 
     # Seção de Prazos e Multas
     st.markdown("---")
