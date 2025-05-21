@@ -70,10 +70,7 @@ def render():
         **O que você pode solicitar:**
         - Cópia completa de todos seus dados armazenados
         - Histórico de uso dos dados
-        
-        **Formato de entrega:**
-        - Digital (PDF) ou impresso
-        - Dados anonimizados quando necessário
+        - Informação sobre o compartilhamento dos dados
         
         **Prazo máximo:** 15 dias úteis
         """)
@@ -96,10 +93,28 @@ def render():
         - Dados coletados com consentimento
         - Finalidade original cumprida
         - Sem obrigação legal de armazenamento
+
+        **Exceções Legais (Artigo 4º da LGPD):**  
+        O IPEM-MG poderá reter dados pessoais mesmo após o cumprimento da finalidade original nos seguintes casos:
         
-        **Exceções:**
-        - Dados necessários para processos judiciais
-        - Informações de saúde pública
+        - 🔒 **Segurança Nacional e Defesa:**  
+          Para proteção do território nacional e atividades estratégicas de Estado
+        
+        - 🛡️ **Investigação Criminal:**  
+          Em procedimentos de apuração de infrações penais sob tutela judicial
+        
+        - 🚨 **Emergências de Saúde Pública:**  
+          Para controle de epidemias e proteção coletiva (ex: pandemias)
+        
+        - 📊 **Pesquisas Científicas:**  
+          Estudos realizados por órgãos de pesquisa com dados anonimizados
+
+          **Base Legal:**  
+        *"Nos termos do Artigo 4º, III da LGPD, esses tratamentos são regidos por legislação específica que garante medidas proporcionais e necessárias ao interesse público, com total observância dos direitos fundamentais."*
+        
+        **⚠️ Atenção:**  
+        A retenção nestes casos segue protocolos rigorosos de segurança e é periodicamente auditada pela Autoridade Nacional de Proteção de Dados (ANPD).
+      
         """)
     
     # Seção de Processo de Solicitação
