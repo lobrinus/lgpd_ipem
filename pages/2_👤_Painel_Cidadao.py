@@ -244,10 +244,9 @@ def render():
         """)
     with st.expander("Posso solicitar dados de terceiros?"):
         st.markdown("""
-        ❌ Não. Você só pode solicitar informações sobre seus próprios dados pessoais, exceto:
+        ❌ Não. Você só pode solicitar informações sobre seus próprios dados pessoais, para qualquer solicitação é necessário um documento comprovatório para que seja analisado se os dados solicitados são do titular exceto:
         - Com autorização judicial
         - Em casos de tutela coletiva
-        - Para qualquer solicitação é necessário um documento comprovatório para que seja analisado se os dados solicitados são do titular
         """)
 
     # Rodapé
