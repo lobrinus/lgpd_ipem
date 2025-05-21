@@ -57,7 +57,7 @@ def render():
     """)
 
     # Layout dividido em colunas
-    col1, col2, col3 = st.columns([1.2, 3, 1.2])
+    col1, col2, col3 = st.columns([2, 8, 2])
 
     # Sidebar esquerda
     with col1:
