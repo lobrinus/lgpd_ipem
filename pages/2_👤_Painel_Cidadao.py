@@ -84,15 +84,15 @@ def render():
     usuario = st.session_state["usuario"]
 
 
-   col1, col2 = st.columns([4, 1])
-with col1:
-    st.success(f"👤 Logado como: {usuario['email']} ({usuario['tipo']})")
-with col2:
-    if st.button("🚪 Sair"):
-        # Limpa sessão e volta para login
-        st.session_state["usuario"] = None
-        st.session_state["modo_auth"] = "login"
-        st.rerun()
+       col1, col2 = st.columns([4, 1])
+    with col1:
+        st.success(f"👤 Logado como: {usuario['email']} ({usuario['tipo']})")
+    with col2:
+        if st.button("🚪 Sair"):
+            # Limpa sessão e volta para login
+            st.session_state["usuario"] = None
+            st.session_state["modo_auth"] = "login"
+            st.rerun()
 
     # Seção de Tipos de Solicitações
     st.header("📋 Tipos de Solicitações")
