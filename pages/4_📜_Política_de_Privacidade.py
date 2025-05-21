@@ -605,6 +605,9 @@ direitos = [
         "detalhes": [
             "Eliminação de dados não obrigatórios",
             "Conversão para dados anônimos",
+            "Generalização",
+            "Criptografia",
+            "Tarjamento",
             "Bloqueio de dados desnecessários"
         ]
     }
