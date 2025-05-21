@@ -28,7 +28,7 @@ def render():
     with cols[3]:
         if st.button("🔒 Painel do Cidadão", use_container_width=True):
             st.markdown("""
-                <meta http-equiv="refresh" content="0; url=/2_👤_Painel_Cidadao">
+            st.switch_page("pages/2_👤_Painel_Cidadao.py")
                 """, unsafe_allow_html=True)
 
     # Seção de Contato
