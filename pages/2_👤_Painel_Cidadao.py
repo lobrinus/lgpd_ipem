@@ -30,7 +30,7 @@ def render():
                 if sucesso:
                     st.session_state["usuario"] = resultado
                     st.success(f"Logado como: {resultado['email']}")
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error(resultado)
         st.info("Por favor, faça login para acessar o painel.")
