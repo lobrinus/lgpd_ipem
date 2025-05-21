@@ -126,40 +126,38 @@ def render():
     st.markdown("---")
     st.header("📨 Como Fazer uma Solicitação")
     
-    col1, col2 = st.columns([3,2])
-    with col1:
-        with st.form("nova_solicitacao"):
-            st.subheader("Nova Solicitação")
-            tipo = st.selectbox("Tipo de Solicitação", [
-                "Acesso aos Dados",
-                "Correção de Dados",
-                "Exclusão de Dados",
-                "Portabilidade",
-                "Outros"
-            ])
-            descricao = st.text_area("Descreva sua solicitação em detalhes")
-            anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
+   # Orientações Importantes acima do formulário
+st.subheader("📌 Orientações Importantes")
+st.markdown("""
+1. Preencha todos os campos obrigatórios  
+2. Anexe documentos legíveis  
+3. Verifique seu e-mail regularmente  
+4. Mantenha seu protocolo de atendimento  
+5. Respeite os prazos legais
 
-            if st.form_submit_button("Enviar Solicitação"):
-                data_prevista = datetime.datetime.now() + datetime.timedelta(days=15)
-                st.success(f"""
-                ✅ Solicitação registrada com sucesso!  
-                **Protocolo:** LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}  
-                **Previsão de resposta:** {data_prevista.strftime('%d/%m/%Y')}
-                """)
+⚠️ Solicitações fraudulentas serão investigadas
+""")
 
-    with col2:
-        st.subheader("📌 Orientações Importantes")
-        st.markdown("""
-        1. Preencha todos os campos obrigatórios
-        2. Anexe documentos legíveis
-        3. Verifique seu e-mail regularmente
-        4. Mantenha seu protocolo de atendimento
-        5. Respeite os prazos legais
+# Formulário ocupando toda a linha
+with st.form("nova_solicitacao"):
+    st.subheader("Nova Solicitação")
+    tipo = st.selectbox("Tipo de Solicitação", [
+        "Acesso aos Dados",
+        "Correção de Dados",
+        "Exclusão de Dados",
+        "Portabilidade",
+        "Outros"
+    ])
+    descricao = st.text_area("Descreva sua solicitação em detalhes")
+    anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
 
-        ⚠️ Solicitações fraudulentas serão investigadas
+    if st.form_submit_button("Enviar Solicitação"):
+        data_prevista = datetime.datetime.now() + datetime.timedelta(days=15)
+        st.success(f"""
+        ✅ Solicitação registrada com sucesso!  
+        **Protocolo:** LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}  
+        **Previsão de resposta:** {data_prevista.strftime('%d/%m/%Y')}
         """)
-
     # Seção de Prazos e Multas
     st.markdown("---")
     st.subheader("⏳ Prazos e Consequências Legais")
