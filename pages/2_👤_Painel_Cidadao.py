@@ -19,23 +19,64 @@ def render():
     if "usuario" not in st.session_state:
         st.session_state["usuario"] = None
 
-    # Se não estiver logado, exibe formulário de login
-    if st.session_state["usuario"] is None:
-        st.title("🔐 Login - Painel do Cidadão")
-        with st.form("login_form"):
-            email = st.text_input("E-mail")
-            senha = st.text_input("Senha", type="password")
-            if st.form_submit_button("Entrar"):
-                sucesso, resultado = autenticar_usuario(email, senha)
-                if sucesso:
-                    st.session_state["usuario"] = resultado
-                    st.success(f"Logado como: {resultado['email']}")
-                    st.rerun()
-                else:
-                    st.error(resultado)
-        st.info("Por favor, faça login para acessar o painel.")
-        return  # Encerra aqui se não estiver logado
+st.title("🔐 Painel do Cidadão")
 
+# Estado para alternar entre Login e Registro
+if "modo_auth" not in st.session_state:
+    st.session_state["modo_auth"] = "login"  # login | registro
+
+# Layout com colunas para botões lado a lado
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("🔑 Login"):
+        st.session_state["modo_auth"] = "login"
+with col2:
+    if st.button("📝 Registro"):
+        st.session_state["modo_auth"] = "registro"
+
+st.markdown("---")
+
+# === FORMULÁRIO DE LOGIN ===
+if st.session_state["modo_auth"] == "login":
+    with st.form("login_form"):
+        email = st.text_input("E-mail")
+        senha = st.text_input("Senha", type="password")
+        if st.form_submit_button("Entrar"):
+            sucesso, resultado = autenticar_usuario(email, senha)
+            if sucesso:
+                st.session_state["usuario"] = resultado
+                st.success(f"Logado como: {resultado['email']}")
+                st.rerun()
+            else:
+                st.error(resultado)
+
+# === FORMULÁRIO DE REGISTRO ===
+elif st.session_state["modo_auth"] == "registro":
+    with st.form("registro_form"):
+        nome = st.text_input("Nome completo*")
+        telefone = st.text_input("Telefone*")
+        email_reg = st.text_input("E-mail*")
+        senha_reg = st.text_input("Senha*", type="password")
+        senha_conf = st.text_input("Confirme a senha*", type="password")
+        registrar_btn = st.form_submit_button("Registrar")
+
+        if registrar_btn:
+            if not all([nome.strip(), telefone.strip(), email_reg.strip(), senha_reg.strip(), senha_conf.strip()]):
+                st.warning("Preencha todos os campos obrigatórios.")
+            elif senha_reg != senha_conf:
+                st.error("As senhas não coincidem.")
+            elif len(senha_reg) < 6:
+                st.error("A senha deve ter pelo menos 6 caracteres.")
+            else:
+                try:
+                    sucesso, msg = registrar_usuario(email_reg, senha_reg, nome, telefone, tipo="cidadao")
+                    if sucesso:
+                        st.success("✅ Registro realizado com sucesso! Agora você pode fazer login.")
+                        st.session_state["modo_auth"] = "login"
+                    else:
+                        st.error(f"Erro no registro: {msg}")
+                except Exception as e:
+                    st.error(f"Erro inesperado: {str(e)}")
     # ==============================================
     # TUDO ABAIXO SÓ É EXECUTADO SE O USUÁRIO ESTIVER LOGADO
     # ==============================================
