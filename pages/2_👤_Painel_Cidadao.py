@@ -140,32 +140,32 @@ def render():
 
     ⚠️ Solicitações fraudulentas serão investigadas
     """)
+
     # --- Minhas Solicitações (compacta, antes do formulário) ---
     st.markdown("### 📬 Minhas Solicitações")
-    
-    # Busque as solicitações do usuário
-        docs = db.collection("solicitacoes").where("usuario_id", "==", st.session_state.usuario['email']).stream()
-        tem_solicitacoes = False
-        
-        for doc in docs:
-            tem_solicitacoes = True
-            data = doc.to_dict()
-            status = data.get("status", "Pendente")
-            resposta = data.get("resposta")
-            protocolo = data.get("protocolo", "")
-            tipo = data.get("tipo", "")
-            resumo = data.get("descricao", "")[:60] + "..." if len(data.get("descricao", "")) > 60 else data.get("descricao", "")
-        
-            # Exibe só o resumo e status
-            with st.expander(f"Protocolo: {protocolo} | Tipo: {tipo} | Status: {status}"):
-                st.markdown(f"**Resumo:** {resumo}")
-                if resposta:
-                    st.success("📢 Sua solicitação já foi respondida pelo IPEM!")
-                    st.markdown(f"**Resposta:** {resposta}")
-        
-        if not tem_solicitacoes:
-            st.info("Você ainda não enviou nenhuma solicitação.", icon="ℹ️")  # [3]
+    docs = db.collection("solicitacoes").where("usuario_id", "==", st.session_state.usuario['email']).stream()
+    tem_solicitacoes = False
 
+    for doc in docs:
+        tem_solicitacoes = True
+        data = doc.to_dict()
+        status = data.get("status", "Pendente")
+        resposta = data.get("resposta")
+        protocolo = data.get("protocolo", "")
+        tipo = data.get("tipo", "")
+        resumo = data.get("descricao", "")[:60] + "..." if len(data.get("descricao", "")) > 60 else data.get("descricao", "")
+
+        # Exibe só o resumo e status
+        with st.expander(f"Protocolo: {protocolo} | Tipo: {tipo} | Status: {status}"):
+            st.markdown(f"**Resumo:** {resumo}")
+            if resposta:
+                st.success("📢 Sua solicitação já foi respondida pelo IPEM!")
+                st.markdown(f"**Resposta:** {resposta}")
+
+    if not tem_solicitacoes:
+        st.info("Você ainda não enviou nenhuma solicitação.", icon="ℹ️")
+
+    # --- Formulário Nova Solicitação ---
     with st.form("nova_solicitacao"):
         st.subheader("Nova Solicitação")
 
@@ -180,9 +180,9 @@ def render():
         ])
         descricao = st.text_area("Descreva sua solicitação em detalhes*")
         anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
-    
+
         submitted = st.form_submit_button("Enviar Solicitação")
-    
+
         if submitted:
             # Validação dos campos obrigatórios
             if not all([email_solicitante.strip(), telefone.strip(), tipo.strip(), descricao.strip()]):
