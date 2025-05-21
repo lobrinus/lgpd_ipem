@@ -61,3 +61,5 @@ def render():
             st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
     else:
         st.warning("⚠️ Você precisa estar logado para acessar o painel cidadão. Por favor, faça login primeiro.")
+
+render()
