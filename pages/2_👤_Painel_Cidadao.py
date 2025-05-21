@@ -52,7 +52,7 @@ def render():
         """)
     
     # Seção de Tipos de Solicitações
-    st.header("📋 Tipos de Solicitações Disponíveis")
+    st.header("📋 Tipos de Solicitações ")
     
     with st.expander("🔍 Confirmar Existência de Dados (Artigo 18-I)"):
         st.markdown("""
@@ -85,6 +85,12 @@ def render():
         **Anexos obrigatórios:**
         - Documento comprobatório da correção
         - Identificação válida
+        """)
+        
+     with st.expander("ℹ️ Informativa "):
+        st.markdown("""
+        **Qualquer** informação relacionado a **Lei de Proteção de Dados**
+        deverá ser solicitada pelo Formulario abaixo
         """)
     
     with st.expander("🗑️ Exclusão de Dados (Artigo 18-VI)"):
