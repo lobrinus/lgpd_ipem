@@ -27,7 +27,7 @@ def render():
         )
     with cols[3]:
         if st.button("🔒 Painel do Cidadão", use_container_width=True):
-            st.page_link("pages/painel_cidadao.py", label="Ir para o Painel")
+            st.page_link("pages/2_👤_Painel_Cidadao.py", label="Ir para o Painel")
     st.markdown("---")
 
     # Seção de Contato
