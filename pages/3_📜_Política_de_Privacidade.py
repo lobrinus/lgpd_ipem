@@ -60,6 +60,220 @@ st.markdown("""
 st.title("📜 Política de Privacidade do IPEM-MG")
 st.markdown("---")
 
+import streamlit as st
+
+st.set_page_config(page_title="Política de Privacidade", page_icon="📜", layout="wide")
+
+# HEADER
+st.markdown("<h1 style='text-align: center; color: #4CAF50;'>📜 Política de Privacidade</h1>", unsafe_allow_html=True)
+st.markdown("---")
+
+# ABAS
+aba1, aba2, aba3, aba4 = st.tabs(["📑 Base Legal", "📖 Glossário", "⏳ Linha do Tempo", "📥 Download"])
+
+########################
+# ABA 1 - BASE LEGAL
+########################
+with aba1:
+    st.subheader("📑 Base Legal Aplicável")
+
+    st.markdown("""
+    <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    td {
+      background-color: #f9f9f9;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <table>
+      <tr>
+        <th>Tipo de Dado</th>
+        <th>Finalidade</th>
+        <th>Base Legal</th>
+      </tr>
+      <tr>
+        <td>Nome Completo, CPF, RG</td>
+        <td>Identificação do Cidadão</td>
+        <td>Obrigação Legal</td>
+      </tr>
+      <tr>
+        <td>Email, Telefone</td>
+        <td>Contato para Suporte e Informações</td>
+        <td>Consentimento</td>
+      </tr>
+      <tr>
+        <td>Endereço</td>
+        <td>Envio de Documentos Físicos</td>
+        <td>Execução de Políticas Públicas</td>
+      </tr>
+      <tr>
+        <td>Dados de Acesso (IP, Logs)</td>
+        <td>Garantia da Segurança e Auditoria</td>
+        <td>Legítimo Interesse</td>
+      </tr>
+    </table>
+    """, unsafe_allow_html=True)
+
+
+########################
+# ABA 2 - GLOSSÁRIO
+########################
+with aba2:
+    st.subheader("📖 Glossário LGPD")
+
+    with st.expander("📌 **Dado Pessoal**"):
+        st.markdown("Informação relacionada a pessoa natural identificada ou identificável.")
+
+    with st.expander("📌 **Dado Sensível**"):
+        st.markdown("Informação sobre origem racial ou étnica, convicção religiosa, opinião política, saúde, vida sexual, dado genético ou biométrico.")
+
+    with st.expander("📌 **Titular dos Dados**"):
+        st.markdown("Pessoa natural a quem se referem os dados pessoais que são objeto de tratamento.")
+
+    with st.expander("📌 **Controlador**"):
+        st.markdown("Pessoa natural ou jurídica, de direito público ou privado, a quem competem as decisões referentes ao tratamento de dados pessoais.")
+
+    with st.expander("📌 **Operador**"):
+        st.markdown("Pessoa natural ou jurídica que realiza o tratamento de dados pessoais em nome do controlador.")
+
+    with st.expander("📌 **Encarregado (DPO)**"):
+        st.markdown("Pessoa indicada pelo controlador para atuar como canal de comunicação entre o controlador, os titulares dos dados e a ANPD.")
+
+    with st.expander("📌 **Anonimização**"):
+        st.markdown("Utilização de meios técnicos razoáveis para remover elementos que permitam a identificação de um titular dos dados.")
+
+    with st.expander("📌 **Base Legal**"):
+        st.markdown("Hipóteses previstas na lei que autorizam o tratamento de dados pessoais.")
+
+
+########################
+# ABA 3 - LINHA DO TEMPO
+########################
+with aba3:
+    st.subheader("⏳ Histórico de Atualizações da Política de Privacidade")
+
+    st.markdown("""
+    <style>
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: #4CAF50;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+    }
+    .container {
+      padding: 10px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+    .container.left {
+      left: 0;
+    }
+    .container.right {
+      left: 50%;
+    }
+    .date {
+      padding: 5px;
+      background: #4CAF50;
+      color: white;
+      position: absolute;
+      top: 15px;
+      width: 100px;
+      text-align: center;
+      border-radius: 6px;
+    }
+    .left .date {
+      right: -120px;
+    }
+    .right .date {
+      left: -120px;
+    }
+    .content {
+      padding: 20px;
+      background-color: #f9f9f9;
+      position: relative;
+      border-radius: 6px;
+    }
+    </style>
+
+    <div class="timeline">
+
+      <div class="container left">
+        <div class="date">01/2023</div>
+        <div class="content">
+          <h4>Versão Inicial</h4>
+          <p>Publicação da primeira versão da Política de Privacidade.</p>
+        </div>
+      </div>
+
+      <div class="container right">
+        <div class="date">06/2023</div>
+        <div class="content">
+          <h4>Revisão Geral</h4>
+          <p>Ajustes nos tópicos de Direitos dos Titulares e Compartilhamento de Dados.</p>
+        </div>
+      </div>
+
+      <div class="container left">
+        <div class="date">02/2024</div>
+        <div class="content">
+          <h4>Inclusão de Formulário LGPD</h4>
+          <p>Adicionado formulário para solicitação de dados pessoais.</p>
+        </div>
+      </div>
+
+      <div class="container right">
+        <div class="date">05/2025</div>
+        <div class="content">
+          <h4>Atualização de Transparência</h4>
+          <p>Adição da tabela de base legal, glossário LGPD e histórico de atualizações.</p>
+        </div>
+      </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+
+########################
+# ABA 4 - DOWNLOAD
+########################
+with aba4:
+    st.subheader("📥 Download da Política de Privacidade")
+
+    st.markdown("Você pode baixar uma cópia da nossa política de privacidade no formato PDF para consulta offline:")
+
+    with open("politica_de_privacidade.pdf", "rb") as file:
+        btn = st.download_button(
+            label="📄 Baixar Política de Privacidade (PDF)",
+            data=file,
+            file_name="politica_de_privacidade.pdf",
+            mime="application/pdf"
+        )
+
+
 #  Introdução
 st.markdown("""
 <div class="policy-container">
