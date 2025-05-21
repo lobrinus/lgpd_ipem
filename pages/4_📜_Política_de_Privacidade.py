@@ -68,9 +68,7 @@ aba1, aba2, aba3 = st.tabs(["📑 Base Legal", "📖 Glossário", "⏳ Linha do 
 ########################
 with aba1:
     st.subheader("📑 Base Legal Aplicável ")
-        st.markdown("""
-        De acordo com o art. 7º, incisos I ao X, e caput do art. 23
-        """)
+    
     st.markdown("""
     <style>
     table {
@@ -122,6 +120,7 @@ with aba1:
     </table>
     """, unsafe_allow_html=True)
 
+    st.markdown("De acordo com o art. 7º, incisos I ao X, e caput do art. 23")
 
 ########################
 # ABA 2 - GLOSSÁRIO
