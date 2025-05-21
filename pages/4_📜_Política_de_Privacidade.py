@@ -255,7 +255,9 @@ with aba3:
 st.markdown("""
 <div class="policy-container">
     <h2 class="section-title"> Introdução</h2>
-    <p>Esta Política de Privacidade estabelece as diretrizes para tratamento de dados pessoais no âmbito do Instituto de Pesos e Medidas do Estado de Minas Gerais (IPEM-MG), em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).</p>
+    <p>A Lei nº 13.709, de 14 de agosto de 2018, Lei Geral de Proteção de Dados Pessoais (LGPD), objetiva proteger os direitos fundamentais da liberdade, da privacidade e o livre desenvolvimento de qualquer pessoa física que se encontre no território brasileiro.<p>
+    <p>Seguindo uma tendência global, a LGPD visa ao correto tratamento de dados pessoais, em meios físicos ou digitais, no âmbito de instituições públicas e privadas.<p>
+    <p>Nesse contexto, o Instituto de Metrologia e Qualidade do Estado de Minas Gerais desenvolve o seu Programa de Proteção de Dados Pessoais, e esta página pretende dar transparência à implantação do modelo de governança organizacional para adequação à LGPD.</p>
     <p>O documento aplica-se a todos os processos institucionais que envolvam tratamento de dados pessoais, incluindo sistemas, formulários e procedimentos administrativos.</p>
 </div>
 """, unsafe_allow_html=True)
