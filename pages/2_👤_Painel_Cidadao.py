@@ -142,16 +142,75 @@ def render():
     ⚠️ Solicitações fraudulentas serão investigadas
     """)
 
-    # Formulário ocupando toda a linha
+    # Formulário
     with st.form("nova_solicitacao"):
-        st.subheader("Nova Solicitação")
-        tipo = st.selectbox("Tipo de Solicitação", [
-            "Acesso aos Dados",
-            "Correção de Dados",
-            "Exclusão de Dados",
-            "Portabilidade",
-            "Outros"
-        ])
+    st.subheader("Nova Solicitação")
+    
+    # Novos campos obrigatórios
+    email_solicitante = st.text_input("E-mail para contato*")
+    telefone = st.text_input("Telefone para contato*")
+    
+    tipo = st.selectbox("Tipo de Solicitação*", [
+        "Acesso aos Dados",
+        "Correção de Dados", 
+        "Exclusão de Dados",
+        "Portabilidade",
+        "Outros"
+    ])
+    
+    descricao = st.text_area("Descreva sua solicitação em detalhes*")
+    anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
+
+    if st.form_submit_button("Enviar Solicitação"):
+        # Validação dos campos obrigatórios
+        if not all([email_solicitante, telefone, tipo, descricao]):
+            st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
+        else:
+            protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
+            
+            try:
+                # Salvar no Firestore
+                doc_ref = db.collection("solicitacoes").document()
+                doc_ref.set({
+                    "protocolo": protocolo,
+                    "email_solicitante": email_solicitante,
+                    "telefone": telefone,
+                    "tipo": tipo,
+                    "descricao": descricao,
+                    "anexos": [file.name for file in anexos],
+                    "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "status": "Recebido",
+                    "responsavel": None,
+                    "resposta": None,
+                    "usuario_id": st.session_state.usuario['email']
+                })
+    
+    descricao = st.text_area("Descreva sua solicitação em detalhes*")
+    anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
+
+    if st.form_submit_button("Enviar Solicitação"):
+        # Validação dos campos obrigatórios
+        if not all([email_solicitante, telefone, tipo, descricao]):
+            st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
+        else:
+            protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
+            
+            try:
+                # Salvar no Firestore
+                doc_ref = db.collection("solicitacoes").document()
+                doc_ref.set({
+                    "protocolo": protocolo,
+                    "email_solicitante": email_solicitante,
+                    "telefone": telefone,
+                    "tipo": tipo,
+                    "descricao": descricao,
+                    "anexos": [file.name for file in anexos],
+                    "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "status": "Recebido",
+                    "responsavel": None,
+                    "resposta": None,
+                    "usuario_id": st.session_state.usuario['email']
+                })
         descricao = st.text_area("Descreva sua solicitação em detalhes")
         anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
 
