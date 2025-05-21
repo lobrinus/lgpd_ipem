@@ -3,6 +3,19 @@ import streamlit as st
 def render():
     st.title("🏠 **Bem Vindo** ao Portal LGPD - IPEM-MG")
     st.markdown("---")
+
+        # Seção de Acesso Rápido
+    st.subheader("⚡ Acesso Rápido")
+    cols = st.columns(4)
+    with cols[0]:
+        st.markdown("📜 [Política de Privacidade](https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais)")
+    with cols[1]:
+        st.markdown("📋 [Formulário de Solicitação de Dados](https://www.ipem.mg.gov.br/fale-conosco)")
+    with cols[2]:
+        st.markdown("⚖️ [Guia LGPD para Cidadãos](https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao)")
+    with cols[3]:
+        st.markdown("🔒 [Painel do Cidadão](#)")
+    st.markdown("---")
     
     # Seção de Contato
     with st.container():
@@ -27,19 +40,6 @@ def render():
             - 📞 (31) 3399-7100 / 0800 335 335  
             - 🌐 [Formulário Online](https://www.ipem.mg.gov.br/fale-conosco)
             """)
-    st.markdown("---")
-    
-    # Seção de Acesso Rápido
-    st.subheader("⚡ Acesso Rápido")
-    cols = st.columns(4)
-    with cols[0]:
-        st.markdown("📜 [Política de Privacidade](https://www.ipem.mg.gov.br/politica-de-privacidade-e-protecao-de-dados-pessoais)")
-    with cols[1]:
-        st.markdown("📋 [Formulário de Solicitação de Dados](https://www.ipem.mg.gov.br/fale-conosco)")
-    with cols[2]:
-        st.markdown("⚖️ [Guia LGPD para Cidadãos](https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao)")
-    with cols[3]:
-        st.markdown("🔒 [Painel do Cidadão](#)")
     st.markdown("---")
     
     # Últimas Notícias
