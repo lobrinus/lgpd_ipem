@@ -253,27 +253,6 @@ def render():
         if not tem_solicitacoes:
             st.info("Nenhuma solicitação encontrada.")
 
-        st.markdown("---")
-        st.subheader("📨 Enviar Nova Solicitação")
-        nova_msg = st.text_area("Digite sua solicitação", key="txt_nova_solicitacao")
-        if st.button("Enviar Solicitação", key="btn_enviar_solicitacao"):
-            if nova_msg.strip():
-                db.collection("solicitacoes").add({
-                    "email": usuario["email"],
-                    "mensagem": nova_msg.strip(),
-                    "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                    "lido": False
-                })
-                st.success("✅ Solicitação enviada com sucesso!")
-                st.rerun()
-            else:
-                st.warning("Por favor, digite a mensagem antes de enviar.")
-
-        if st.button("Sair", key="btn_sair_painel"):
-            st.session_state["usuario"] = None
-            st.rerun()
-    else:
-        st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
 
 if __name__ == "__main__":
     render()
