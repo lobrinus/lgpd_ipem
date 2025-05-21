@@ -35,6 +35,10 @@ def render():
                     st.error(resultado)
         st.info("Por favor, faça login para acessar o painel.")
         return  # Encerra aqui se não estiver logado
+
+    # ==============================================
+    # TUDO ABAIXO SÓ É EXECUTADO SE O USUÁRIO ESTIVER LOGADO
+    # ==============================================
     
     # Sidebar com informações rápidas
     with st.sidebar:
@@ -50,9 +54,9 @@ def render():
         **Horário de Atendimento:**  
         🕒 Seg-Sex: 8h às 18h
         """)
-    
+
     # Seção de Tipos de Solicitações
-    st.header("📋 Tipos de Solicitações ")
+    st.header("📋 Tipos de Solicitações")
     
     with st.expander("🔍 Confirmar Existência de Dados (Artigo 18-I)"):
         st.markdown("""
@@ -87,10 +91,10 @@ def render():
         - Identificação válida
         """)
     
-    with st.expander("ℹ️ Informativa "):
+    with st.expander("ℹ️ Informativa"):
         st.markdown("""
-        - **Qualquer** informação relacionado a **Lei de Proteção de Dados**
-        deverá ser solicitada pelo Formulario abaixo
+        - **Qualquer** informação relacionada à **Lei de Proteção de Dados**
+        deverá ser solicitada pelo formulário abaixo.
         """)
     
     with st.expander("🗑️ Exclusão de Dados (Artigo 18-VI)"):
@@ -121,43 +125,43 @@ def render():
         **⚠️ Atenção:**  
         A retenção nestes casos segue protocolos rigorosos de segurança e é periodicamente auditada pela Autoridade Nacional de Proteção de Dados (ANPD).
         """)
-    
-# Seção de Processo de Solicitação
-st.markdown("---")
-st.header("📨 Como Fazer uma Solicitação")
 
-# Orientações Importantes acima do formulário
-st.subheader("📌 Orientações Importantes")
-st.markdown("""
-1. Preencha todos os campos obrigatórios  
-2. Anexe documentos legíveis  
-3. Verifique seu e-mail regularmente  
-4. Mantenha seu protocolo de atendimento  
-5. Respeite os prazos legais
+    # Seção de Processo de Solicitação
+    st.markdown("---")
+    st.header("📨 Como Fazer uma Solicitação")
 
-⚠️ Solicitações fraudulentas serão investigadas
-""")
+    # Orientações Importantes acima do formulário
+    st.subheader("📌 Orientações Importantes")
+    st.markdown("""
+    1. Preencha todos os campos obrigatórios  
+    2. Anexe documentos legíveis  
+    3. Verifique seu e-mail regularmente  
+    4. Mantenha seu protocolo de atendimento  
+    5. Respeite os prazos legais
 
-# Formulário ocupando toda a linha
-with st.form("nova_solicitacao"):
-    st.subheader("Nova Solicitação")
-    tipo = st.selectbox("Tipo de Solicitação", [
-        "Acesso aos Dados",
-        "Correção de Dados",
-        "Exclusão de Dados",
-        "Portabilidade",
-        "Outros"
-    ])
-    descricao = st.text_area("Descreva sua solicitação em detalhes")
-    anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
+    ⚠️ Solicitações fraudulentas serão investigadas
+    """)
 
-    if st.form_submit_button("Enviar Solicitação"):
-        data_prevista = datetime.datetime.now() + datetime.timedelta(days=15)
-        st.success(f"""
-        ✅ Solicitação registrada com sucesso!  
-        **Protocolo:** LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}  
-        **Previsão de resposta:** {data_prevista.strftime('%d/%m/%Y')}
-        """)
+    # Formulário ocupando toda a linha
+    with st.form("nova_solicitacao"):
+        st.subheader("Nova Solicitação")
+        tipo = st.selectbox("Tipo de Solicitação", [
+            "Acesso aos Dados",
+            "Correção de Dados",
+            "Exclusão de Dados",
+            "Portabilidade",
+            "Outros"
+        ])
+        descricao = st.text_area("Descreva sua solicitação em detalhes")
+        anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
+
+        if st.form_submit_button("Enviar Solicitação"):
+            data_prevista = datetime.datetime.now() + datetime.timedelta(days=15)
+            st.success(f"""
+            ✅ Solicitação registrada com sucesso!  
+            **Protocolo:** LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}  
+            **Previsão de resposta:** {data_prevista.strftime('%d/%m/%Y')}
+            """)
 
     # Seção de Prazos e Multas
     st.markdown("---")
@@ -197,7 +201,7 @@ with st.form("nova_solicitacao"):
     </div>
     """, unsafe_allow_html=True)
 
-    # Se estiver logado, mostra mensagem de usuário logado
+    # Seção de Solicitações Existentes
     usuario = st.session_state["usuario"]
     if usuario.get("tipo") in ["cidadao", "admin"]:
         st.sidebar.success(f"👤 Logado como: {usuario['email']}")
@@ -217,6 +221,7 @@ with st.form("nova_solicitacao"):
                     st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
                 else:
                     st.info("⏳ Ainda aguardando resposta do IPEM.")
+        
         if not tem_solicitacoes:
             st.info("Nenhuma solicitação encontrada.")
 
@@ -235,6 +240,7 @@ with st.form("nova_solicitacao"):
                 st.rerun()
             else:
                 st.warning("Por favor, digite a mensagem antes de enviar.")
+        
         # Botão de Sair
         if st.button("Sair", key="btn_sair_painel"):
             st.session_state["usuario"] = None
@@ -242,6 +248,5 @@ with st.form("nova_solicitacao"):
     else:
         st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
 
-# Chamada padrão
 if __name__ == "__main__":
     render()
