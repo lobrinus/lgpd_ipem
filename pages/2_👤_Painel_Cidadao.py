@@ -35,6 +35,149 @@ def render():
                     st.error(resultado)
         st.info("Por favor, faça login para acessar o painel.")
         return  # Encerra aqui se não estiver logado
+    
+    # Sidebar com informações rápidas
+    with st.sidebar:
+        st.subheader("ℹ️ Informações Rápidas")
+        st.markdown("""
+        **Prazo Máximo de Resposta:**  
+        ⏱️ 15 dias úteis  
+        
+        **Canais de Atendimento:**  
+        📞 (31) 3399-7100  
+        📧 lgpd@ipem.mg.gov.br  
+        
+        **Horário de Atendimento:**  
+        🕒 Seg-Sex: 8h às 18h
+        """)
+    
+    # Seção de Tipos de Solicitações
+    st.header("📋 Tipos de Solicitações Disponíveis")
+    
+    with st.expander("🔍 Confirmar Existência de Dados (Artigo 18-I)"):
+        st.markdown("""
+        **O que você pode solicitar:**
+        - Verificação se o IPEM-MG possui seus dados cadastrais
+        
+        **Documentação necessária:**
+        - Cópia do documento de identificação
+        
+        **Prazo máximo:** 24 horas (resposta simplificada)
+        """)
+    
+    with st.expander("📂 Acesso aos Dados (Artigo 18-II)"):
+        st.markdown("""
+        **O que você pode solicitar:**
+        - Cópia completa de todos seus dados armazenados
+        - Histórico de uso dos dados
+        
+        **Formato de entrega:**
+        - Digital (PDF) ou impresso
+        - Dados anonimizados quando necessário
+        
+        **Prazo máximo:** 15 dias úteis
+        """)
+    
+    with st.expander("✏️ Correção de Dados (Artigo 18-III)"):
+        st.markdown("""
+        **Quando solicitar:**
+        - Dados desatualizados
+        - Informações incorretas
+        - Registros incompletos
+        
+        **Anexos obrigatórios:**
+        - Documento comprobatório da correção
+        - Identificação válida
+        """)
+    
+    with st.expander("🗑️ Exclusão de Dados (Artigo 18-VI)"):
+        st.markdown("""
+        **Condições para exclusão:**
+        - Dados coletados com consentimento
+        - Finalidade original cumprida
+        - Sem obrigação legal de armazenamento
+        
+        **Exceções:**
+        - Dados necessários para processos judiciais
+        - Informações de saúde pública
+        """)
+    
+    # Seção de Processo de Solicitação
+    st.markdown("---")
+    st.header("📨 Como Fazer uma Solicitação")
+    
+    col1, col2 = st.columns([3,2])
+    with col1:
+        with st.form("nova_solicitacao"):
+            st.subheader("Nova Solicitação")
+            tipo = st.selectbox("Tipo de Solicitação", [
+                "Acesso aos Dados",
+                "Correção de Dados",
+                "Exclusão de Dados",
+                "Portabilidade",
+                "Outros"
+            ])
+            
+            descricao = st.text_area("Descreva sua solicitação em detalhes")
+            anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
+            
+            if st.form_submit_button("Enviar Solicitação"):
+                data_prevista = datetime.now() + timedelta(days=15)
+                st.success(f"""
+                ✅ Solicitação registrada com sucesso!  
+                **Protocolo:** LGPD-{datetime.now().strftime('%Y%m%d%H%M%S')}  
+                **Previsão de resposta:** {data_prevista.strftime('%d/%m/%Y')}
+                """)
+    
+    with col2:
+        st.subheader("📌 Orientações Importantes")
+        st.markdown("""
+        1. Preencha todos os campos obrigatórios
+        2. Anexe documentos legíveis
+        3. Verifique seu e-mail regularmente
+        4. Mantenha seu protocolo de atendimento
+        5. Respeite os prazos legais
+        
+        ⚠️ Solicitações fraudulentas serão investigadas
+        """)
+    
+    # Seção de Prazos e Multas
+    st.markdown("---")
+    st.subheader("⏳ Prazos e Consequências Legais")
+    st.markdown("""
+    | Situação | Prazo | Consequência |
+    |----------|-------|--------------|
+    | Resposta inicial | 15 dias | - |
+    | Prorrogação | +15 dias | Notificação obrigatória |
+    | Descumprimento | - | Multa de até 2% do faturamento |
+    """, unsafe_allow_html=True)
+    
+    # FAQ
+    st.markdown("---")
+    st.subheader("❓ Perguntas Frequentes")
+    
+    with st.expander("O que fazer se não receber resposta?"):
+        st.markdown("""
+        1. Verifique sua caixa de spam
+        2. Entre em contato via telefone
+        3. Encaminhe reclamação para ANPD
+        """)
+    
+    with st.expander("Posso solicitar dados de terceiros?"):
+        st.markdown("""
+        ❌ Não. Você só pode solicitar informações sobre seus próprios dados pessoais, exceto:
+        - Com autorização judicial
+        - Em casos de tutela coletiva
+        """)
+    
+    # Rodapé
+    st.markdown("---")
+    st.markdown("""
+    <div style="text-align: center; color: gray;">
+        ℹ️ Atendimento regulamentado pela Lei nº 13.709/2018 (LGPD)<br>
+        Última atualização: {date}
+    </div>
+    """.format(date=datetime.now().strftime("%d/%m/%Y")), unsafe_allow_html=True)
 
     # Se estiver logado, mostra mensagem de usuário logado
     usuario = st.session_state["usuario"]
