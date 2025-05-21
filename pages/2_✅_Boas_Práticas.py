@@ -6,14 +6,6 @@ def render():
     # CSS Geral e Reformulação de Estilo
     st.markdown("""
     <style>
-        .main .block-container {
-            padding-left: 2rem;
-            padding-right: 2rem;
-            max-width: 100%;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-    <style>
         body {
             font-family: 'Arial', sans-serif;
         }
