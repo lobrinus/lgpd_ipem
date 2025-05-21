@@ -5,8 +5,13 @@ from login_unificado import autenticar_usuario, registrar_usuario
 def render():
     # CSS Geral e Reformulação de Estilo
     st.markdown("""
-    <style>
-        body {
+        <style>
+        .main .block-container {
+            padding-left: 2rem;
+            padding-right: 2rem;
+            max-width: 100%;
+        }
+            body {
             font-family: 'Arial', sans-serif;
         }
         .section, .sidebar-section {
