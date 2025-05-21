@@ -44,45 +44,43 @@ def render():
         solicitacoes_ref = db.collection("solicitacoes")
         query = solicitacoes_ref.where("email", "==", usuario["email"])
         docs = query.stream()
+
         tem_solicitacoes = False
-    for doc in docs:
-        tem_solicitacoes = True
-        data = doc.to_dict()
-    with st.expander(f"📌 {data['mensagem']} ({data['data_envio']})"):
-        if "resposta" in data:
-            st.success("💬 Resposta do IPEM:")
-            st.markdown(data["resposta"])
-            st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
-    else:
-        st.info("⏳ Ainda aguardando resposta do IPEM.")
-    if not tem_solicitacoes:
-        st.info("Nenhuma solicitação encontrada.")
+        for doc in docs:
+            tem_solicitacoes = True
+            data = doc.to_dict()
+            with st.expander(f"📌 {data['mensagem']} ({data['data_envio']})"):
+                if "resposta" in data:
+                    st.success("💬 Resposta do IPEM:")
+                    st.markdown(data["resposta"])
+                    st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
+                else:
+                    st.info("⏳ Ainda aguardando resposta do IPEM.")
+        if not tem_solicitacoes:
+            st.info("Nenhuma solicitação encontrada.")
+        
         st.markdown("---")
         st.subheader("📨 Enviar Nova Solicitação")
         nova_msg = st.text_area("Digite sua solicitação", key="txt_nova_solicitacao")
         if st.button("Enviar Solicitação", key="btn_enviar_solicitacao"):
             if nova_msg.strip():
                 db.collection("solicitacoes").add({
-                "email": usuario["email"],
-                "mensagem": nova_msg.strip(),
-                "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                "lido": False
+                    "email": usuario["email"],
+                    "mensagem": nova_msg.strip(),
+                    "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "lido": False
                 })
                 st.success("✅ Solicitação enviada com sucesso!")
                 st.rerun()
             else:
                 st.warning("Por favor, digite a mensagem antes de enviar.")
-                    if st.button("Sair", key="btn_sair_painel"):
-                st.session_state["usuario"] = None
-                st.rerun()
-                    else:
-                    st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
-            else:
-            st.warning("⚠️ Você precisa estar logado para acessar o painel cidadão. Por favor, faça login primeiro.")
-
-render()
+        # Botão de Sair
+        if st.button("Sair", key="btn_sair_painel"):
+            st.session_state["usuario"] = None
+            st.rerun()
+    else:
+        st.warning("⚠️ Você não tem permissão para acessar o painel cidadão.")
 
 # Chamada padrão
 if __name__ == "__main__":
     render()
-
