@@ -20,7 +20,6 @@ def render():
     # Inicializa variáveis de sessão
     if "modo_auth" not in st.session_state:
         st.session_state["modo_auth"] = "login"
-
     if "usuario" not in st.session_state:
         st.session_state["usuario"] = None
 
@@ -33,7 +32,6 @@ def render():
         with col2:
             if st.button("📝 Registro"):
                 st.session_state["modo_auth"] = "registro"
-
         st.markdown("---")
 
         if st.session_state["modo_auth"] == "login":
@@ -48,7 +46,6 @@ def render():
                         st.rerun()
                     else:
                         st.error(resultado)
-
         elif st.session_state["modo_auth"] == "registro":
             with st.form("registro_form"):
                 nome = st.text_input("Nome completo*")
@@ -57,7 +54,6 @@ def render():
                 senha_reg = st.text_input("Senha*", type="password")
                 senha_conf = st.text_input("Confirme a senha*", type="password")
                 registrar_btn = st.form_submit_button("Registrar")
-
                 if registrar_btn:
                     if not all([nome.strip(), telefone.strip(), email_reg.strip(), senha_reg.strip(), senha_conf.strip()]):
                         st.warning("Preencha todos os campos obrigatórios.")
@@ -76,15 +72,12 @@ def render():
                                 st.error(f"Erro no registro: {msg}")
                         except Exception as e:
                             st.error(f"Erro inesperado: {str(e)}")
-
         # ⚠️Impede que o resto do app seja carregado antes do login
         st.stop()
 
- #CONTEÚDO VISÍVEL APÓS LOGIN
+    # CONTEÚDO VISÍVEL APÓS LOGIN
     usuario = st.session_state["usuario"]
-
-
-       col1, col2 = st.columns([4, 1])
+    col1, col2 = st.columns([4, 1])
     with col1:
         st.success(f"👤 Logado como: {usuario['email']} ({usuario['tipo']})")
     with col2:
@@ -96,7 +89,6 @@ def render():
 
     # Seção de Tipos de Solicitações
     st.header("📋 Tipos de Solicitações")
-
     with st.expander("🔍 Confirmar Existência de Dados (Artigo 18-I)"):
         st.markdown("""
         **O que você pode solicitar:**
@@ -107,7 +99,6 @@ def render():
 
         **Prazo máximo:** 24 horas (resposta simplificada)
         """)
-
     with st.expander("📂 Acesso aos Dados (Artigo 18-II)"):
         st.markdown("""
         **O que você pode solicitar:**
@@ -117,7 +108,6 @@ def render():
 
         **Prazo máximo:** 15 dias úteis
         """)
-
     with st.expander("✏️ Correção de Dados (Artigo 18-III)"):
         st.markdown("""
         **Quando solicitar:**
@@ -129,13 +119,11 @@ def render():
         - Documento comprobatório da correção
         - Identificação válida
         """)
-
     with st.expander("ℹ️ Informativa"):
         st.markdown("""
         - **Qualquer** informação relacionada à **Lei de Proteção de Dados**
         deverá ser solicitada pelo formulário abaixo.
         """)
-
     with st.expander("🗑️ Exclusão de Dados (Artigo 18-VI)"):
         st.markdown("""
         **Condições para exclusão:**
@@ -145,18 +133,10 @@ def render():
 
         **Exceções Legais (Artigo 4º da LGPD):**  
         O IPEM-MG poderá reter dados pessoais mesmo após o cumprimento da finalidade original nos seguintes casos:
-
-        - 🔒 **Segurança Nacional e Defesa:**  
-          Para proteção do território nacional e atividades estratégicas de Estado
-
-        - 🛡️ **Investigação Criminal:**  
-          Em procedimentos de apuração de infrações penais sob tutela judicial
-
-        - 🚨 **Emergências de Saúde Pública:**  
-          Para controle de epidemias e proteção coletiva (ex: pandemias)
-
-        - 📊 **Pesquisas Científicas:**  
-          Estudos realizados por órgãos de pesquisa com dados anonimizados
+        - 🔒 **Segurança Nacional e Defesa:** Para proteção do território nacional e atividades estratégicas de Estado
+        - 🛡️ **Investigação Criminal:** Em procedimentos de apuração de infrações penais sob tutela judicial
+        - 🚨 **Emergências de Saúde Pública:** Para controle de epidemias e proteção coletiva (ex: pandemias)
+        - 📊 **Pesquisas Científicas:** Estudos realizados por órgãos de pesquisa com dados anonimizados
 
         **Base Legal:**  
         *"Nos termos do Artigo 4º, III da LGPD, esses tratamentos são regidos por legislação específica que garante medidas proporcionais e necessárias ao interesse público, com total observância dos direitos fundamentais."*
@@ -168,7 +148,6 @@ def render():
     # Seção de Processo de Solicitação
     st.markdown("---")
     st.header("📨 Como Fazer uma Solicitação")
-
     st.subheader("📌 Orientações Importantes")
     st.markdown("""
     1. Preencha todos os campos obrigatórios  
@@ -180,11 +159,10 @@ def render():
     ⚠️ Solicitações fraudulentas serão investigadas
     """)
 
-    # --- Minhas Solicitações (compacta, antes do formulário) ---
+    # Minhas Solicitações (compacta, antes do formulário)
     st.markdown("### 📬 Minhas Solicitações")
     docs = db.collection("solicitacoes").where("usuario_id", "==", st.session_state.usuario['email']).stream()
     tem_solicitacoes = False
-
     for doc in docs:
         tem_solicitacoes = True
         data = doc.to_dict()
@@ -193,21 +171,17 @@ def render():
         protocolo = data.get("protocolo", "")
         tipo = data.get("tipo", "")
         resumo = data.get("descricao", "")[:60] + "..." if len(data.get("descricao", "")) > 60 else data.get("descricao", "")
-
-        # Exibe só o resumo e status
         with st.expander(f"Protocolo: {protocolo} | Tipo: {tipo} | Status: {status}"):
             st.markdown(f"**Resumo:** {resumo}")
             if resposta:
                 st.success("📢 Sua solicitação já foi respondida pelo IPEM!")
                 st.markdown(f"**Resposta:** {resposta}")
-
     if not tem_solicitacoes:
         st.info("Você ainda não enviou nenhuma solicitação.", icon="ℹ️")
 
-    # --- Formulário Nova Solicitação ---
+    # Formulário Nova Solicitação
     with st.form("nova_solicitacao"):
         st.subheader("Nova Solicitação")
-
         email_solicitante = st.text_input("E-mail para contato*")
         telefone = st.text_input("Telefone para contato*")
         tipo = st.selectbox("Tipo de Solicitação*", [
@@ -219,18 +193,13 @@ def render():
         ])
         descricao = st.text_area("Descreva sua solicitação em detalhes*")
         anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
-
         submitted = st.form_submit_button("Enviar Solicitação")
-
         if submitted:
-            # Validação dos campos obrigatórios
             if not all([email_solicitante.strip(), telefone.strip(), tipo.strip(), descricao.strip()]):
                 st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
             else:
-                # Geração de protocolo único
                 protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')}"
                 try:
-                    # Salva na coleção 'solicitacoes' com o protocolo como ID do documento
                     doc_ref = db.collection("solicitacoes").document(protocolo)
                     doc_ref.set({
                         "protocolo": protocolo,
@@ -252,7 +221,6 @@ def render():
                     """)
                 except Exception as e:
                     st.error(f"Erro ao enviar solicitação: {str(e)}")
-                    
 
     # Seção de Prazos e Multas
     st.markdown("---")
@@ -268,14 +236,12 @@ def render():
     # FAQ
     st.markdown("---")
     st.subheader("❓ Perguntas Frequentes")
-
     with st.expander("O que fazer se não receber resposta?"):
         st.markdown("""
-        1. Verifique sua caixa de spam  
-        2. Entre em contato via telefone  
+        1. Verifique sua caixa de spam
+        2. Entre em contato via telefone
         3. Encaminhe reclamação para ANPD
         """)
-
     with st.expander("Posso solicitar dados de terceiros?"):
         st.markdown("""
         ❌ Não. Você só pode solicitar informações sobre seus próprios dados pessoais, exceto:
@@ -292,30 +258,6 @@ def render():
     </div>
     """, unsafe_allow_html=True)
 
-    # Seção de Solicitações Existentes
-    usuario = st.session_state["usuario"]
-    if usuario.get("tipo") in ["cidadao", "admin"]:
-        st.sidebar.success(f"👤 Logado como: {usuario['email']}")
-        st.header("📬 Minhas Solicitações")
-        solicitacoes_ref = db.collection("solicitacoes")
-        query = solicitacoes_ref.where("email", "==", usuario["email"])
-        docs = query.stream()
-
-        tem_solicitacoes = False
-        for doc in docs:
-            tem_solicitacoes = True
-            data = doc.to_dict()
-            with st.expander(f"📌 {data.get('mensagem', 'Solicitação')} ({data['data_envio']})"):
-                if "resposta" in data and data["resposta"]:
-                    st.success("💬 Resposta do IPEM:")
-                    st.markdown(data["resposta"])
-                    st.caption(f"🕒 Respondido em: {data.get('data_resposta', 'Data não registrada')}")
-                else:
-                    st.info("⏳ Ainda aguardando resposta do IPEM.")
-
-        if not tem_solicitacoes:
-            st.info("Nenhuma solicitação encontrada.")
-
-
+# Para Streamlit multipage
 if __name__ == "__main__":
     render()
