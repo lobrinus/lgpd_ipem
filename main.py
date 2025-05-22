@@ -1,17 +1,14 @@
-import streamlit as st
 from streamlit_option_menu import option_menu
+import streamlit as st
 
-# Configuração inicial do app
 st.set_page_config(
     page_title="Portal LGPD - IPEM-MG",
     page_icon="📘",
     layout="wide"
 )
 
-# --- Logo no menu lateral ---
-st.sidebar.image("ipem_mg.png", use_container_width=True)
+st.sidebar.image("ipem_mg.png", use_column_width=True)
 
-# --- Menu lateral com option_menu ---
 with st.sidebar:
     pagina = option_menu(
         "Menu Principal",
@@ -32,11 +29,12 @@ with st.sidebar:
             "📁 Solicitações Recebidas",
             "❓ FAQ"
         ],
-        icons=[""] * 15,         
-        menu_icon="cast",  # Ícone do título do menu
+        icons=[""] * 15,  # <- remove o ícone de play
+        menu_icon="cast",
         default_index=1,
         orientation="vertical"
     )
+
 # --- Renderização de cada página ---
 if pagina == "🔐 Login":
     import home
