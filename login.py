@@ -26,7 +26,7 @@ def render():
             for key in ["logado", "email", "tipo_usuario", "admin_email"]:
                 st.session_state.pop(key, None)
             st.success("Você saiu com sucesso.")
-            st.experimental_rerun()
+            st.rerun()
 
         return
 
