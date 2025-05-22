@@ -19,11 +19,12 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
-if not firebase_admin._apps:
+try:
     cred_dict = st.secrets["FIREBASE_CREDENTIALS"]
-    cred = credentials.Certificate(cred_dict)
-    firebase_admin.initialize_app(cred)
-
+except KeyError:
+    st.error("❌ Credenciais do Firebase não configuradas nos secrets do Streamlit Cloud.")
+    st.error("Verifique se você adicionou a seção [FIREBASE_CREDENTIALS] nos secrets.")
+    st.stop()
 
 def autenticar_usuario(email, senha):
     email = email.lower()
