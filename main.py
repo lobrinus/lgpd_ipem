@@ -32,12 +32,7 @@ with st.sidebar:
             "📁 Solicitações Recebidas",
             "❓ FAQ"
         ],
-        icons=[
-            "key", "house", "person", "check2-circle", "search", "people",
-            "file-earmark-text", "shield-lock", "scale",
-            "check2-square", "arrow-repeat", "unlock", "envelope",
-            "folder", "question-circle"
-        ],
+        
         menu_icon="cast",  # Ícone do título do menu
         default_index=1,
         orientation="vertical"
