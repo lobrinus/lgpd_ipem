@@ -32,7 +32,7 @@ def render():
                 if dados["tipo"] == "admin":
                     st.session_state["admin_email"] = dados["email"]
                 st.success(f"✅ Bem-vindo, {dados['tipo']}")
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.error(dados)
 
