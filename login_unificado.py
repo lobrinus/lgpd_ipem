@@ -11,20 +11,29 @@ firebaseConfig = {
     "authDomain": "lgpd-ipem-mg-9f1a5.firebaseapp.com",
     "projectId": "lgpd-ipem-mg-9f1a5",
     "storageBucket": "lgpd-ipem-mg-9f1a5.appspot.com",
-    "messagingSenderId": "XXXXXXXXXXXX",
-    "appId": "1:XXXXXXXXXXXX:web:XXXXXXXXXXXX",
+    "messagingSenderId": "510388427771",
+    "appId": "1:51038842771:web:fdcda6526f125892db8266",
     "databaseURL": ""
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
-try:
-    cred_dict = st.secrets["FIREBASE_CREDENTIALS"]
-except KeyError:
-    st.error("❌ Credenciais do Firebase não configuradas nos secrets do Streamlit Cloud.")
-    st.error("Verifique se você adicionou a seção [FIREBASE_CREDENTIALS] nos secrets.")
-    st.stop()
+if not firebase_admin._apps:
+    try:
+        # Use dict() para converter o objeto secrets em dicionário
+        cred = credentials.Certificate(dict(st.secrets["FIREBASE_CREDENTIALS"]))
+        firebase_admin.initialize_app(cred)
+    except KeyError as e:
+        st.error(f"❌ Erro: {e}")
+        st.error("Verifique se você adicionou a seção [FIREBASE_CREDENTIALS] nos secrets.")
+        st.error(f"Secrets disponíveis: {list(st.secrets.keys())}")
+        st.stop()
+    except Exception as e:
+        st.error(f"❌ Erro ao inicializar Firebase: {e}")
+        st.stop()
+
+db = firestore.client()
 
 def autenticar_usuario(email, senha):
     email = email.lower()
