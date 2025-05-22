@@ -69,7 +69,7 @@ with st.sidebar:
     )
 
 # --- Renderização de cada página ---
-  if pagina == "🏠 Página Principal":
+if pagina == "🏠 Página Principal":
     import pagina_principal
     pagina_principal.render()
 
