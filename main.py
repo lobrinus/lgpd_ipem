@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_option_menu import option_menu
 
 # Configuração inicial do app
 st.set_page_config(
@@ -7,31 +8,40 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- Menu Lateral ---
-st.sidebar.image("icone_ipem.png", use_container_width=True)
-st.sidebar.title("Menu de Navegação")
+# --- Logo no menu lateral ---
+st.sidebar.image("ipem_mg.png", use_column_width=True)
 
-pagina = st.sidebar.radio(
-    "Selecione uma página:",
-    [
-        "🔐 Login",
-        "🏠 Página Principal",
-        "👤 Painel Cidadão",
-        "✅ Boas Práticas",
-        "🔍 Orientação de Dados Pessoais",
-        "👥 Quem Lida com os Dados",
-        "📜 Política de Privacidade",
-        "🛡️ Mitigação de Riscos",
-        "⚖️ Princípios Básicos",
-        "✅❌ O Que Fazer e Não Fazer",
-        "🔄 Fluxo de Dados LGPD",
-        "🔓 Solicitar Acesso aos Dados",
-        "📧 Formulário LGPD",
-        "📁 Solicitações Recebidas",
-        "❓ FAQ"
-    ],
-    label_visibility="collapsed"
-)
+# --- Menu lateral com option_menu ---
+with st.sidebar:
+    pagina = option_menu(
+        "Menu Principal",
+        [
+            "🔐 Login",
+            "🏠 Página Principal",
+            "👤 Painel Cidadão",
+            "✅ Boas Práticas",
+            "🔍 Orientação de Dados Pessoais",
+            "👥 Quem Lida com os Dados",
+            "📜 Política de Privacidade",
+            "🛡️ Mitigação de Riscos",
+            "⚖️ Princípios Básicos",
+            "✅❌ O Que Fazer e Não Fazer",
+            "🔄 Fluxo de Dados LGPD",
+            "🔓 Solicitar Acesso aos Dados",
+            "📧 Formulário LGPD",
+            "📁 Solicitações Recebidas",
+            "❓ FAQ"
+        ],
+        icons=[
+            "key", "house", "person", "check2-circle", "search", "people",
+            "file-earmark-text", "shield-lock", "balance-scale",
+            "check2-square", "arrow-repeat", "unlock", "envelope",
+            "folder", "question-circle"
+        ],
+        menu_icon="cast",  # Ícone do título do menu
+        default_index=1,
+        orientation="vertical"
+    )
 # --- Renderização de cada página ---
 if pagina == "🔐 Login":
     import home
