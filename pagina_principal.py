@@ -6,7 +6,7 @@ def render():
 
     # Seção de Acesso Rápido
     st.subheader("⚡ Acesso Rápido")
-    cols = st.columns([1, 1, 1, 1], gap="small")
+    cols = st.columns([1, 1, 1], gap="small")
     with cols[0]:
         st.link_button(
             label="📜 Política de Privacidade",
@@ -25,10 +25,6 @@ def render():
             url="https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao",
             use_container_width=True
         )
-    with cols[3]:
-        if st.button("🔒 Painel do Cidadão", use_container_width=True):
-            st.switch_page("painel_cidadao")
-
     # Seção de Contato
     with st.container():
         col1, col2 = st.columns([2, 3])
