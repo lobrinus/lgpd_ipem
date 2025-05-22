@@ -4,12 +4,32 @@ from login_unificado import autenticar_usuario, registrar_usuario
 def render():
     st.subheader("🔐 Login LGPD")
 
-    # Criar estado para controlar qual aba está ativa
+    # Se o usuário estiver logado, exibe a mensagem de status + botão de sair
+    if st.session_state.get("logado", False):
+        email = st.session_state.get("email", "")
+        tipo = st.session_state.get("tipo_usuario", "cidadao").lower()
+        tipo_legivel = "Administrador" if tipo == "admin" else "Cidadão"
+
+        st.success(
+            f"✅ Você já está logado como: `{email}`\n\n"
+            f"🔒 Usuário: **{tipo_legivel}**\n\n"
+            "📌 Acesse o **Painel do Cidadão** para enviar ou visualizar suas solicitações."
+        )
+
+        if st.button("🚪 Sair"):
+            # Limpa a sessão
+            for key in ["logado", "email", "tipo_usuario", "admin_email"]:
+                st.session_state.pop(key, None)
+            st.success("Você saiu com sucesso.")
+            st.rerun()
+
+        return  # Não exibe formulário de login/registro
+
+    # Aba ativa: login ou registro
     if "aba_login" not in st.session_state:
-        st.session_state["aba_login"] = "login"  # valor inicial
+        st.session_state["aba_login"] = "login"
 
-    col1, col2 = st.columns([1,1])
-
+    col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Login"):
             st.session_state["aba_login"] = "login"
@@ -17,8 +37,9 @@ def render():
         if st.button("Registro"):
             st.session_state["aba_login"] = "registro"
 
-    st.write("---")  # Linha divisória
+    st.write("---")
 
+    # Formulário de Login
     if st.session_state["aba_login"] == "login":
         email = st.text_input("Usuário (email)", key="login_email")
         senha = st.text_input("Senha", type="password", key="login_senha")
@@ -32,11 +53,12 @@ def render():
                 if dados["tipo"] == "admin":
                     st.session_state["admin_email"] = dados["email"]
                 st.success(f"✅ Bem-vindo, {dados['tipo']}")
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.error(dados)
 
-    else:  # Registro
+    # Formulário de Registro
+    else:
         nome = st.text_input("Nome Completo", key="reg_nome")
         email = st.text_input("Email", key="reg_email")
         telefone = st.text_input("Telefone", key="reg_telefone")
