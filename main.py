@@ -6,6 +6,14 @@ st.set_page_config(
     page_icon="📘",
     layout="wide"
 )
+# CSS para ocultar os ícones do menu
+st.markdown("""
+    <style>
+    .icon {
+        display: none !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 st.sidebar.image("ipem_mg.png", use_container_width=True)
 
