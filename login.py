@@ -13,7 +13,9 @@ def render():
     with st.success(""):
         st.markdown(
             f"""
-            ✅ Você já está logado como: <strong>{email}</strong><br>
+            email = st.session_state.get("usuario", {}).get("email", "Desconhecido")
+st.markdown(f"✅ Você já está logado como: <strong>{email}</strong><br>", unsafe_allow_html=True)
+
             🔒 Usuário: <strong>{tipo_legivel}</strong><br>
             📌 Acesse o <strong>Painel do Cidadão</strong> para enviar ou visualizar suas solicitações.
             """,
