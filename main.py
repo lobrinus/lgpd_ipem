@@ -11,7 +11,7 @@ st.set_page_config(
 st.sidebar.image("icone_ipem.png", use_container_width=True)
 st.sidebar.title("Menu de Navegação")
 
-pagina = st.sidebar.selectbox(
+pagina = st.sidebar.radio(
     "Selecione uma página:",
     [
         "🔐 Login",
@@ -29,9 +29,9 @@ pagina = st.sidebar.selectbox(
         "📧 Formulário LGPD",
         "📁 Solicitações Recebidas",
         "❓ FAQ"
-    ]
+    ],
+    label_visibility="collapsed"
 )
-
 # --- Renderização de cada página ---
 if pagina == "🔐 Login":
     import home
