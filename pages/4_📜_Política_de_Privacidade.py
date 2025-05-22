@@ -122,11 +122,11 @@ with aba1:
     </table>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <p style='text-align: center; font-style: italic;'>
-    De acordo com o art. 7º, incisos I ao X, e caput do art. 23
-    </p>
-    """, unsafe_allow_html=True)
+        st.markdown("""
+        <p style='text-align: center; font-style: italic;'>
+        De acordo com o art. 7º, incisos I ao X, e caput do art. 23
+        </p>
+        """, unsafe_allow_html=True)
 
 ########################
 # ABA 2 - GLOSSÁRIO
