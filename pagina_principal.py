@@ -27,9 +27,7 @@ def render():
         )
     with cols[3]:
         if st.button("🔒 Painel do Cidadão", use_container_width=True):
-            st.markdown("""
-            st.switch_page("painel_cidadao.py")
-                """, unsafe_allow_html=True)
+            st.switch_page("painel_cidadao")
 
     # Seção de Contato
     with st.container():
