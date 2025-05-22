@@ -45,7 +45,7 @@ with st.sidebar:
 
 # --- Renderização de cada página ---
 if pagina == "🔐 Login":
-    import home
+    import login
     login.render()
 
 elif pagina == "🏠 Página Principal":
