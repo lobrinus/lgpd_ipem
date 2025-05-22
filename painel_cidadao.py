@@ -7,7 +7,7 @@ from firebase_admin import credentials, firestore
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    # Inicialização Firebase (uma única vez)
+    # === Inicialização do Firebase (executa apenas uma vez) ===
     if not firebase_admin._apps:
         cred_json = os.getenv("FIREBASE_CREDENTIALS")
         cred_dict = json.loads(cred_json)
@@ -15,18 +15,21 @@ def render():
         firebase_admin.initialize_app(cred)
     db = firestore.client()
 
+    # Título principal
     st.title("🔐 Painel do Cidadão")
 
-    # Inicializa variáveis de sessão
+    # === Estado de sessão ===
     if "modo_auth" not in st.session_state:
-        st.session_state["modo_auth"] = "login"
+        st.session_state["modo_auth"] = "login"  # Pode ser "login" ou "registro"
     if "usuario" not in st.session_state:
         st.session_state["usuario"] = None
 
-    # === SE NÃO ESTIVER LOGADO, MOSTRA LOGIN/REGISTRO ===
+    # === AUTENTICAÇÃO ===
     if st.session_state["usuario"] is None:
-        st.title("🔐 Painel do Cidadão")
-    
+        # Título da seção de login/registro
+        st.subheader("Acesse ou crie sua conta")
+
+        # Botões para alternar entre login e registro
         col1, col2 = st.columns(2)
         with col1:
             if st.button("🔑 Login"):
@@ -35,49 +38,66 @@ def render():
             if st.button("📝 Registro"):
                 st.session_state["modo_auth"] = "registro"
         st.markdown("---")
-    
+
+        # === Formulário de Login ===
         if st.session_state["modo_auth"] == "login":
-            with st.form("login_form"):
-                email = st.text_input("E-mail")
-                senha = st.text_input("Senha", type="password")
-                if st.form_submit_button("Entrar"):
-                    sucesso, resultado = autenticar_usuario(email, senha)
-                    if sucesso:
-                        st.session_state["usuario"] = resultado
-                        st.success(f"Logado como: {resultado['email']}")
-                        st.rerun()
+            with st.form("form_login"):
+                st.subheader("🔑 Login")
+                email = st.text_input("E-mail*")
+                senha = st.text_input("Senha*", type="password")
+                login_submit = st.form_submit_button("Entrar")
+
+                if login_submit:
+                    if not email or not senha:
+                        st.warning("Por favor, preencha todos os campos.")
                     else:
-                        st.error(resultado)
-    
+                        sucesso, resultado = autenticar_usuario(email, senha)
+                        if sucesso:
+                            st.session_state["usuario"] = resultado
+                            st.success("✅ Login realizado com sucesso!")
+                            st.rerun()
+                        else:
+                            st.error(f"Erro ao fazer login: {resultado}")
+
+        # === Formulário de Registro ===
         elif st.session_state["modo_auth"] == "registro":
-            with st.form("registro_form"):
+            with st.form("form_registro"):
+                st.subheader("📝 Registro")
                 nome = st.text_input("Nome completo*")
                 telefone = st.text_input("Telefone*")
                 email_reg = st.text_input("E-mail*")
                 senha_reg = st.text_input("Senha*", type="password")
                 senha_conf = st.text_input("Confirme a senha*", type="password")
-                registrar_btn = st.form_submit_button("Registrar")
-                if registrar_btn:
+                registro_submit = st.form_submit_button("Registrar")
+
+                if registro_submit:
                     if not all([nome.strip(), telefone.strip(), email_reg.strip(), senha_reg.strip(), senha_conf.strip()]):
-                        st.warning("Preencha todos os campos obrigatórios.")
+                        st.warning("Por favor, preencha todos os campos obrigatórios.")
                     elif senha_reg != senha_conf:
                         st.error("As senhas não coincidem.")
                     elif len(senha_reg) < 6:
                         st.error("A senha deve ter pelo menos 6 caracteres.")
                     else:
                         try:
-                            sucesso, msg = registrar_usuario(email_reg, senha_reg, nome, telefone, tipo="cidadao")
+                            sucesso, msg = registrar_usuario(
+                                email=email_reg,
+                                senha=senha_reg,
+                                nome=nome,
+                                telefone=telefone,
+                                tipo="cidadao"
+                            )
                             if sucesso:
-                                st.success("✅ Registro realizado com sucesso! Agora você pode fazer login.")
+                                st.success("✅ Registro concluído! Agora você pode fazer login.")
                                 st.session_state["modo_auth"] = "login"
                                 st.rerun()
                             else:
                                 st.error(f"Erro no registro: {msg}")
                         except Exception as e:
                             st.error(f"Erro inesperado: {str(e)}")
-    
-        # ⚠️ Impede que o resto do app seja carregado antes do login
+
+        # ⚠️ Impede que o restante do app carregue sem login
         st.stop()
+
 
     # CONTEÚDO VISÍVEL APÓS LOGIN
     usuario = st.session_state["usuario"]
