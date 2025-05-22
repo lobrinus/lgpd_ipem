@@ -6,7 +6,8 @@ st.set_page_config(
     page_icon="📘",
     layout="wide"
 )
-# CSS para ocultar os ícones do menu
+
+# CSS para ocultar os ícones do menu (se ainda quiser)
 st.markdown("""
     <style>
     .icon {
@@ -17,7 +18,38 @@ st.markdown("""
 
 st.sidebar.image("ipem_mg.png", use_container_width=True)
 
+Vou ajustar só essa parte do trecho que exibe a barra verde no seu main.py:
+
+python
+Copiar
+Editar
 with st.sidebar:
+    if st.session_state.get("logado", False):
+        email = st.session_state.get("email", "")
+        tipo = st.session_state.get("tipo_usuario", "cidadao").lower()
+
+        if tipo == "admin":
+            texto_tipo = "Administrador"
+        else:
+            texto_tipo = "Cidadão"
+
+        st.markdown(
+            f"""
+            <div style="
+                background-color: #4CAF50;
+                padding: 10px;
+                border-radius: 5px;
+                color: white;
+                font-weight: bold;
+                margin-bottom: 15px;
+                word-break: break-word;
+            ">
+                Usuário: {email}<br>
+                Logado como {texto_tipo}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     pagina = option_menu(
         "Menu Principal",
         [
@@ -37,7 +69,7 @@ with st.sidebar:
             "📁 Solicitações Recebidas",
             "❓ FAQ"
         ],
-        icons=["dot"] * 15,  # <- remove o ícone de play
+        # NÃO passar o parâmetro icons para evitar sobrescrever seus ícones
         menu_icon="cast",
         default_index=1,
         orientation="vertical"
