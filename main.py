@@ -37,7 +37,7 @@ with st.sidebar:
             "📁 Solicitações Recebidas",
             "❓ FAQ"
         ],
-        icons=[""] * 15,  # <- remove o ícone de play
+        icons=["dot"] * 15,  # <- remove o ícone de play
         menu_icon="cast",
         default_index=1,
         orientation="vertical"
