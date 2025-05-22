@@ -47,7 +47,6 @@ with st.sidebar:
     pagina = option_menu(
         "Menu Principal",
         [
-            "🔐 Login",
             "🏠 Página Principal",
             "👤 Painel Cidadão",
             "✅ Boas Práticas",
@@ -70,11 +69,7 @@ with st.sidebar:
     )
 
 # --- Renderização de cada página ---
-if pagina == "🔐 Login":
-    import login
-    login.render()
-
-elif pagina == "🏠 Página Principal":
+  if pagina == "🏠 Página Principal":
     import pagina_principal
     pagina_principal.render()
 
