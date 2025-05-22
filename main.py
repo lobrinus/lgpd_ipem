@@ -17,12 +17,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.sidebar.image("ipem_mg.png", use_container_width=True)
-
-Vou ajustar só essa parte do trecho que exibe a barra verde no seu main.py:
-
-python
-Copiar
-Editar
 with st.sidebar:
     if st.session_state.get("logado", False):
         email = st.session_state.get("email", "")
