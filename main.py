@@ -34,7 +34,7 @@ with st.sidebar:
         ],
         icons=[
             "key", "house", "person", "check2-circle", "search", "people",
-            "file-earmark-text", "shield-lock", "balance-scale",
+            "file-earmark-text", "shield-lock", "scale",
             "check2-square", "arrow-repeat", "unlock", "envelope",
             "folder", "question-circle"
         ],
