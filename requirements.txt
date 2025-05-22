@@ -5,3 +5,4 @@ firebase-admin
 pytz
 pyrebase4
 setuptools
+streamlit-option-menu
