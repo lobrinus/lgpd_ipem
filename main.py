@@ -32,7 +32,7 @@ with st.sidebar:
             "📁 Solicitações Recebidas",
             "❓ FAQ"
         ],
-        
+        icons=[""] * 15,         
         menu_icon="cast",  # Ícone do título do menu
         default_index=1,
         orientation="vertical"
