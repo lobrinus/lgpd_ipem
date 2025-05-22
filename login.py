@@ -10,10 +10,14 @@ def render():
         tipo = st.session_state.get("tipo_usuario", "cidadao").lower()
         tipo_legivel = "Administrador" if tipo == "admin" else "Cidadão"
 
-        st.success(
-            f"✅ Você já está logado como: **{email}**\n\n"
-            f"🔒 Usuário: **{tipo_legivel}**\n\n"
-            "📌 Acesse o **Painel do Cidadão** para enviar ou visualizar suas solicitações."
+    with st.success(""):
+        st.markdown(
+            f"""
+            ✅ Você já está logado como: <strong>{email}</strong><br>
+            🔒 Usuário: <strong>{tipo_legivel}</strong><br>
+            📌 Acesse o <strong>Painel do Cidadão</strong> para enviar ou visualizar suas solicitações.
+            """,
+            unsafe_allow_html=True
         )
 
         if st.button("🚪 Sair"):
