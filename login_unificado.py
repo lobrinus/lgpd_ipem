@@ -20,11 +20,15 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 if not firebase_admin._apps:
+    # Mudar isto:
     cred_json = os.getenv("FIREBASE_CREDENTIALS")
     cred_dict = json.loads(cred_json)
+    
+    # Para isto:
+    cred_dict = st.secrets["FIREBASE_CREDENTIALS"]
+    
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
-db = firestore.client()
 
 
 def autenticar_usuario(email, senha):
