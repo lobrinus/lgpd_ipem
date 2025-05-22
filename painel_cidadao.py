@@ -23,8 +23,10 @@ def render():
     if "usuario" not in st.session_state:
         st.session_state["usuario"] = None
 
-    # === SE NÃO ESTIVER LOGADO ===
+    # === SE NÃO ESTIVER LOGADO, MOSTRA LOGIN/REGISTRO ===
     if st.session_state["usuario"] is None:
+        st.title("🔐 Painel do Cidadão")
+    
         col1, col2 = st.columns(2)
         with col1:
             if st.button("🔑 Login"):
@@ -33,7 +35,7 @@ def render():
             if st.button("📝 Registro"):
                 st.session_state["modo_auth"] = "registro"
         st.markdown("---")
-
+    
         if st.session_state["modo_auth"] == "login":
             with st.form("login_form"):
                 email = st.text_input("E-mail")
@@ -46,6 +48,7 @@ def render():
                         st.rerun()
                     else:
                         st.error(resultado)
+    
         elif st.session_state["modo_auth"] == "registro":
             with st.form("registro_form"):
                 nome = st.text_input("Nome completo*")
@@ -72,7 +75,8 @@ def render():
                                 st.error(f"Erro no registro: {msg}")
                         except Exception as e:
                             st.error(f"Erro inesperado: {str(e)}")
-        # ⚠️Impede que o resto do app seja carregado antes do login
+    
+        # ⚠️ Impede que o resto do app seja carregado antes do login
         st.stop()
 
     # CONTEÚDO VISÍVEL APÓS LOGIN
