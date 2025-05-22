@@ -4,30 +4,31 @@ from login_unificado import autenticar_usuario, registrar_usuario
 def render():
     st.subheader("🔐 Login LGPD")
 
-    # Se o usuário estiver logado, exibe a mensagem de status + botão de sair
+    email = ""
+    tipo_legivel = ""
+
     if st.session_state.get("logado", False):
         email = st.session_state.get("email", "")
         tipo = st.session_state.get("tipo_usuario", "cidadao").lower()
         tipo_legivel = "Administrador" if tipo == "admin" else "Cidadão"
 
-    with st.success(""):
-        st.markdown(
-            f"""
-            ✅ Você já está logado como: <strong>{email}</strong><br>
-            🔒 Usuário: <strong>{tipo_legivel}</strong><br>
-            📌 Acesse o <strong>Painel do Cidadão</strong> para enviar ou visualizar suas solicitações.
-            """,
-            unsafe_allow_html=True
-        )
+        with st.success(""):
+            st.markdown(
+                f"""
+                ✅ Você já está logado como: <strong>{email}</strong><br>
+                🔒 Usuário: <strong>{tipo_legivel}</strong><br>
+                📌 Acesse o <strong>Painel do Cidadão</strong> para enviar ou visualizar suas solicitações.
+                """,
+                unsafe_allow_html=True
+            )
 
         if st.button("🚪 Sair"):
-            # Limpa a sessão
             for key in ["logado", "email", "tipo_usuario", "admin_email"]:
                 st.session_state.pop(key, None)
             st.success("Você saiu com sucesso.")
-            st.rerun()
+            st.experimental_rerun()
 
-        return  # Não exibe formulário de login/registro
+        return
 
     # Aba ativa: login ou registro
     if "aba_login" not in st.session_state:
@@ -57,7 +58,7 @@ def render():
                 if dados["tipo"] == "admin":
                     st.session_state["admin_email"] = dados["email"]
                 st.success(f"✅ Bem-vindo, {dados['tipo']}")
-                st.rerun()
+                st.experimental_rerun()
             else:
                 st.error(dados)
 
