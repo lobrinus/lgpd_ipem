@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # --- Logo no menu lateral ---
-st.sidebar.image("ipem_mg.png", use_column_width=True)
+st.sidebar.image("ipem_mg.png", use_container_width=True)
 
 # --- Menu lateral com option_menu ---
 with st.sidebar:
