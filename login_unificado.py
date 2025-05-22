@@ -68,7 +68,6 @@ def registrar_usuario(email, senha, nome, telefone, tipo="cidadao"):
 
 
 # 🔹 Função principal da interface de login
-def render():
     st.subheader("🔐 Login LGPD")
     email = st.text_input("Email")
     senha = st.text_input("Senha", type="password")
