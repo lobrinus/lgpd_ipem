@@ -1,12 +1,6 @@
 import streamlit as st
 from login_unificado import registrar_usuario, autenticar_usuario
 
-# Configuração inicial obrigatória
-st.set_page_config(
-    page_title="LGPD - IPEM-MG",
-    page_icon="📘",
-    layout="wide"
-)
 
 # Inicializa estados de sessão
 if "logado" not in st.session_state:
