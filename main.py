@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.sidebar.image("ipem_mg.png", use_column_width=True)
+st.sidebar.image("ipem_mg.png", use_container_width=True)
 
 with st.sidebar:
     pagina = option_menu(
