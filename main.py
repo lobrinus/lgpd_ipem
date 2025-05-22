@@ -35,7 +35,7 @@ pagina = st.sidebar.selectbox(
 # --- Renderização de cada página ---
 if pagina == "🔐 Login":
     import home
-    home.render()
+    login.render()
 
 elif pagina == "🏠 Página Principal":
     import pagina_principal
