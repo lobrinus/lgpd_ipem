@@ -8,7 +8,7 @@ st.set_page_config(
 )
 
 # --- Menu Lateral ---
-st.sidebar.image("logo_ipem.png", use_container_width=True)
+st.sidebar.image("icone_ipem.png", use_container_width=True)
 st.sidebar.title("Menu de Navegação")
 
 pagina = st.sidebar.selectbox(
