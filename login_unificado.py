@@ -2,10 +2,8 @@ import streamlit as st
 import pyrebase
 import firebase_admin
 from firebase_admin import credentials, firestore
-import json
-import os
 
-# 🔧 Firebase Configuração Web
+# 🔧 Firebase Configuração Web (para Pyrebase Auth)
 firebaseConfig = {
     "apiKey": "AIzaSyB5chTFihZM_v-5bkVecmDDUvkOKG7C22Q",
     "authDomain": "lgpd-ipem-mg-9f1a5.firebaseapp.com",
@@ -19,20 +17,20 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
+# 🔒 Inicialização do Firebase Admin SDK para Firestore
 if not firebase_admin._apps:
-    try:
-        # Use dict() para converter o objeto secrets em dicionário
-        cred = credentials.Certificate(dict(st.secrets["FIREBASE_CREDENTIALS"]))
-        firebase_admin.initialize_app(cred)
-    except KeyError as e:
-        st.error(f"❌ Erro: {e}")
-        st.error("Verifique se você adicionou a seção [FIREBASE_CREDENTIALS] nos secrets.")
-        st.error(f"Secrets disponíveis: {list(st.secrets.keys())}")
-        st.stop()
-    except Exception as e:
-        st.error(f"❌ Erro ao inicializar Firebase: {e}")
+    if "FIREBASE_CREDENTIALS" not in st.secrets:
+        st.error("❌ As credenciais do Firebase não foram encontradas nos secrets.")
         st.stop()
 
+    try:
+        cred = credentials.Certificate(dict(st.secrets["FIREBASE_CREDENTIALS"]))
+        firebase_admin.initialize_app(cred)
+    except Exception as e:
+        st.error(f"❌ Erro ao inicializar o Firebase Admin: {e}")
+        st.stop()
+
+# 🔗 Firestore client
 db = firestore.client()
 
 def autenticar_usuario(email, senha):
