@@ -11,7 +11,7 @@ def render():
         tipo_legivel = "Administrador" if tipo == "admin" else "Cidadão"
 
         st.success(
-            f"✅ Você já está logado como: `{email}`\n\n"
+            f"✅ Você já está logado como: **{email}**\n\n"
             f"🔒 Usuário: **{tipo_legivel}**\n\n"
             "📌 Acesse o **Painel do Cidadão** para enviar ou visualizar suas solicitações."
         )
