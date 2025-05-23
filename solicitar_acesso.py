@@ -3,8 +3,6 @@ from PIL import Image
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    st.title("🔓 Solicitar Acesso aos Dados")
-    
     # CSS global
     st.markdown("""
     <style>
@@ -62,8 +60,6 @@ def render():
     
     
     # Logo e título
-    logo_ipem = Image.open('ipem_mg.png')
-    st.image(logo_ipem, width=150)
     st.title("🔓 Solicitar Acesso a Dados Pessoais")
     st.markdown("---")
     
