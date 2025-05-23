@@ -24,7 +24,7 @@ def render():
                         st.session_state.email = email
                         st.session_state.tipo_usuario = "admin"
                         st.success("✅ Login realizado com sucesso.")
-                        st.experimental_rerun()
+                        st.rerun()
                     else:
                         st.error("🚫 Acesso negado. Você não tem permissão de administrador.")
                 except Exception as e:
