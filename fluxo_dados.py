@@ -2,12 +2,10 @@ import streamlit as st
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    st.title("🔄 Fluxo de Dados LGPD")
-    st.markdown("---")
     st.markdown("""
-    Visualização dos principais fluxos de dados pessoais no IPEM-MG e as medidas de proteção em cada etapa:
-    """)
-
+    <h1 style='text-align: center;'>🔄 Fluxo de Dados LGPD</h1>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
     st.subheader("1. Coleta de Dados")
     st.markdown("""
     **Fontes:**
