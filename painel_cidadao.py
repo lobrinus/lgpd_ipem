@@ -16,7 +16,7 @@ def render():
     db = firestore.client()
 
     # Título principal
-    st.title("🔐 Painel do Cidadão")
+    st.title("🔐 Painel LGPD")
 
     # === Estado de sessão ===
     if "modo_auth" not in st.session_state:
