@@ -64,12 +64,11 @@ with st.sidebar:
             "📁 Solicitações Recebidas",
             "❓ FAQ"
         ],
-        # NÃO passar o parâmetro icons para evitar sobrescrever seus ícones
-        menu_icon="cast",
-        default_index=1,
-        orientation="vertical"
-    )
-
+    icons=["record-circle"] * 14,  # Usa o mesmo ícone pequeno em todos
+    menu_icon="cast",
+    default_index=0,
+    orientation="vertical"
+)
 # --- Renderização de cada página ---
 if pagina == "🏠 Página Principal":
     import pagina_principal
