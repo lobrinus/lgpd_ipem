@@ -3,7 +3,7 @@ from PIL import Image
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    st.title("🔓 Solicitar Acesso Dados")
+    st.title("🔓 Solicitar Acesso aos Dados")
     
     # CSS global
     st.markdown("""
