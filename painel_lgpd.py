@@ -16,6 +16,7 @@ def render():
     db = firestore.client()
 
     # Título principal
+    st.write("🔍 Render painel_lgpd carregado!")
     st.title("🔐 Painel LGPD")
 
     # === Estado de sessão ===
