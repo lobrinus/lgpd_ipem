@@ -57,20 +57,26 @@ def render():
     }
     </style>
     """, unsafe_allow_html=True)
-    
-    
-    # Logo e título
-    st.title("🔓 Solicitar Acesso a Dados Pessoais")
+
+    # Logo (com verificação de erro)
+    try:
+        logo_ipem = Image.open('ipem_mg.png')
+        st.image(logo_ipem, width=150)
+    except Exception as e:
+        st.warning("⚠️ Logo não encontrada ou não pôde ser carregada.")
+
+    # Título centralizado
+    st.markdown("<h1 style='text-align: center;'>🔓 Solicitar Acesso a Dados Pessoais</h1>", unsafe_allow_html=True)
     st.markdown("---")
-    
+
     # Introdução
     st.markdown("""
     <div class="policy-container">
-        <h2 class="section-title"> Como solicitar acesso aos seus dados pessoais </h2>
-        <p> No IPEM-MG, você pode exercer seus direitos como titular de dados pessoais através das opções a seguir: </p>
+        <h2 class="section-title">Como solicitar acesso aos seus dados pessoais</h2>
+        <p>No IPEM-MG, você pode exercer seus direitos como titular de dados pessoais através das opções a seguir:</p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # Direitos do Titular
     st.markdown("""
     <div class="finalidade-card">
@@ -91,7 +97,7 @@ def render():
         </details>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # E-mail
     st.markdown("""
     <div class="finalidade-card">
@@ -114,7 +120,7 @@ def render():
         </details>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # Formulário Online
     st.markdown("""
     <div class="finalidade-card">
@@ -134,7 +140,7 @@ def render():
         </details>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # Presencial
     st.markdown("""
     <div class="finalidade-card">
@@ -149,7 +155,7 @@ def render():
         </details>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # Prazo
     st.markdown("""
     <div class="finalidade-card">
@@ -157,7 +163,7 @@ def render():
         <p>O IPEM-MG responderá sua solicitação em até <strong>15 dias</strong>, prorrogáveis por mais 15 dias mediante justificativa, conforme determina a LGPD.</p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # Contato
     st.markdown("""
     <div class="info-box">
@@ -165,7 +171,7 @@ def render():
         <p>📧 <strong>encarregado.data@ipem.mg.gov.br</strong> | 📞 <strong>(31) 3399-7100</strong></p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # Rodapé
     st.markdown("---")
     st.markdown("""
@@ -174,6 +180,6 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335<br>
         <p style="text-align: center; color: gray;">
         © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os direitos reservados.
-    </p>
+        </p>
     </div>
     """, unsafe_allow_html=True)
