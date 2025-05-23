@@ -1,8 +1,12 @@
 import streamlit as st
 
+
 def render():
-    st.title("🏠 **Bem Vindo** ao Portal LGPD - IPEM-MG")
+    st.markdown("""
+    <h1 style='text-align: center;'>🏠 **Bem Vindo** ao Portal LGPD - IPEM-MG</h1>
+    """, unsafe_allow_html=True)
     st.markdown("---")
+    
 
     # Seção de Acesso Rápido
     st.subheader("⚡ Acesso Rápido")
