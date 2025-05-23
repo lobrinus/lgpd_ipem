@@ -89,3 +89,4 @@ def render()
             if isinstance(data_resposta, datetime):
                 data_resposta = data_resposta.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y às %H:%M')
                 st.caption(f"Enviado em: {data_resposta}")
+render()
