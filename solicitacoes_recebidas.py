@@ -98,7 +98,7 @@ def render():
                     "data_resolvido": datetime.now(pytz.timezone("America/Sao_Paulo"))
                 })
                 st.success("✅ Solicitação marcada como resolvida.")
-                st.experimental_rerun()
+                st.rerun()
 
         # Botão para excluir (se quiser)
         if st.button("🗑️ Excluir Solicitação", key=f"excluir_{doc_id}"):
