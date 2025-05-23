@@ -2,12 +2,10 @@ import streamlit as st
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    st.title("✅ O Que Fazer e Não Fazer")
-    st.markdown("---")
     st.markdown("""
-    Guia rápido de condutas adequadas e inadequadas no tratamento de dados pessoais no IPEM-MG:
-    """)
-    
+    <h1 style='text-align: center;'>✅ O Que Fazer e Não Fazer</h1>
+    """, unsafe_allow_html=True)
+    st.markdown("---")  
     col1, col2 = st.columns(2)
     
     with col1:
