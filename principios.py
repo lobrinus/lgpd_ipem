@@ -5,63 +5,57 @@ def render():
     st.title("⚖️ Princípios Básicos da LGPD")
     st.markdown("---")
     st.markdown("""
-    A LGPD estabelece 10 princípios que devem orientar todo tratamento de dados pessoais no IPEM-MG:
+    A LGPD estabelece 10 princípios fundamentais que devem orientar todo tratamento de dados pessoais no IPEM-MG:
     """)
     
-    st.subheader("1. Finalidade")
+    # CSS para cartões com hover
     st.markdown("""
-    Realização do tratamento para propósitos legítimos, específicos, explícitos e informados ao titular.
-    """)
-    
-    st.subheader("2. Adequação")
-    st.markdown("""
-    Compatibilidade do tratamento com as finalidades informadas ao titular.
-    """)
-    
-    st.subheader("3. Necessidade")
-    st.markdown("""
-    Limitação do tratamento ao mínimo necessário para a realização de suas finalidades.
-    """)
-    
-    st.subheader("4. Livre Acesso")
-    st.markdown("""
-    Garantia aos titulares de consulta facilitada e gratuita sobre a forma e a duração do tratamento.
-    """)
-    
-    st.subheader("5. Qualidade dos Dados")
-    st.markdown("""
-    Garantia de exatidão, clareza, relevância e atualização dos dados.
-    """)
-    
-    st.subheader("6. Transparência")
-    st.markdown("""
-    Garantia aos titulares de informações claras, precisas e facilmente acessíveis sobre o tratamento.
-    """)
-    
-    st.subheader("7. Segurança")
-    st.markdown("""
-    Utilização de medidas técnicas e administrativas aptas a proteger os dados pessoais.
-    """)
-    
-    st.subheader("8. Prevenção")
-    st.markdown("""
-    Adoção de medidas para prevenir a ocorrência de danos em virtude do tratamento de dados.
-    """)
-    
-    st.subheader("9. Não Discriminação")
-    st.markdown("""
-    Impossibilidade de realização do tratamento para fins discriminatórios ilícitos ou abusivos.
-    """)
-    
-    st.subheader("10. Responsabilização e Prestação de Contas")
-    st.markdown("""
-    Demonstração pelo agente da adoção de medidas eficazes capazes de comprovar o cumprimento das normas de proteção de dados.
-    """)
-    
+    <style>
+    .card {
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .card:hover {
+        background-color: #eef6ff;
+        transform: translateY(-3px);
+    }
+    .card h4 {
+        margin-top: 0;
+        color: #004080;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    principios = [
+        ("Finalidade", "O tratamento de dados deve ser realizado para propósitos legítimos, específicos, explícitos e informados ao titular, sem possibilidade de tratamento posterior de forma incompatível com essas finalidades. "),
+        ("Adequação", "Os dados coletados devem ser compatíveis com a finalidade declarada. Se o objetivo é contato profissional, não faz sentido solicitar dados de saúde."),
+        ("Necessidade", "O tratamento deve ser restrito à coleta de dados estritamente necessários ao atendimento da finalidade pretendida, evitando a coleta excessiva. "),
+        ("Livre Acesso", "Os titulares devem poder acessar facilmente seus dados, saber por quanto tempo serão armazenados e como estão sendo usados."),
+        ("Qualidade dos Dados", "Os dados devem ser mantidos exatos, atualizados e relevantes para o tratamento. Informações incorretas devem ser corrigidas."),
+        ("Transparência", "O cidadão deve receber informações claras e acessíveis sobre como seus dados estão sendo utilizados, inclusive por terceiros."),
+        ("Segurança", "O tratamento deve garantir a segurança dos dados pessoais, utilizando medidas técnicas e organizacionais adequadas para evitar danos, perdas ou acesso não autorizado. "),
+        ("Prevenção", "É necessário agir proativamente para evitar que incidentes com dados ocorram, com base na análise de riscos."),
+        ("Não Discriminação", "Os dados não podem ser usados para fins discriminatórios, como segmentar ou excluir pessoas de forma injusta."),
+        ("Responsabilização e Prestação de Contas", "O IPEM-MG deve ser capaz de demonstrar que adota práticas de proteção de dados eficazes e auditáveis."),
+    ]
+
+    for titulo, descricao in principios:
+        st.markdown(f"""
+        <div class="card">
+            <h4>🔹 {titulo}</h4>
+            <p>{descricao}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
     st.markdown("---")
     st.info("""
-    Todos os processos do IPEM-MG que envolvem tratamento de dados pessoais devem observar estes princípios em todas as etapas.
+    Esses princípios visam garantir que o tratamento de dados pessoais seja feito de forma justa, transparente e responsável, protegendo os direitos dos titulares e promovendo a confiança na utilização dos dados. 
     """)
+
     # Rodapé
     st.markdown("""
     <hr>
