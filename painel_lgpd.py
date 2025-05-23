@@ -246,6 +246,7 @@ def render():
                     """)
                 except Exception as e:
                     st.error(f"Erro ao enviar solicitação: {str(e)}")
+            st.rerun()
 
     # Seção de Prazos e Multas
     st.markdown("---")
