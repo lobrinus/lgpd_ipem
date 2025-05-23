@@ -49,7 +49,6 @@ with st.sidebar:
         "✅❌ O Que Fazer e Não Fazer",
         "🔄 Fluxo de Dados LGPD",
         "🔓 Solicitar Acesso aos Dados",
-        "📧 Formulário LGPD",
         "📁 Solicitações Recebidas",
         "❓ FAQ"
     ],
@@ -103,10 +102,6 @@ elif pagina == "🔄 Fluxo de Dados LGPD":
 elif pagina == "🔓 Solicitar Acesso aos Dados":
     import solicitar_acesso
     solicitar_acesso.render()
-
-elif pagina == "📧 Formulário LGPD":
-    import formulario_lgpd
-    formulario_lgpd.render()
 
 elif pagina == "📁 Solicitações Recebidas":
     import solicitacoes_recebidas
