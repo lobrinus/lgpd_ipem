@@ -15,7 +15,7 @@ def render():
             sucesso, retorno = autenticar_usuario(email, senha)
             if sucesso and retorno["tipo"] == "admin":
                 st.session_state["usuario"] = retorno
-                st.experimental_rerun()
+                st.rerun()
             elif sucesso:
                 st.error("❌ Acesso restrito. Seu perfil não é de administrador.")
             else:
@@ -32,7 +32,7 @@ def render():
 
     if st.button("🚪 Logout"):
         st.session_state["usuario"] = None
-        st.experimental_rerun()
+        st.rerun()
 
     # Filtro
     st.markdown("## 🔍 Filtro de Solicitações")
@@ -114,13 +114,13 @@ def render():
                             "status": "Respondido"
                         })
                         st.success("Resposta enviada com sucesso.")
-                        st.experimental_rerun()
+                        st.rerun()
 
                 if st.button("✅ Marcar como Resolvido", key=f"resolver_{s['id']}"):
                     db.collection("solicitacoes").document(s["id"]).update({
                         "status": "Resolvido"
                     })
                     st.success("Solicitação marcada como resolvida.")
-                    st.experimental_rerun()
+                    st.rerun()
             else:
                 st.warning("🔒 Esta solicitação foi marcada como *Resolvida*. Não é possível responder.")
