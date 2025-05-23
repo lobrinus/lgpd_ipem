@@ -2,18 +2,24 @@ import streamlit as st
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    st.title("❓ FAQ - Perguntas Frequentes")
+    st.markdown("""
+    <h1 style='text-align: center;'>❓ FAQ - Perguntas Frequentes</h1>
+    """, unsafe_allow_html=True)
     st.markdown("---")
 
-    st.markdown("Abaixo você encontra respostas rápidas para dúvidas frequentes sobre a LGPD no IPEM-MG.")
+    st.markdown("""
+    <p style='text-align: center; font-size: 18px;'>
+        Abaixo você encontra respostas rápidas para dúvidas frequentes sobre a LGPD no IPEM-MG.
+    </p>
+    """, unsafe_allow_html=True)
 
-    # Lista de imagens (certifique-se que estão no mesmo diretório do app)
+    # Lista de imagens
     imagens = ["faq_1.png", "faq_2.png", "faq_3.png", "faq_4.png"]
 
     for imagem in imagens:
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.image(imagem, use_container_width=True)  # <- Parêntese fechado aqui
+            st.image(imagem, use_container_width=True)
 
     # Rodapé
     st.markdown("---")
