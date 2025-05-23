@@ -284,4 +284,3 @@ def render():
 
 # Para Streamlit multipage
 if __name__ == "__main__":
-    render()
