@@ -76,8 +76,8 @@ if pagina == "🏠 Página Principal":
     pagina_principal.render()
 
 elif pagina == "👤 Painel Cidadão":
-    import painel_cidadao
-    painel_cidadao.render()
+    import painel_lgpd
+    painel_lgpd.render()
 
 elif pagina == "✅ Boas Práticas":
     import boas_praticas
