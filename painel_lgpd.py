@@ -229,17 +229,20 @@ def render():
                     doc_ref = db.collection("solicitacoes").document(protocolo)
                     doc_ref.set({
                         "protocolo": protocolo,
-                        "email_solicitante": email_solicitante,
+                        "email": usuario['email'],
+                        "nome": db.collection("usuarios").document(usuario['email']).get().to_dict().get('nome', '---'),
+                        "cpf": db.collection("usuarios").document(usuario['email']).get().to_dict().get('cpf', '---'),
                         "telefone": telefone,
                         "tipo": tipo,
                         "descricao": descricao,
                         "anexos": [file.name for file in anexos] if anexos else [],
-                        "data_envio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                        "data_envio": datetime.datetime.now().isoformat(),
                         "status": "Recebido",
                         "responsavel": None,
                         "resposta": None,
-                        "usuario_id": st.session_state.usuario['email']
+                        "usuario_id": usuario['email']
                     })
+
                     st.success(f"""
                     ✅ Solicitação registrada com sucesso!  
                     **Protocolo:** {protocolo}  
