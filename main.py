@@ -99,14 +99,14 @@ elif pagina == "🔄 Fluxo de Dados LGPD":
     import fluxo_dados
     fluxo_dados.render()
 
-elif pagina == "🔓 Acesso aos Dados":
-    import solicitar_acesso
-    solicitar_acesso.render()
-
 elif pagina == "🔓 Solicitar Acesso aos Dados":
     import solicitar_acesso
     solicitar_acesso.render()
-
+    
+elif pagina == "📁 Solicitações Recebidas":
+    import solicitacoes_recebidas
+    solicitacoes_recebidas.render()
+    
 elif pagina == "❓ FAQ":
     import faq
     faq.render()
