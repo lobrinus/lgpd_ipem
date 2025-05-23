@@ -7,17 +7,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS para ocultar os ícones do menu (se ainda quiser)
-st.markdown("""
-    <style>
-    /* Oculta os ícones de cada item do menu lateral */
-    .css-1d391kg .css-1v3fvcr svg {
-        display: none !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
 st.sidebar.image("icone_ipem.png", use_container_width=True)
 with st.sidebar:
     if st.session_state.get("logado", False):
