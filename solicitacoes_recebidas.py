@@ -5,7 +5,7 @@ from firebase_admin import credentials, firestore
 from login_unificado import autenticar_usuario, registrar_usuario
 import streamlit as st 
 
-def render()
+def render():
     st.title("📁 Solicitações Recebidas")
     
     # 🔒 Verifica login e tipo de usuário
