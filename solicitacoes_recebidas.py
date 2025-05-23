@@ -8,19 +8,30 @@ from login_unificado import autenticar_usuario
 def render():
     st.title("📁 Solicitações Recebidas")
 
-    # Login do administrador
-    autenticar_usuario()
+    # Tenta autenticar o usuário e captura possíveis erros
+    try:
+        autenticar_usuario()
+    except Exception as e:
+        st.error(f"Erro na autenticação: {e}")
+        st.stop()
 
+    # Verifica se o usuário é admin
     if st.session_state.get("tipo_usuario") != "admin":
         st.error("🚫 Você não tem acesso de administrador.")
         return
 
-    # Inicializa Firebase se ainda não estiver
+    # Inicializa o Firebase, se ainda não estiver iniciado
     if not firebase_admin._apps:
-        cred = credentials.Certificate(dict(st.secrets["firebase"]))
-        firebase_admin.initialize_app(cred)
+        try:
+            cred = credentials.Certificate(dict(st.secrets["firebase"]))
+            firebase_admin.initialize_app(cred)
+        except Exception as e:
+            st.error(f"Erro ao inicializar Firebase: {e}")
+            st.stop()
+
     db = firestore.client()
 
+    # Campo de busca
     filtro = st.text_input("🔍 Buscar por protocolo, CPF ou nome:")
 
     solicitacoes_ref = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING)
@@ -44,23 +55,17 @@ def render():
         st.markdown("---")
         st.subheader(f"📨 Solicitação #{i}")
         st.write(f"**Protocolo:** `{data.get('protocolo', 'N/A')}`")
-        st.write(f"**Nome:** {data.get('nome', 'N/A')}")
-        st.write(f"**Telefone:** {data.get('telefone', 'N/A')}")
-        st.write(f"**Email:** {data.get('email', 'N/A')}")
-        st.write(f"**CPF:** {data.get('cpf', 'N/A')}")
+        st.write(f"**Nome:** {data.get('nome')}")
+        st.write(f"**Telefone:** {data.get('telefone')}")
+        st.write(f"**Email:** {data.get('email')}")
+        st.write(f"**CPF:** {data.get('cpf')}")
 
-        # Exibe a mensagem/descrição principal da solicitação
-        descricao = data.get("descricao", "Mensagem não informada.")
-        st.markdown(f"**📝 Descrição da solicitação:**")
-        st.info(descricao)
-
-        # Data de envio
         data_envio = data.get("data_envio")
         if isinstance(data_envio, datetime):
             data_envio = data_envio.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y às %H:%M')
-        st.write(f"**Enviado em:** {data_envio or 'Data não informada'}")
+        st.write(f"**Enviado em:** {data_envio}")
 
-        # STATUS com barra colorida
+        # STATUS visual
         resolvido = data.get("resolvido", False)
         if resolvido:
             st.markdown(
@@ -73,36 +78,35 @@ def render():
                 unsafe_allow_html=True
             )
 
-        # Exibe o histórico de mensagens
+        # Mensagens
         mensagens = data.get("mensagens", [])
-        if mensagens:
-            st.markdown("**📚 Histórico de mensagens:**")
-            for msg in mensagens:
-                dt = msg.get("data")
-                if isinstance(dt, datetime):
-                    dt = dt.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y %H:%M')
-                st.write(f"{dt or 'Sem data'} - **{msg.get('de', 'desconhecido').capitalize()}**: {msg.get('texto')}")
-        else:
-            st.write("Nenhuma mensagem trocada ainda.")
+        st.markdown("**Histórico de mensagens:**")
+        for msg in mensagens:
+            dt = msg.get("data")
+            if isinstance(dt, datetime):
+                dt = dt.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y %H:%M')
+            st.write(f"{dt} - **{msg.get('de').capitalize()}**: {msg.get('texto')}")
 
-        # Campo para nova resposta do admin
+        # Campo de resposta
         if not resolvido:
             with st.expander("✍️ Enviar nova resposta"):
                 resposta_texto = st.text_area("Digite sua resposta", key=f"resposta_{doc_id}")
                 if st.button("📨 Enviar Resposta", key=f"btn_{doc_id}"):
-                    nova_msg = {
-                        "de": "admin",
-                        "texto": resposta_texto,
-                        "data": datetime.now(pytz.timezone("America/Sao_Paulo"))
-                    }
-                    mensagens.append(nova_msg)
-                    db.collection("solicitacoes").document(doc_id).update({
-                        "mensagens": mensagens
-                    })
-                    st.success("✅ Resposta enviada com sucesso.")
-                    st.rerun()
+                    if resposta_texto.strip() == "":
+                        st.warning("⚠️ A resposta não pode estar vazia.")
+                    else:
+                        nova_msg = {
+                            "de": "admin",
+                            "texto": resposta_texto,
+                            "data": datetime.now(pytz.timezone("America/Sao_Paulo"))
+                        }
+                        mensagens.append(nova_msg)
+                        db.collection("solicitacoes").document(doc_id).update({
+                            "mensagens": mensagens
+                        })
+                        st.success("✅ Resposta enviada com sucesso.")
+                        st.rerun()
 
-            # Botão para marcar como resolvido
             if st.button("✔️ Marcar como resolvido", key=f"resolver_{doc_id}"):
                 db.collection("solicitacoes").document(doc_id).update({
                     "resolvido": True,
@@ -111,7 +115,7 @@ def render():
                 st.success("✅ Solicitação marcada como resolvida.")
                 st.rerun()
 
-        # Botão para excluir
+        # Exclusão
         if st.button("🗑️ Excluir Solicitação", key=f"excluir_{doc_id}"):
             db.collection("solicitacoes").document(doc_id).delete()
             st.success("🗑️ Solicitação excluída.")
