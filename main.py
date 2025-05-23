@@ -61,23 +61,11 @@ with st.sidebar:
     "📧 Formulário LGPD",
     "📁 Solicitações Recebidas",
     "❓ FAQ"
-]
-
-# Força página inicial via URL, se houver
-if "pagina_forcada" in st.session_state:
-    nome = st.session_state["pagina_forcada"]
-    default_index = next((i for i, p in enumerate(paginas) if nome in p), 0)
-    st.session_state.pop("pagina_forcada")
-else:
-    default_index = 0  # Página Principal
-
-pagina = option_menu(
-    "Menu Principal",
-    paginas,
+],
     icons=["record-circle"] * len(paginas),  # ou use "" para sem ícones
     default_index=default_index,
     orientation="vertical"
-),
+
 # --- Renderização de cada página ---
 if pagina == "🏠 Página Principal":
     import pagina_principal
