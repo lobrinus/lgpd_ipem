@@ -46,7 +46,7 @@ def render():
             **Para reportar incidentes ou irregularidades relacionados a LGPD:**  
             - 📧 [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)  
             - 📞 (31) 3399-7100 / 0800 335 335  
-            - 🌐 [Formulário Online](https://lgpd-ipem-mg.streamlit.app/Painel_Cidadao)
+            - 🌐 Formulário Online via Painel LGPD
             """)
     st.markdown("---")
 
