@@ -2,12 +2,15 @@ import streamlit as st
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    st.title("🔍 Orientação sobre Dados Pessoais")
+    st.markdown("""
+    <h1 style='text-align: center;'>🔍 Orientação sobre Dados Pessoais</h1>
+    """, unsafe_allow_html=True)
     st.markdown("---")
+    
     st.markdown("""
     Esta seção fornece orientações sobre como identificar, classificar e tratar dados pessoais no âmbito do IPEM-MG.
     """)
-    
+            
     st.subheader("O que são Dados Pessoais?")
     st.markdown("""
     De acordo com a LGPD, **dado pessoal** é qualquer informação relacionada a pessoa natural identificada ou identificável.
