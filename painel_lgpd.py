@@ -282,5 +282,3 @@ def render():
     </div>
     """, unsafe_allow_html=True)
 
-# Para Streamlit multipage
-if __name__ == "__main__":
