@@ -13,13 +13,11 @@ def render():
     for imagem in imagens:
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.image(imagem, use_container_width=True)
-
+            st.image(imagem, use_container_width=True
+    # Rodapé
     st.markdown("---")
     st.info("**Não encontrou sua dúvida?** Entre em contato com nosso Encarregado de Dados: encarregado.data@ipem.mg.gov.br")
 
-    # Rodapé
-    st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: gray; margin-top: 40px;">
         © 2025 IPEM-MG. Todos os direitos reservados.<br>
