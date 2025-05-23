@@ -4,15 +4,28 @@ import datetime
 from firebase_admin import firestore
 
 def render():
+    db = firestore.client()
+
     if "usuario" not in st.session_state or st.session_state["usuario"] is None:
-        st.error("🔒 Área restrita para administradores.")
+        st.subheader("🔐 Login do Administrador")
+        email = st.text_input("E-mail")
+        senha = st.text_input("Senha", type="password")
+        if st.button("Entrar"):
+            from login_unificado import autenticar_usuario
+            sucesso, retorno = autenticar_usuario(email, senha)
+            if sucesso and retorno["tipo"] == "admin":
+                st.session_state["usuario"] = retorno
+                st.experimental_rerun()
+            elif sucesso:
+                st.error("❌ Acesso restrito. Seu perfil não é de administrador.")
+            else:
+                st.error(retorno)
         st.stop()
 
     if st.session_state["usuario"].get("tipo") != "admin":
         st.error("🔒 Acesso negado. Apenas administradores podem acessar este painel.")
         st.stop()
 
-    db = firestore.client()
     usuario = st.session_state["usuario"]
     st.title("📂 Painel de Solicitações - Admin")
     st.success(f"👤 Logado como: {usuario['email']}")
