@@ -64,7 +64,7 @@ if pagina == "🏠 Página Principal":
     import pagina_principal
     pagina_principal.render()
 
-elif pagina == "👤 Painel Cidadão":
+elif pagina == "👤 Painel LGPD":
     import painel_lgpd
     painel_lgpd.render()
 
