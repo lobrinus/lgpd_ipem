@@ -1,12 +1,10 @@
 import streamlit as st
 
 def render():
-    
     st.markdown("""
     <h1 style='text-align: center;'>❓ FAQ - Perguntas Frequentes</h1>
     """, unsafe_allow_html=True)
-    st.markdown("---")
-
+    
     st.markdown("---")
     st.markdown("""
     A LGPD estabelece 10 princípios fundamentais que devem orientar todo tratamento de dados pessoais no IPEM-MG:
