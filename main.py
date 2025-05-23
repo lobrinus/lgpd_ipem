@@ -50,7 +50,7 @@ with st.sidebar:
     "Menu Principal",
     [
         "🏠 Página Principal",
-        "👤 Painel Cidadão",
+        "👤 Painel LGPD",
         "✅ Boas Práticas",
         "🔍 Orientação de Dados Pessoais",
         "👥 Quem Lida com os Dados",
