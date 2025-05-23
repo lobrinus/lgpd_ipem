@@ -10,8 +10,8 @@ st.set_page_config(
 # CSS para ocultar os ícones do menu (se ainda quiser)
 st.markdown("""
     <style>
-    /* Oculta os ícones SVG do option_menu */
-    .menu-icon, .menu-icon svg {
+    /* Oculta os ícones de cada item do menu lateral */
+    .css-1d391kg .css-1v3fvcr svg {
         display: none !important;
     }
     </style>
