@@ -51,8 +51,9 @@ def render():
 </style>
 """, unsafe_allow_html=True)
 
-    # Título Principal e Introdução
-    st.title("✅ Boas Práticas no IPEM-MG")
+    st.markdown("""
+    <h1 style='text-align: center;'>❓ FAQ - Perguntas Frequentes</h1>
+    """, unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("""
     O IPEM-MG está comprometido em garantir a conformidade com a **LGPD** (Lei Geral de Proteção de Dados). 
