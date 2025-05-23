@@ -221,7 +221,7 @@ def render():
         <div class="timeline">
     
           <div class="container left">
-            <div class="date">01/2023</div>
+            <div class="date">01/2020</div>
             <div class="content">
               <h4>Versão Inicial</h4>
               <p>Publicação da primeira versão da Política de Privacidade.</p>
@@ -229,7 +229,7 @@ def render():
           </div>
     
           <div class="container right">
-            <div class="date">06/2023</div>
+            <div class="date">05/2025</div>
             <div class="content">
               <h4>Revisão Geral</h4>
               <p>Ajustes nos tópicos de Direitos dos Titulares e Compartilhamento de Dados.</p>
@@ -237,7 +237,7 @@ def render():
           </div>
     
           <div class="container left">
-            <div class="date">02/2024</div>
+            <div class="date">05/2025</div>
             <div class="content">
               <h4>Inclusão de Formulário LGPD</h4>
               <p>Adicionado formulário para solicitação de dados pessoais.</p>
