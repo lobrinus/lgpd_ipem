@@ -774,5 +774,3 @@ def render():
     </div>
     """, unsafe_allow_html=True)
 
-render()
-
