@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.sidebar.image("ipem_novo.png", use_container_width=True)
+st.sidebar.image("lgpd_logo.png", use_container_width=True)
 with st.sidebar:
     if st.session_state.get("logado", False):
         email = st.session_state.get("email", "")
