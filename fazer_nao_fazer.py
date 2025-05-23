@@ -63,4 +63,3 @@ def render():
         © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.
     </p>
     """, unsafe_allow_html=True)
-render()
