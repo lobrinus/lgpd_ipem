@@ -3,35 +3,44 @@ from datetime import datetime
 import pytz
 import firebase_admin
 from firebase_admin import credentials, firestore
-from login_unificado import autenticar_usuario
+from login_unificado import autenticar_usuario  # Função exige email e senha
 
 def render():
     st.title("📁 Solicitações Recebidas")
 
-    # Tenta autenticar o usuário e captura possíveis erros
-    try:
-        autenticar_usuario()
-    except Exception as e:
-        st.error(f"Erro na autenticação: {e}")
-        st.stop()
+    # 🔐 Login
+    if "usuario_autenticado" not in st.session_state:
+        with st.form("login_form"):
+            st.subheader("🔐 Login do Administrador")
+            email = st.text_input("Email")
+            senha = st.text_input("Senha", type="password")
+            submit = st.form_submit_button("Entrar")
 
-    # Verifica se o usuário é admin
+            if submit:
+                try:
+                    usuario = autenticar_usuario(email, senha)
+                    if usuario and usuario.get("tipo") == "admin":
+                        st.session_state.usuario_autenticado = True
+                        st.session_state.email = email
+                        st.session_state.tipo_usuario = "admin"
+                        st.success("✅ Login realizado com sucesso.")
+                        st.experimental_rerun()
+                    else:
+                        st.error("🚫 Acesso negado. Você não tem permissão de administrador.")
+                except Exception as e:
+                    st.error(f"Erro na autenticação: {e}")
+        return
+
     if st.session_state.get("tipo_usuario") != "admin":
         st.error("🚫 Você não tem acesso de administrador.")
         return
 
-    # Inicializa o Firebase, se ainda não estiver iniciado
+    # 🔥 Firebase
     if not firebase_admin._apps:
-        try:
-            cred = credentials.Certificate(dict(st.secrets["firebase"]))
-            firebase_admin.initialize_app(cred)
-        except Exception as e:
-            st.error(f"Erro ao inicializar Firebase: {e}")
-            st.stop()
-
+        cred = credentials.Certificate(dict(st.secrets["firebase"]))
+        firebase_admin.initialize_app(cred)
     db = firestore.client()
 
-    # Campo de busca
     filtro = st.text_input("🔍 Buscar por protocolo, CPF ou nome:")
 
     solicitacoes_ref = db.collection("solicitacoes").order_by("data_envio", direction=firestore.Query.DESCENDING)
@@ -78,7 +87,7 @@ def render():
                 unsafe_allow_html=True
             )
 
-        # Mensagens
+        # Histórico de mensagens
         mensagens = data.get("mensagens", [])
         st.markdown("**Histórico de mensagens:**")
         for msg in mensagens:
@@ -87,14 +96,11 @@ def render():
                 dt = dt.astimezone(pytz.timezone("America/Sao_Paulo")).strftime('%d/%m/%Y %H:%M')
             st.write(f"{dt} - **{msg.get('de').capitalize()}**: {msg.get('texto')}")
 
-        # Campo de resposta
         if not resolvido:
             with st.expander("✍️ Enviar nova resposta"):
                 resposta_texto = st.text_area("Digite sua resposta", key=f"resposta_{doc_id}")
                 if st.button("📨 Enviar Resposta", key=f"btn_{doc_id}"):
-                    if resposta_texto.strip() == "":
-                        st.warning("⚠️ A resposta não pode estar vazia.")
-                    else:
+                    if resposta_texto.strip():
                         nova_msg = {
                             "de": "admin",
                             "texto": resposta_texto,
@@ -106,6 +112,8 @@ def render():
                         })
                         st.success("✅ Resposta enviada com sucesso.")
                         st.rerun()
+                    else:
+                        st.warning("Digite uma resposta antes de enviar.")
 
             if st.button("✔️ Marcar como resolvido", key=f"resolver_{doc_id}"):
                 db.collection("solicitacoes").document(doc_id).update({
@@ -115,7 +123,6 @@ def render():
                 st.success("✅ Solicitação marcada como resolvida.")
                 st.rerun()
 
-        # Exclusão
         if st.button("🗑️ Excluir Solicitação", key=f"excluir_{doc_id}"):
             db.collection("solicitacoes").document(doc_id).delete()
             st.success("🗑️ Solicitação excluída.")
