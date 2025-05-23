@@ -46,25 +46,29 @@ with st.sidebar:
             """,
             unsafe_allow_html=True
         )
-    paginas = [
-    "🏠 Página Principal",
-    "👤 Painel Cidadão",
-    "✅ Boas Práticas",
-    "🔍 Orientação de Dados Pessoais",
-    "👥 Quem Lida com os Dados",
-    "📜 Política de Privacidade",
-    "🛡️ Mitigação de Riscos",
-    "⚖️ Princípios Básicos",
-    "✅❌ O Que Fazer e Não Fazer",
-    "🔄 Fluxo de Dados LGPD",
-    "🔓 Solicitar Acesso aos Dados",
-    "📧 Formulário LGPD",
-    "📁 Solicitações Recebidas",
-    "❓ FAQ"
-],
-    icons=["record-circle"] * len(paginas),  # ou use "" para sem ícones
-    default_index=default_index,
+    pagina = option_menu(
+    "Menu Principal",
+    [
+        "🏠 Página Principal",
+        "👤 Painel Cidadão",
+        "✅ Boas Práticas",
+        "🔍 Orientação de Dados Pessoais",
+        "👥 Quem Lida com os Dados",
+        "📜 Política de Privacidade",
+        "🛡️ Mitigação de Riscos",
+        "⚖️ Princípios Básicos",
+        "✅❌ O Que Fazer e Não Fazer",
+        "🔄 Fluxo de Dados LGPD",
+        "🔓 Solicitar Acesso aos Dados",
+        "📧 Formulário LGPD",
+        "📁 Solicitações Recebidas",
+        "❓ FAQ"
+    ],
+    icons=["record-circle"] * 14,  # ícones pequenos personalizados
+    menu_icon="cast",
+    default_index=0,  # <- Isso garante que Página Principal seja carregada primeiro
     orientation="vertical"
+)
 
 # --- Renderização de cada página ---
 if pagina == "🏠 Página Principal":
