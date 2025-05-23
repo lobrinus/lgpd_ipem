@@ -10,13 +10,15 @@ st.set_page_config(
 # CSS para ocultar os ícones do menu (se ainda quiser)
 st.markdown("""
     <style>
-    .icon {
+    /* Oculta os ícones SVG do option_menu */
+    .menu-icon, .menu-icon svg {
         display: none !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.sidebar.image("ipem_mg.png", use_container_width=True)
+
+st.sidebar.image("icone_ipem.png", use_container_width=True)
 with st.sidebar:
     if st.session_state.get("logado", False):
         email = st.session_state.get("email", "")
