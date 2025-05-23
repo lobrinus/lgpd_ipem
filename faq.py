@@ -18,4 +18,12 @@ def render():
     st.markdown("---")
     st.info("**Não encontrou sua dúvida?** Entre em contato com nosso Encarregado de Dados: encarregado.data@ipem.mg.gov.br")
 
-    st.caption("© 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.")
+    # Rodapé
+    st.markdown("---")
+    st.markdown("""
+    <div style="text-align: center; color: gray; margin-top: 40px;">
+        © 2025 IPEM-MG. Todos os direitos reservados.<br>
+        R. Cristiano França Teixeira Guimarães, 80 - Cinco, Contagem - MG, 32010-130<br> 
+        CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
+    </div>
+    """, unsafe_allow_html=True)
