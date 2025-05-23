@@ -18,18 +18,17 @@ def render():
 
             if submit:
                 try:
-                    usuario = autenticar_usuario(email, senha)
-                    if usuario and usuario.get("tipo") == "admin":
+                    usuario, tipo = autenticar_usuario(email, senha)
+                    if tipo == "admin":
                         st.session_state.usuario_autenticado = True
                         st.session_state.email = email
-                        st.session_state.tipo_usuario = "admin"
+                        st.session_state.tipo_usuario = tipo
                         st.success("✅ Login realizado com sucesso.")
-                        st.rerun()
+                        st.experimental_rerun()
                     else:
                         st.error("🚫 Acesso negado. Você não tem permissão de administrador.")
                 except Exception as e:
                     st.error(f"Erro na autenticação: {e}")
-        return
 
     if st.session_state.get("tipo_usuario") != "admin":
         st.error("🚫 Você não tem acesso de administrador.")
