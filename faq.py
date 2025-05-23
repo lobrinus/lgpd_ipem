@@ -9,10 +9,10 @@ def render():
 
     # Exibe imagens das FAQs
     # Substitua os nomes abaixo por suas imagens reais
-    st.image("faq_1.png", use_container_width, caption="O que é a LGPD?")
-    st.image("faq_2.png", use_container_width, caption="Como o IPEM-MG protege meus dados?")
-    st.image("faq_3.png", use_container_width, caption="Como posso solicitar acesso aos meus dados pessoais?")
-    st.image("faq_4.png", use_container_width, caption="Quais são meus direitos?")
+    st.image("faq_1.png")
+    st.image("faq_2.png")
+    st.image("faq_3.png")
+    st.image("faq_4.png")
     # Adicione ou remova imagens conforme necessário
 
     st.markdown("---")
