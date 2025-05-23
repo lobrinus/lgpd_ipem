@@ -2,9 +2,10 @@ import streamlit as st
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    st.title("👥 Quem Lida com os Dados")
-    st.markdown("---")
     st.markdown("""
+    <h1 style='text-align: center;'>❓ FAQ - Perguntas Frequentes</h1>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
     A LGPD define diferentes papéis e responsabilidades no tratamento de dados pessoais. No IPEM-MG, essas funções estão assim distribuídas:
     """)
     
