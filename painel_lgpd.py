@@ -15,7 +15,10 @@ def render():
         firebase_admin.initialize_app(cred)
     db = firestore.client()
 
-    st.title("🔐 Painel LGPD")
+    st.markdown("""
+    <h1 style='text-align: center;'>🔐 Painel LGPD</h1>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
 
     # === Estado de sessão ===
     if "modo_auth" not in st.session_state:
