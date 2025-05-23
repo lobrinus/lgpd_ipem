@@ -5,7 +5,6 @@ from firebase_admin import firestore
 def render():
     db = firestore.client()
 
-    # Autenticação do Admin
     if "usuario" not in st.session_state or st.session_state["usuario"] is None:
         st.subheader("🔐 Login do Administrador")
         email = st.text_input("E-mail")
@@ -17,24 +16,23 @@ def render():
                 st.session_state["usuario"] = retorno
                 st.rerun()
             elif sucesso:
-                st.error("❌ Acesso restrito. Seu perfil não é de administrador.")
+                st.error("❌ Acesso restrito.")
             else:
                 st.error(retorno)
         st.stop()
 
     if st.session_state["usuario"].get("tipo") != "admin":
-        st.error("🔒 Acesso negado. Apenas administradores podem acessar este painel.")
+        st.error("🔒 Acesso negado. Apenas administradores.")
         st.stop()
 
     usuario = st.session_state["usuario"]
-    st.title("📂 Painel de Solicitações - Admin")
+    st.title("📂 Painel de Solicitações")
     st.success(f"👤 Logado como: {usuario['email']}")
 
     if st.button("🚪 Logout"):
         st.session_state["usuario"] = None
         st.rerun()
 
-    # Filtro
     st.markdown("## 🔍 Filtro de Solicitações")
     filtro_tipo = st.selectbox("Buscar por:", ["Todos", "CPF", "Nome", "Protocolo"])
     termo_busca = ""
@@ -60,32 +58,29 @@ def render():
         st.info("Nenhuma solicitação encontrada.")
         return
 
-    # Exibir solicitações
     for s in solicitacoes:
         status = s.get("status", "Pendente")
         cor_status = {"Pendente": "🟡", "Respondido": "🟢", "Resolvido": "⚪"}.get(status, "⚪")
 
         data_envio = s.get("data_envio", "")
         try:
-            data_part, hora_part = data_envio.split("T")
-            hora_part = hora_part[:5]
+            dt = datetime.datetime.fromisoformat(data_envio)
+            data_part = dt.strftime('%d/%m/%Y')
+            hora_part = dt.strftime('%H:%M')
         except:
             data_part, hora_part = "Data inválida", "Hora inválida"
 
         with st.expander(f"{cor_status} Protocolo: {s.get('protocolo', '---')} | Data: {data_part}"):
-            st.markdown(f"**👤 Nome:** {s.get('nome', '')}")
-            st.markdown(f"**📧 E-mail:** {s.get('email', '')}")
+            st.markdown(f"**👤 Nome:** {s.get('nome', '---')}")
+            st.markdown(f"**📧 E-mail:** {s.get('email', '---')}")
+            st.markdown(f"**🪪 CPF:** {s.get('cpf', '---')}")
             st.markdown(f"**📅 Data:** {data_part} | 🕒 Hora: {hora_part}")
-            st.markdown(f"**🪪 CPF:** {s.get('cpf', '')}")
-            st.markdown(f"**🧾 Protocolo:** {s.get('protocolo', '')}")
+            st.markdown(f"**🧾 Protocolo:** {s.get('protocolo', '---')}")
 
-            st.markdown("---")
             st.subheader("📨 Texto da solicitação:")
             st.markdown(s.get("descricao", "_Sem descrição_"))
 
-            st.markdown("---")
             st.subheader("📬 Histórico de respostas:")
-
             respostas = s.get("respostas", [])
             if not respostas:
                 st.info("Nenhuma resposta ainda.")
@@ -98,7 +93,6 @@ def render():
                     st.markdown(f"> {texto}")
 
             if status != "Resolvido":
-                st.markdown("---")
                 with st.form(f"resposta_{s['id']}"):
                     nova_resposta = st.text_area("✍️ Escreva sua resposta", height=150)
                     enviar = st.form_submit_button("📨 Enviar resposta")
@@ -113,14 +107,14 @@ def render():
                             "respostas": novas_respostas,
                             "status": "Respondido"
                         })
-                        st.success("Resposta enviada com sucesso.")
+                        st.success("Resposta enviada.")
                         st.rerun()
 
                 if st.button("✅ Marcar como Resolvido", key=f"resolver_{s['id']}"):
                     db.collection("solicitacoes").document(s["id"]).update({
                         "status": "Resolvido"
                     })
-                    st.success("Solicitação marcada como resolvida.")
+                    st.success("Marcada como resolvida.")
                     st.rerun()
             else:
-                st.warning("🔒 Esta solicitação foi marcada como *Resolvida*. Não é possível responder.")
+                st.warning("🔒 Solicitação resolvida.")
