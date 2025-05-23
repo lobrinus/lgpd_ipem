@@ -42,7 +42,7 @@ def autenticar_usuario(email, senha):
     except:
         return False, "❌ E-mail ou senha incorretos."
 
-def registrar_usuario(email, senha, nome, telefone, tipo="cidadao"):
+def registrar_usuario(email, senha, nome, telefone, cpf, tipo="cidadao"):
     email = email.lower()
     try:
         auth.create_user_with_email_and_password(email, senha)
@@ -50,6 +50,7 @@ def registrar_usuario(email, senha, nome, telefone, tipo="cidadao"):
             "email": email,
             "nome": nome,
             "telefone": telefone,
+            "cpf": cpf,
             "tipo": tipo
         })
         return True, "✅ Registro realizado com sucesso."
@@ -58,3 +59,4 @@ def registrar_usuario(email, senha, nome, telefone, tipo="cidadao"):
         if "EMAIL_EXISTS" in error_str:
             return False, "❌ Este e-mail já está cadastrado."
         return False, f"Erro no registro: {error_str}"
+
