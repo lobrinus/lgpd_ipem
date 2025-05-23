@@ -59,7 +59,7 @@ def render():
     """, unsafe_allow_html=True)
     
     # HEADER
-    st.markdown("<h1 style='text-align: center; color: #4CAF50;'>📜 Política de Privacidade</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #000000;'>📜 Política de Privacidade</h1>", unsafe_allow_html=True)
     st.markdown("---")
     
     # ABAS
