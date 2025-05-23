@@ -1,7 +1,7 @@
 import streamlit as st
 from login_unificado import autenticar_usuario, registrar_usuario
 
-    def render():
+def render():
     st.markdown("""
     <h1 style='text-align: center;'>🛡️ Mitigação de Riscos</h1>
     """, unsafe_allow_html=True)
