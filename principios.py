@@ -30,5 +30,14 @@ def render():
     Esses princípios visam garantir que o tratamento de dados pessoais seja feito de forma justa, transparente e responsável, protegendo os direitos dos titulares e promovendo a confiança na utilização dos dados.
     """)
 
-    # Rodapé simples
-    st.caption("© 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os Direitos Reservados.")
+    # Rodapé
+    st.markdown("---")
+    st.markdown("""
+    <div style="text-align: center; color: gray; margin-top: 40px;">
+        R. Cristiano França Teixeira Guimarães, 80 - Cinco, Contagem - MG, 32010-130<br> 
+        CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335<br>
+        <p style="text-align: center; color: gray;">
+        © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os direitos reservados.
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
