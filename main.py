@@ -46,7 +46,7 @@ with st.sidebar:
         "📜 Política de Privacidade",
         "🛡️ Mitigação de Riscos",
         "⚖️ Princípios Básicos",
-        "✅❌ O Que Fazer e Não Fazer",
+        "✅ O Que Fazer e Não Fazer",
         "🔄 Fluxo de Dados LGPD",
         "🔓 Solicitar Acesso aos Dados",
         "📁 Solicitações Recebidas",
@@ -91,7 +91,7 @@ elif pagina == "⚖️ Princípios Básicos":
     import principios
     principios.render()
 
-elif pagina == "✅❌ O Que Fazer e Não Fazer":
+elif pagina == "✅ O Que Fazer e Não Fazer":
     import fazer_nao_fazer
     fazer_nao_fazer.render()
 
@@ -99,7 +99,7 @@ elif pagina == "🔄 Fluxo de Dados LGPD":
     import fluxo_dados
     fluxo_dados.render()
 
-elif pagina == "🔓 Solicitar Acesso aos Dados":
+elif pagina == "🔓 Acesso aos Dados":
     import solicitar_acesso
     solicitar_acesso.render()
 
