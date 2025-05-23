@@ -3,7 +3,7 @@ import streamlit as st
 
 def render():
     st.markdown("""
-    <h1 style='text-align: center;'>🏠 **Bem Vindo** ao Portal LGPD - IPEM-MG</h1>
+    <h1 style='text-align: center;'>🏠 Bem Vindo ao Portal LGPD - IPEM-MG</h1>
     """, unsafe_allow_html=True)
     st.markdown("---")
     
