@@ -99,5 +99,3 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
-
-render()
