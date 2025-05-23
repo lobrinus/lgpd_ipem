@@ -52,7 +52,7 @@ def render():
 """, unsafe_allow_html=True)
 
     st.markdown("""
-    <h1 style='text-align: center;'>❓ FAQ - Perguntas Frequentes</h1>
+    <h1 style='text-align: center;'>✔️ Boas Práticas</h1>
     """, unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("""
