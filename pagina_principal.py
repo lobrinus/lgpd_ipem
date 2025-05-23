@@ -82,13 +82,13 @@ def render():
         st.markdown("""
         **Perguntas Frequentes:**
         Q: Como solicitar exclusão de dados?  
-        R: Através do Painel do Cidadão ou formulário específico[21]
+        R: Através do Painel LGPD ou formulário específico
 
         Q: Quanto tempo demora uma resposta?  
-        R: Prazo máximo de 15 dias úteis[14]
+        R: Prazo máximo de 15 dias úteis. Com a probabilidade de prorrogação dependendo da complexidade da solicitação
 
         Q: Posso acessar dados de terceiros?  
-        R: Somente com autorização judicial expressa[19]
+        R: Somente com autorização judicial expressa
         """)
     # Rodapé
     st.markdown("---")
