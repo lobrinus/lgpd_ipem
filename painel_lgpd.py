@@ -7,8 +7,6 @@ from firebase_admin import credentials, firestore
 from login_unificado import autenticar_usuario, registrar_usuario
 
 def render():
-    # Título principal
-    st.write("🔍 Render painel_lgpd carregado!")
     # === Inicialização do Firebase (executa apenas uma vez) ===
     if not firebase_admin._apps:
         cred_json = os.getenv("FIREBASE_CREDENTIALS")
