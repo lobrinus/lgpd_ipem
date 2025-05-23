@@ -59,4 +59,3 @@ def registrar_usuario(email, senha, nome, telefone, cpf, tipo="cidadao"):
         if "EMAIL_EXISTS" in error_str:
             return False, "❌ Este e-mail já está cadastrado."
         return False, f"Erro no registro: {error_str}"
-
