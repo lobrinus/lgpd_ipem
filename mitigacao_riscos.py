@@ -1,13 +1,12 @@
 import streamlit as st
 from login_unificado import autenticar_usuario, registrar_usuario
 
-def render():
-    st.title("🛡️ Mitigação de Riscos")
-    st.markdown("---")
+    def render():
     st.markdown("""
-    O IPEM-MG adota as seguintes medidas para mitigar riscos relacionados à proteção de dados pessoais:
-    """)
-    
+    <h1 style='text-align: center;'>🛡️ Mitigação de Riscos</h1>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
+        
     st.subheader("1. Avaliação de Riscos")
     st.markdown("""
     - **Identificação de ativos:** Sistemas, bancos de dados e processos que tratam dados pessoais
