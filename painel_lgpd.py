@@ -70,14 +70,15 @@ def render():
             with st.form("form_registro"):
                 st.subheader("📝 Registro")
                 nome = st.text_input("Nome completo*")
+                cpf = st.text_input("CPF*", max_chars=14, help="Digite o CPF no formato 000.000.000-00")
                 telefone = st.text_input("Telefone*")
                 email_reg = st.text_input("E-mail*")
                 senha_reg = st.text_input("Senha*", type="password")
                 senha_conf = st.text_input("Confirme a senha*", type="password")
                 registro_submit = st.form_submit_button("Registrar")
-
+        
                 if registro_submit:
-                    if not all([nome.strip(), telefone.strip(), email_reg.strip(), senha_reg.strip(), senha_conf.strip()]):
+                    if not all([nome.strip(), cpf.strip(), telefone.strip(), email_reg.strip(), senha_reg.strip(), senha_conf.strip()]):
                         st.warning("Por favor, preencha todos os campos obrigatórios.")
                     elif senha_reg != senha_conf:
                         st.error("As senhas não coincidem.")
@@ -90,6 +91,7 @@ def render():
                                 senha=senha_reg,
                                 nome=nome,
                                 telefone=telefone,
+                                cpf=cpf,
                                 tipo="cidadao"
                             )
                             if sucesso:
@@ -100,6 +102,7 @@ def render():
                                 st.error(f"Erro no registro: {msg}")
                         except Exception as e:
                             st.error(f"Erro inesperado: {str(e)}")
+
 
         # ⚠️ Impede que o restante do app carregue sem login
         st.stop()
