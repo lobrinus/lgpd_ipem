@@ -122,72 +122,72 @@ def render():
 # 🚻 PAINEL DO CIDADÃO (ATUALIZADO)
 # ==============================
     if tipo_usuario == "cidadao":
-        st.subheader("📄 Minhas Solicitações LGPD")
+        st.markdown("<h2 style='text-align: center;'>📥 Enviar Nova Solicitação LGPD</h2>", unsafe_allow_html=True)
     
         aba = st.selectbox("Escolha uma opção", ["📨 Nova Solicitação", "📜 Minhas Solicitações"])
     
         if aba == "📨 Nova Solicitação":
-            with st.form("form_nova_solicitacao", clear_on_submit=True):
-                st.markdown("### 📋 Formulário de Solicitação LGPD")
-                
-                # Dados do usuário (automáticos)
-                st.markdown(f"**👤 Nome:** {usuario['nome']}")
-                st.markdown(f"**📧 E-mail:** {usuario['email']}")
-                st.markdown(f"**📞 Telefone:** {usuario.get('telefone', 'Não cadastrado')}")
-                
-                # Campos editáveis
-                tipo_solicitacao = st.selectbox(
-                    "🔽 Selecione o Tipo de Solicitação*",
-                    options=[
-                        "Acesso aos Dados Pessoais",
-                        "Correção de Dados",
-                        "Exclusão de Dados",
-                        "Portabilidade de Dados",
-                        "Revogação de Consentimento"
-                    ],
-                    help="Expanda para ver as opções"
-                )
-                
-                descricao = st.text_area(
-                    "📝 Descreva detalhadamente sua solicitação*",
-                    height=200,
-                    placeholder="Ex: Solicito acesso a todos os meus dados pessoais armazenados..."
-                )
-                
-                enviar = st.form_submit_button("🚀 Enviar Solicitação")
-                
-                if enviar:
-                    if not descricao.strip():
-                        st.warning("Por favor, descreva sua solicitação.")
-                    else:
-                        try:
-                            protocolo = gerar_protocolo()
-                            data_envio = datetime.datetime.now(timezone_brasilia)
-    
-                            dados = {
-                                "nome": usuario["nome"],
-                                "email": usuario["email"],
-                                "telefone": usuario.get("telefone", ""),
-                                "cpf": usuario.get("cpf", ""),
-                                "tipo_solicitacao": tipo_solicitacao,  # Novo campo
-                                "protocolo": protocolo,
-                                "data": data_envio.isoformat(),
-                                "status": "pendente",
-                                "historico": [
-                                    {
-                                        "remetente": "cidadao",
-                                        "mensagem": descricao,
-                                        "data": data_envio.isoformat(),
-                                        "tipo": tipo_solicitacao  # Registro do tipo
-                                    }
-                                ]
-                            }
-    
-                            db.collection("solicitacoes").document(protocolo).set(dados)
-                            st.success(f"✅ Solicitação enviada com sucesso!\n\n**Protocolo:** {protocolo}")
-                            
-                        except Exception as e:
-                            st.error(f"Erro ao enviar solicitação: {str(e)}")
+    with st.form("form_nova_solicitacao", clear_on_submit=True):
+        st.markdown("### 📋 Nova Solicitação LGPD")
+        
+        # Dados fixos do usuário
+        st.markdown(f"**👤 Nome:** {usuario['nome']}")
+        st.markdown(f"**📧 E-mail:** {usuario['email']}")
+        st.markdown(f"**📞 Telefone:** {usuario.get('telefone', 'Não informado')}")
+        
+        # Campos editáveis
+        tipo_solicitacao = st.selectbox(
+            "**Tipo de Solicitação***",
+            options=[
+                "Acesso aos Dados",
+                "Retificação de Dados",
+                "Exclusão de Dados",
+                "Outros"
+            ],
+            index=0
+        )
+        
+        descricao = st.text_area(
+            "**Descrição Detalhada***",
+            height=200,
+            placeholder="Descreva sua solicitação aqui..."
+        )
+        
+        enviado = st.form_submit_button("📤 Enviar Solicitação")
+        
+        if enviado:
+            if not descricao.strip():
+                st.error("A descrição é obrigatória!")
+            else:
+                try:
+                    protocolo = gerar_protocolo()
+                    data_envio = datetime.datetime.now(timezone_brasilia)
+                    
+                    nova_solicitacao = {
+                        "nome": usuario["nome"],
+                        "email": usuario["email"],
+                        "telefone": usuario.get("telefone", ""),
+                        "cpf": usuario.get("cpf", ""),
+                        "tipo": tipo_solicitacao,
+                        "descricao": descricao,
+                        "protocolo": protocolo,
+                        "status": "pendente",
+                        "data_envio": data_envio.isoformat(),
+                        "historico": [{
+                            "remetente": "cidadao",
+                            "mensagem": descricao,
+                            "data": data_envio.isoformat()
+                        }]
+                    }
+                    
+                    db.collection("solicitacoes").document(protocolo).set(nova_solicitacao)
+                    st.success(f"""
+                    ✅ **Solicitação registrada com sucesso!**  
+                    **Protocolo:** {protocolo}
+                    """)
+                    
+                except Exception as e:
+                    st.error(f"Erro crítico: {str(e)}")
         elif aba == "📜 Minhas Solicitações":
             email_usuario = usuario.get("email")
             if not email_usuario:
