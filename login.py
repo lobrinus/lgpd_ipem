@@ -4,37 +4,26 @@ from login_unificado import autenticar_usuario, registrar_usuario
 def render():
     st.subheader("🔐 Login LGPD")
 
-    email = ""
-    tipo_legivel = ""
-
     if st.session_state.get("logado", False):
-        email = st.session_state.get("email", "")
-        tipo = st.session_state.get("tipo_usuario", "cidadao").lower()
-        tipo_legivel = "Administrador" if tipo == "admin" else "Cidadão"
+        tipo = st.session_state.get("tipo_usuario")
+        st.success(f"✅ Você já está logado como {st.session_state['email']} ({tipo})")
 
-        with st.success(""):
-            st.markdown(
-                f"""
-                ✅ Você já está logado como: <strong>{email}</strong><br>
-                🔒 Usuário: <strong>{tipo_legivel}</strong><br>
-                📌 Acesse o <strong>Painel do Cidadão</strong> para enviar ou visualizar suas solicitações.
-                """,
-                unsafe_allow_html=True
-            )
+        if tipo == "admin":
+            st.info("➡️ Acesse o painel de administração no menu 'Solicitações Recebidas'.")
+        else:
+            st.info("➡️ Acesse o painel do cidadão no menu 'Painel LGPD'.")
 
         if st.button("🚪 Sair"):
             for key in ["logado", "email", "tipo_usuario", "admin_email"]:
                 st.session_state.pop(key, None)
-            st.success("Você saiu com sucesso.")
             st.rerun()
 
         return
 
-    # Aba ativa: login ou registro
     if "aba_login" not in st.session_state:
         st.session_state["aba_login"] = "login"
 
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns(2)
     with col1:
         if st.button("Login"):
             st.session_state["aba_login"] = "login"
@@ -44,12 +33,12 @@ def render():
 
     st.write("---")
 
-    # Formulário de Login
+    # 🔑 Login
     if st.session_state["aba_login"] == "login":
-        email = st.text_input("Usuário (email)", key="login_email")
-        senha = st.text_input("Senha", type="password", key="login_senha")
+        email = st.text_input("E-mail")
+        senha = st.text_input("Senha", type="password")
 
-        if st.button("Entrar", key="btn_entrar"):
+        if st.button("Entrar"):
             sucesso, dados = autenticar_usuario(email, senha)
             if sucesso:
                 st.session_state["logado"] = True
@@ -57,21 +46,30 @@ def render():
                 st.session_state["tipo_usuario"] = dados["tipo"]
                 if dados["tipo"] == "admin":
                     st.session_state["admin_email"] = dados["email"]
-                st.success(f"✅ Bem-vindo, {dados['tipo']}")
+
+                # 🔥 Redirecionamento inteligente
+                if dados["tipo"] == "admin":
+                    st.success("✅ Bem-vindo, administrador!")
+                    st.info("➡️ Acesse o painel de administração no menu 'Solicitações Recebidas'.")
+                else:
+                    st.success("✅ Bem-vindo, cidadão!")
+                    st.info("➡️ Acesse o painel do cidadão no menu 'Painel LGPD'.")
+
                 st.experimental_rerun()
+
             else:
                 st.error(dados)
 
-    # Formulário de Registro
+    # 📝 Registro
     else:
-        nome = st.text_input("Nome Completo*", key="reg_nome")
-        cpf = st.text_input("CPF*", key="reg_cpf")
-        email = st.text_input("Email*", key="reg_email")
-        telefone = st.text_input("Telefone*", key="reg_telefone")
-        senha = st.text_input("Senha*", type="password", key="reg_senha")
-        senha2 = st.text_input("Confirme a senha*", type="password", key="reg_senha2")
+        nome = st.text_input("Nome Completo")
+        cpf = st.text_input("CPF")
+        email = st.text_input("E-mail")
+        telefone = st.text_input("Telefone")
+        senha = st.text_input("Senha", type="password")
+        senha2 = st.text_input("Confirme a senha", type="password")
 
-        if st.button("Registrar", key="btn_registrar"):
+        if st.button("Registrar"):
             if not all([nome.strip(), cpf.strip(), email.strip(), telefone.strip(), senha.strip(), senha2.strip()]):
                 st.error("❌ Todos os campos são obrigatórios.")
             elif senha != senha2:
@@ -82,5 +80,7 @@ def render():
                 sucesso, msg = registrar_usuario(email, senha, nome, telefone, cpf)
                 if sucesso:
                     st.success(msg)
+                    st.session_state["aba_login"] = "login"
+                    st.rerun()
                 else:
                     st.error(msg)
