@@ -203,56 +203,56 @@ def render():
 
                 st.markdown("----")
                 # 👨‍💼 PAINEL DO ADMIN
-                elif tipo_usuario == "admin":
-                    st.subheader("📥 Solicitações Recebidas")
-            
-                    solicitacoes_ref = db.collection("solicitacoes_lgpd")
-                    solicitacoes = solicitacoes_ref.stream()
-            
-                    for doc in solicitacoes:
-                        dados = doc.to_dict()
-                        st.markdown("### 🔖 Protocolo: " + dados["protocolo"])
-                        st.markdown(f"""
-                            - 👤 **Nome:** {dados['nome']}
-                            - 📧 **E-mail:** {dados['email']}
-                            - 🪪 **CPF:** {dados['cpf']}
-                            - 📅 **Data:** {dados['data']}
-                            - 🟢 **Status:** {status_opcoes[dados['status']]}
-                        """)
-                        st.markdown("**🗒️ Histórico:**")
-                        st.markdown("---")
-            
-                        for msg in dados.get("historico", []):
-                            remetente = "👤 Cidadão" if msg["remetente"] == "cidadao" else "🛠️ Admin"
-                            data_msg = datetime.datetime.fromisoformat(msg["data"]).strftime('%d/%m/%Y %H:%M')
-                            st.markdown(f"**{remetente} ({data_msg}):**")
-                            st.markdown(f"> {msg['mensagem']}")
-                            st.markdown("---")
-            
-                        if dados["status"] != "resolvido":
-                            with st.form(f"responder_{dados['protocolo']}"):
-                                resposta = st.text_area("💬 Responder", height=100)
-                                enviar_resp = st.form_submit_button("📤 Enviar Resposta")
-            
-                                if enviar_resp:
-                                    if not resposta.strip():
-                                        st.warning("Digite a resposta antes de enviar.")
-                                    else:
-                                        nova_entrada = {
-                                            "remetente": "admin",
-                                            "mensagem": resposta,
-                                            "data": datetime.datetime.now(timezone_brasilia).isoformat()
-                                        }
-                                        dados["historico"].append(nova_entrada)
-                                        dados["status"] = "respondido"
-                                        db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
-                                        st.success("✅ Resposta enviada com sucesso!")
-                                        st.rerun()
-            
-                            if st.button(f"✔️ Marcar como Resolvido", key=f"resolver_{dados['protocolo']}"):
-                                dados["status"] = "resolvido"
-                                db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
-                                st.success("🟩 Solicitação marcada como resolvida.")
-                                st.rerun()
-            
-                        st.markdown("----")
+    elif tipo_usuario == "admin":
+        st.subheader("📥 Solicitações Recebidas")
+
+        solicitacoes_ref = db.collection("solicitacoes_lgpd")
+        solicitacoes = solicitacoes_ref.stream()
+
+        for doc in solicitacoes:
+            dados = doc.to_dict()
+            st.markdown("### 🔖 Protocolo: " + dados["protocolo"])
+            st.markdown(f"""
+                - 👤 **Nome:** {dados['nome']}
+                - 📧 **E-mail:** {dados['email']}
+                - 🪪 **CPF:** {dados['cpf']}
+                - 📅 **Data:** {dados['data']}
+                - 🟢 **Status:** {status_opcoes[dados['status']]}
+            """)
+            st.markdown("**🗒️ Histórico:**")
+            st.markdown("---")
+
+            for msg in dados.get("historico", []):
+                remetente = "👤 Cidadão" if msg["remetente"] == "cidadao" else "🛠️ Admin"
+                data_msg = datetime.datetime.fromisoformat(msg["data"]).strftime('%d/%m/%Y %H:%M')
+                st.markdown(f"**{remetente} ({data_msg}):**")
+                st.markdown(f"> {msg['mensagem']}")
+                st.markdown("---")
+
+            if dados["status"] != "resolvido":
+                with st.form(f"responder_{dados['protocolo']}"):
+                    resposta = st.text_area("💬 Responder", height=100)
+                    enviar_resp = st.form_submit_button("📤 Enviar Resposta")
+
+                    if enviar_resp:
+                        if not resposta.strip():
+                            st.warning("Digite a resposta antes de enviar.")
+                        else:
+                            nova_entrada = {
+                                "remetente": "admin",
+                                "mensagem": resposta,
+                                "data": datetime.datetime.now(timezone_brasilia).isoformat()
+                            }
+                            dados["historico"].append(nova_entrada)
+                            dados["status"] = "respondido"
+                            db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
+                            st.success("✅ Resposta enviada com sucesso!")
+                            st.rerun()
+
+                if st.button(f"✔️ Marcar como Resolvido", key=f"resolver_{dados['protocolo']}"):
+                    dados["status"] = "resolvido"
+                    db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
+                    st.success("🟩 Solicitação marcada como resolvida.")
+                    st.rerun()
+
+            st.markdown("----")
