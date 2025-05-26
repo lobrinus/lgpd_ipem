@@ -63,19 +63,24 @@ def render():
                 st.error(dados)
 
     # Formulário de Registro
+    # Formulário de Registro
     else:
-        nome = st.text_input("Nome Completo", key="reg_nome")
-        email = st.text_input("Email", key="reg_email")
-        cpf = st.text_input("Cpf", key="reg_cpf")
-        telefone = st.text_input("Telefone", key="reg_telefone")
-        senha = st.text_input("Senha", type="password", key="reg_senha")
-        senha2 = st.text_input("Confirme a senha", type="password", key="reg_senha2")
+        nome = st.text_input("Nome Completo*", key="reg_nome")
+        cpf = st.text_input("CPF*", key="reg_cpf")
+        email = st.text_input("Email*", key="reg_email")
+        telefone = st.text_input("Telefone*", key="reg_telefone")
+        senha = st.text_input("Senha*", type="password", key="reg_senha")
+        senha2 = st.text_input("Confirme a senha*", type="password", key="reg_senha2")
 
         if st.button("Registrar", key="btn_registrar"):
-            if senha != senha2:
+            if not all([nome.strip(), cpf.strip(), email.strip(), telefone.strip(), senha.strip(), senha2.strip()]):
+                st.error("❌ Todos os campos são obrigatórios.")
+            elif senha != senha2:
                 st.error("❌ As senhas não coincidem.")
+            elif len(senha) < 6:
+                st.error("❌ A senha deve ter pelo menos 6 caracteres.")
             else:
-                sucesso, msg = registrar_usuario(email, senha, nome, telefone)
+                sucesso, msg = registrar_usuario(email, senha, nome, telefone, cpf)
                 if sucesso:
                     st.success(msg)
                 else:
