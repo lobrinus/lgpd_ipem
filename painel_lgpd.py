@@ -208,7 +208,7 @@ def render():
     # Formulário Nova Solicitação
     with st.form("nova_solicitacao"):
         st.subheader("Nova Solicitação")
-        email_solicitante = st.text_input("E-mail para contato*")
+        nome_solicitante = st.text_input("Nome do Titular*")  # <- Nome livre que ele informa
         telefone = st.text_input("Telefone para contato*")
         tipo = st.selectbox("Tipo de Solicitação*", [
             "Acesso aos Dados",
@@ -220,41 +220,42 @@ def render():
         descricao = st.text_area("Descreva sua solicitação em detalhes*")
         anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
         submitted = st.form_submit_button("Enviar Solicitação")
+    
         if submitted:
-            if not all([email_solicitante.strip(), telefone.strip(), tipo.strip(), descricao.strip()]):
+            if not all([nome_solicitante.strip(), telefone.strip(), tipo.strip(), descricao.strip()]):
                 st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
             else:
-                protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')}"
+                protocolo = f"LGPD-{datetime.datetime.now(timezone_brasilia).strftime('%Y%m%d%H%M%S%f')}"
                 try:
-                    # 🔥 Buscar dados do usuário de forma segura
+                    # 🔥 Buscar CPF do cadastro
                     usuario_doc = db.collection("usuarios").document(usuario['email']).get()
                     usuario_data = usuario_doc.to_dict() if usuario_doc.exists else {}
-        
-                    nome = usuario_data.get('nome', '---')
+    
                     cpf = usuario_data.get('cpf', '---')
-        
-                    # 🔥 Enviar solicitação
+    
+                    agora = datetime.datetime.now(timezone_brasilia).isoformat()
+    
                     doc_ref = db.collection("solicitacoes").document(protocolo)
                     doc_ref.set({
                         "protocolo": protocolo,
                         "email": usuario['email'],
-                        "nome": nome,
-                        "cpf": cpf,
+                        "nome": nome_solicitante,  # <- Nome informado no formulário
+                        "cpf": cpf,  # <- CPF puxado automaticamente do cadastro
                         "telefone": telefone,
                         "tipo": tipo,
                         "descricao": descricao,
                         "anexos": [file.name for file in anexos] if anexos else [],
-                        "data_envio": datetime.datetime.now().isoformat(),
+                        "data_envio": agora,
                         "status": "Recebido",
                         "responsavel": None,
                         "resposta": None,
                         "usuario_id": usuario['email']
                     })
-        
+    
                     st.success(f"""
                     ✅ Solicitação registrada com sucesso!  
                     **Protocolo:** {protocolo}  
-                    **Previsão de resposta:** {(datetime.datetime.now() + datetime.timedelta(days=15)).strftime('%d/%m/%Y')}
+                    **Previsão de resposta:** {(datetime.datetime.now(timezone_brasilia) + datetime.timedelta(days=15)).strftime('%d/%m/%Y')}
                     """)
                 except Exception as e:
                     st.error(f"Erro ao enviar solicitação: {str(e)}")
