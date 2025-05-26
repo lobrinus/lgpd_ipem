@@ -66,6 +66,7 @@ def render():
     else:
         nome = st.text_input("Nome Completo", key="reg_nome")
         email = st.text_input("Email", key="reg_email")
+        cpf = st.text_input("Cpf", key="reg_cpf")
         telefone = st.text_input("Telefone", key="reg_telefone")
         senha = st.text_input("Senha", type="password", key="reg_senha")
         senha2 = st.text_input("Confirme a senha", type="password", key="reg_senha2")
