@@ -37,22 +37,23 @@ def render():
     st.markdown("---")
     st.subheader("Situações Comuns")
     st.markdown("""
-    **Recebimento de solicitação de titular:** <br>
-    ✅ Encaminhar imediatamente ao Encarregado <br>
-    ❌ Tentar resolver por conta própria ou ignorar <br>
+    <strong>Recebimento de solicitação de titular:</strong><br>
+    ✅ Encaminhar imediatamente ao Encarregado<br>
+    ❌ Tentar resolver por conta própria ou ignorar<br><br>
     
-    **Identificação de dado desatualizado:** <br>
-    ✅ Atualizar ou marcar para correção <br>
-    ❌ Manter o dado incorreto no sistema <br>
+    <strong>Identificação de dado desatualizado:</strong><br>
+    ✅ Atualizar ou marcar para correção<br>
+    ❌ Manter o dado incorreto no sistema<br><br>
     
-    **Necessidade de compartilhar dados com terceiro:**
-    ✅ Verificar contrato/cláusula de proteção  
-    ❌ Enviar sem medidas de segurança adequadas
+    <strong>Necessidade de compartilhar dados com terceiro:</strong><br>
+    ✅ Verificar contrato/cláusula de proteção<br>
+    ❌ Enviar sem medidas de segurança adequadas<br><br>
     
-    **Descoberta de violação:**
-    ✅ Comunicar imediatamente ao DPO  
+    <strong>Descoberta de violação:</strong><br>
+    ✅ Comunicar imediatamente ao DPO<br>
     ❌ Tentar resolver sem registro ou tentar esconder
-    """)
+    """, unsafe_allow_html=True)
+
     
     # Rodapé
     st.markdown("---")
