@@ -191,13 +191,13 @@ def render():
                                 }
                                 dados["historico"].append(nova_entrada)
                                 dados["status"] = "pendente"
-                                db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
+                                db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
                                 st.success("✅ Mensagem enviada com sucesso!")
                                 st.rerun()
 
                     if st.button(f"✔️ Marcar como Resolvido", key=f"resolvido_{dados['protocolo']}"):
                         dados["status"] = "resolvido"
-                        db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
+                        db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
                         st.success("🟩 Solicitação marcada como resolvida.")
                         st.rerun()
 
@@ -206,7 +206,7 @@ def render():
     elif tipo_usuario == "admin":
         st.subheader("📥 Solicitações Recebidas")
 
-        solicitacoes_ref = db.collection("solicitacoes_lgpd")
+        solicitacoes_ref = db.collection("solicitacoes")
         solicitacoes = solicitacoes_ref.stream()
 
         for doc in solicitacoes:
@@ -245,13 +245,13 @@ def render():
                             }
                             dados["historico"].append(nova_entrada)
                             dados["status"] = "respondido"
-                            db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
+                            db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
                             st.success("✅ Resposta enviada com sucesso!")
                             st.rerun()
 
                 if st.button(f"✔️ Marcar como Resolvido", key=f"resolver_{dados['protocolo']}"):
                     dados["status"] = "resolvido"
-                    db.collection("solicitacoes_lgpd").document(dados["protocolo"]).set(dados)
+                    db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
                     st.success("🟩 Solicitação marcada como resolvida.")
                     st.rerun()
 
