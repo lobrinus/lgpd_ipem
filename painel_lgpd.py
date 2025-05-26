@@ -19,7 +19,7 @@ def render():
         firebase_admin.initialize_app(cred)
     db = firestore.client()
 
-    st.markdown("<h1 style='text-align: center;'>🔐 Painel LGPD</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>👤 Painel LGPD</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
     # 🔑 Controle de sessão
