@@ -141,7 +141,7 @@ def render():
                         dados = {
                             "nome": usuario["nome"],
                             "email": usuario["email"],
-                            "cpf": usuario["cpf"],
+                            "cpf": usuario.get("cpf", ""),
                             "protocolo": protocolo,
                             "data": data_envio.isoformat(),
                             "status": "pendente",
@@ -162,29 +162,37 @@ def render():
             if not email_usuario:
                 st.error("❌ Seu e-mail não foi identificado. Refaça o login.")
                 st.stop()
-        
+
             solicitacoes_ref = db.collection("solicitacoes").where("email", "==", email_usuario)
             solicitacoes = solicitacoes_ref.stream()
-        
+
             for doc in solicitacoes:
                 dados = doc.to_dict()
-                st.markdown("### 🔖 Protocolo: " + dados["protocolo"])
-                st.markdown(f"**📅 Data:** {dados['data']}")
-                st.markdown(f"**🟢 Status:** {status_opcoes[dados['status']]}")
+                st.markdown("### 🔖 Protocolo: " + dados.get("protocolo", "Desconhecido"))
+
+                try:
+                    data_obj = datetime.datetime.fromisoformat(dados["data"])
+                    data_formatada = data_obj.astimezone(timezone_brasilia).strftime('%d/%m/%Y %H:%M')
+                    st.markdown(f"**📅 Data:** {data_formatada}")
+                except Exception as e:
+                    st.warning("⚠️ Data inválida ou ausente.")
+                    continue
+
+                st.markdown(f"**🟢 Status:** {status_opcoes.get(dados.get('status', 'pendente'), '🔘 Desconhecido')}")
                 st.markdown("---")
-        
+
                 for msg in dados.get("historico", []):
                     remetente = "👤 Você" if msg["remetente"] == "cidadao" else "🛠️ Admin"
-                    data_msg = datetime.datetime.fromisoformat(msg["data"]).strftime('%d/%m/%Y %H:%M')
+                    data_msg = datetime.datetime.fromisoformat(msg["data"]).astimezone(timezone_brasilia).strftime('%d/%m/%Y %H:%M')
                     st.markdown(f"**{remetente} ({data_msg}):**")
                     st.markdown(f"> {msg['mensagem']}")
                     st.markdown("---")
-        
-                if dados["status"] != "resolvido":
+
+                if dados.get("status") != "resolvido":
                     with st.form(f"continuar_{dados['protocolo']}"):
                         nova_msg = st.text_area("📝 Enviar nova mensagem nesta solicitação", height=100)
                         enviar_nova = st.form_submit_button("📩 Enviar")
-        
+
                         if enviar_nova:
                             if not nova_msg.strip():
                                 st.warning("Digite sua mensagem antes de enviar.")
@@ -199,16 +207,18 @@ def render():
                                 db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
                                 st.success("✅ Mensagem enviada com sucesso!")
                                 st.rerun()
-        
+
                 if st.button(f"✔️ Marcar como Resolvido", key=f"resolvido_{dados['protocolo']}"):
                     dados["status"] = "resolvido"
                     db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
                     st.success("🟩 Solicitação marcada como resolvida.")
                     st.rerun()
-        
+
                 st.markdown("----")
 
-                # 👨‍💼 PAINEL DO ADMIN
+    # ==============================
+    # 👨‍💼 PAINEL DO ADMIN
+    # ==============================
     elif tipo_usuario == "admin":
         st.subheader("📥 Solicitações Recebidas")
 
@@ -217,25 +227,32 @@ def render():
 
         for doc in solicitacoes:
             dados = doc.to_dict()
-            st.markdown("### 🔖 Protocolo: " + dados["protocolo"])
+            st.markdown("### 🔖 Protocolo: " + dados.get("protocolo", "Desconhecido"))
+
+            try:
+                data_obj = datetime.datetime.fromisoformat(dados["data"])
+                data_formatada = data_obj.astimezone(timezone_brasilia).strftime('%d/%m/%Y %H:%M')
+            except:
+                data_formatada = "Data inválida"
+
             st.markdown(f"""
-                - 👤 **Nome:** {dados['nome']}
-                - 📧 **E-mail:** {dados['email']}
-                - 🪪 **CPF:** {dados['cpf']}
-                - 📅 **Data:** {dados['data']}
-                - 🟢 **Status:** {status_opcoes[dados['status']]}
+                - 👤 **Nome:** {dados.get('nome', 'N/A')}
+                - 📧 **E-mail:** {dados.get('email', 'N/A')}
+                - 🪪 **CPF:** {dados.get('cpf', 'N/A')}
+                - 📅 **Data:** {data_formatada}
+                - 🟢 **Status:** {status_opcoes.get(dados.get('status', 'pendente'), '🔘 Desconhecido')}
             """)
             st.markdown("**🗒️ Histórico:**")
             st.markdown("---")
 
             for msg in dados.get("historico", []):
                 remetente = "👤 Cidadão" if msg["remetente"] == "cidadao" else "🛠️ Admin"
-                data_msg = datetime.datetime.fromisoformat(msg["data"]).strftime('%d/%m/%Y %H:%M')
+                data_msg = datetime.datetime.fromisoformat(msg["data"]).astimezone(timezone_brasilia).strftime('%d/%m/%Y %H:%M')
                 st.markdown(f"**{remetente} ({data_msg}):**")
                 st.markdown(f"> {msg['mensagem']}")
                 st.markdown("---")
 
-            if dados["status"] != "resolvido":
+            if dados.get("status") != "resolvido":
                 with st.form(f"responder_{dados['protocolo']}"):
                     resposta = st.text_area("💬 Responder", height=100)
                     enviar_resp = st.form_submit_button("📤 Enviar Resposta")
