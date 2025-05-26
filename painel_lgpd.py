@@ -213,17 +213,49 @@ def render():
             st.markdown(f"**Resumo da solicitação:** {resumo}")
             st.markdown(f"**Descrição completa:** {descricao}")
     
-            if respostas:
-                st.subheader("📬 Respostas do IPEM-MG")
-                for r in respostas:
-                    autor = r.get("autor", "Administrador")
-                    texto = r.get("texto", "")
-                    data_resp = r.get("data", "").replace("T", " ").split(".")[0]
-                    st.markdown(f"**{autor}** em `{data_resp}`:")
-                    st.info(f"{texto}")
-            else:
-                st.warning("⏳ Sua solicitação ainda não foi respondida pelo IPEM.")
-    
+            st.subheader("📬 Histórico de mensagens")
+
+            # 🔁 Exibir histórico de mensagens
+            historico = data.get("historico", [])
+            for item in historico:
+                remetente = "Você" if item.get("remetente") == "cidadao" else "Admin"
+                data_msg = item.get("data", "").replace("T", " ").split(".")[0]
+                if remetente == "Admin":
+                    st.markdown(f"**{remetente} em `{data_msg}`:**")
+                    st.success(item.get("mensagem", ""))
+                else:
+                    st.markdown(f"**{remetente} em `{data_msg}`:**")
+                    st.info(item.get("mensagem", ""))
+            
+            st.markdown("---")
+            
+            # ✅ Campo para o cidadão enviar nova mensagem (se não estiver resolvido)
+            if data.get("status") in ["pendente", "respondido"]:
+                with st.form(f"continuar_{protocolo}"):
+                    nova_msg = st.text_area("💬 Enviar nova mensagem nesta solicitação", height=100)
+                    enviar_nova = st.form_submit_button("📩 Enviar")
+            
+                    if enviar_nova:
+                        if not nova_msg.strip():
+                            st.warning("Digite sua mensagem antes de enviar.")
+                        else:
+                            nova_entrada = {
+                                "remetente": "cidadao",
+                                "mensagem": nova_msg,
+                                "data": datetime.datetime.now(timezone_brasilia).isoformat()
+                            }
+                            historico.append(nova_entrada)
+                            db.collection("solicitacoes").document(protocolo).update({
+                                "historico": historico,
+                                "status": "pendente"
+                            })
+                            st.success("✅ Mensagem enviada com sucesso!")
+                            st.rerun()
+            
+            elif data.get("status") == "resolvido":
+                st.info("✔️ Esta solicitação foi marcada como **Resolvida** e não aceita mais mensagens.")
+            
+                
     if not tem_solicitacoes:
         st.info("Você ainda não enviou nenhuma solicitação.", icon="ℹ️")
 
