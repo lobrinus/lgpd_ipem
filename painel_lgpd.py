@@ -127,67 +127,68 @@ def render():
         aba = st.selectbox("Escolha uma opção", ["📨 Nova Solicitação", "📜 Minhas Solicitações"])
     
         if aba == "📨 Nova Solicitação":
-    with st.form("form_nova_solicitacao", clear_on_submit=True):
-        st.markdown("### 📋 Nova Solicitação LGPD")
-        
-        # Dados fixos do usuário
-        st.markdown(f"**👤 Nome:** {usuario['nome']}")
-        st.markdown(f"**📧 E-mail:** {usuario['email']}")
-        st.markdown(f"**📞 Telefone:** {usuario.get('telefone', 'Não informado')}")
-        
-        # Campos editáveis
-        tipo_solicitacao = st.selectbox(
-            "**Tipo de Solicitação***",
-            options=[
-                "Acesso aos Dados",
-                "Retificação de Dados",
-                "Exclusão de Dados",
-                "Outros"
-            ],
-            index=0
-        )
-        
-        descricao = st.text_area(
-            "**Descrição Detalhada***",
-            height=200,
-            placeholder="Descreva sua solicitação aqui..."
-        )
-        
-        enviado = st.form_submit_button("📤 Enviar Solicitação")
-        
-        if enviado:
-            if not descricao.strip():
-                st.error("A descrição é obrigatória!")
-            else:
-                try:
-                    protocolo = gerar_protocolo()
-                    data_envio = datetime.datetime.now(timezone_brasilia)
-                    
-                    nova_solicitacao = {
-                        "nome": usuario["nome"],
-                        "email": usuario["email"],
-                        "telefone": usuario.get("telefone", ""),
-                        "cpf": usuario.get("cpf", ""),
-                        "tipo": tipo_solicitacao,
-                        "descricao": descricao,
-                        "protocolo": protocolo,
-                        "status": "pendente",
-                        "data_envio": data_envio.isoformat(),
-                        "historico": [{
-                            "remetente": "cidadao",
-                            "mensagem": descricao,
-                            "data": data_envio.isoformat()
-                        }]
-                    }
-                    
-                    db.collection("solicitacoes").document(protocolo).set(nova_solicitacao)
-                    st.success(f"""
-                    ✅ **Solicitação registrada com sucesso!**  
-                    **Protocolo:** {protocolo}
-                    """)
-                    
-                except Exception as e:
-                    st.error(f"Erro crítico: {str(e)}")
+            with st.form("form_nova_solicitacao", clear_on_submit=True):
+                st.markdown("### 📋 Nova Solicitação LGPD")
+                
+                # Dados fixos do usuário
+                st.markdown(f"**👤 Nome:** {usuario['nome']}")
+                st.markdown(f"**📧 E-mail:** {usuario['email']}")
+                st.markdown(f"**📞 Telefone:** {usuario.get('telefone', 'Não informado')}")
+                
+                # Campos editáveis
+                tipo_solicitacao = st.selectbox(
+                    "**Tipo de Solicitação***",
+                    options=[
+                        "Acesso aos Dados",
+                        "Retificação de Dados",
+                        "Exclusão de Dados",
+                        "Outros"
+                    ],
+                    index=0
+                )
+                
+                descricao = st.text_area(
+                    "**Descrição Detalhada***",
+                    height=200,
+                    placeholder="Descreva sua solicitação aqui..."
+                )
+                
+                enviado = st.form_submit_button("📤 Enviar Solicitação")
+                
+                if enviado:
+                    if not descricao.strip():
+                        st.error("A descrição é obrigatória!")
+                    else:
+                        try:
+                            protocolo = gerar_protocolo()
+                            data_envio = datetime.datetime.now(timezone_brasilia)
+                            
+                            nova_solicitacao = {
+                                "nome": usuario["nome"],
+                                "email": usuario["email"],
+                                "telefone": usuario.get("telefone", ""),
+                                "cpf": usuario.get("cpf", ""),
+                                "tipo": tipo_solicitacao,
+                                "descricao": descricao,
+                                "protocolo": protocolo,
+                                "status": "pendente",
+                                "data_envio": data_envio.isoformat(),
+                                "historico": [{
+                                    "remetente": "cidadao",
+                                    "mensagem": descricao,
+                                    "data": data_envio.isoformat()
+                                }]
+                            }
+                            
+                            db.collection("solicitacoes").document(protocolo).set(nova_solicitacao)
+                            st.success(f"""
+                            ✅ **Solicitação registrada com sucesso!**  
+                            **Protocolo:** {protocolo}
+                            """)
+                            
+                        except Exception as e:
+                            st.error(f"Erro crítico: {str(e)}")
+                            
         elif aba == "📜 Minhas Solicitações":
             email_usuario = usuario.get("email")
             if not email_usuario:
