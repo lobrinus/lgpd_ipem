@@ -154,11 +154,11 @@ def render():
                             ]
                         }
 
-                        db.collection("solicitacoes_lgpd").document(protocolo).set(dados)
+                        db.collection("solicitacoes").document(protocolo).set(dados)
                         st.success(f"✅ Solicitação enviada com sucesso!\nSeu protocolo é: {protocolo}")
 
         elif aba == "📜 Minhas Solicitações":
-            solicitacoes_ref = db.collection("solicitacoes_lgpd").where("cpf", "==", usuario["cpf"])
+            solicitacoes_ref = db.collection("solicitacoes").where("cpf", "==", usuario["cpf"])
             solicitacoes = solicitacoes_ref.stream()
 
             for doc in solicitacoes:
