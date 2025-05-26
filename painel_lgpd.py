@@ -192,25 +192,41 @@ def render():
     ⚠️ Solicitações fraudulentas serão investigadas
     """)
 
-    # Minhas Solicitações (compacta, antes do formulário)
+    # Minhas Solicitações (antes do formulário)
     st.markdown("### 📬 Minhas Solicitações")
     docs = db.collection("solicitacoes").where("usuario_id", "==", st.session_state.usuario['email']).stream()
     tem_solicitacoes = False
+    
     for doc in docs:
         tem_solicitacoes = True
         data = doc.to_dict()
+    
         status = data.get("status", "Pendente")
-        resposta = data.get("resposta")
         protocolo = data.get("protocolo", "")
         tipo = data.get("tipo", "")
-        resumo = data.get("descricao", "")[:60] + "..." if len(data.get("descricao", "")) > 60 else data.get("descricao", "")
+        descricao = data.get("descricao", "")
+        resumo = descricao[:60] + "..." if len(descricao) > 60 else descricao
+    
+        respostas = data.get("respostas", [])  # <- Lista de respostas enviadas pelo admin
+    
         with st.expander(f"Protocolo: {protocolo} | Tipo: {tipo} | Status: {status}"):
-            st.markdown(f"**Resumo:** {resumo}")
-            if resposta:
-                st.success("📢 Sua solicitação já foi respondida pelo IPEM!")
-                st.markdown(f"**Resposta:** {resposta}")
+            st.markdown(f"**Resumo da solicitação:** {resumo}")
+            st.markdown(f"**Descrição completa:** {descricao}")
+    
+            if respostas:
+                st.subheader("📬 Respostas do IPEM-MG")
+                for r in respostas:
+                    autor = r.get("autor", "Administrador")
+                    texto = r.get("texto", "")
+                    data_resp = r.get("data", "").replace("T", " ").split(".")[0]
+                    st.markdown(f"**{autor}** em `{data_resp}`:")
+                    st.info(f"{texto}")
+            else:
+                st.warning("⏳ Sua solicitação ainda não foi respondida pelo IPEM.")
+    
     if not tem_solicitacoes:
         st.info("Você ainda não enviou nenhuma solicitação.", icon="ℹ️")
+
 
     # Formulário Nova Solicitação
     with st.form("nova_solicitacao"):
