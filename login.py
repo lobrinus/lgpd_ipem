@@ -63,7 +63,6 @@ def render():
                 st.error(dados)
 
     # Formulário de Registro
-    # Formulário de Registro
     else:
         nome = st.text_input("Nome Completo*", key="reg_nome")
         cpf = st.text_input("CPF*", key="reg_cpf")
