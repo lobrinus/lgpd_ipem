@@ -6,11 +6,11 @@ def render():
     db = firestore.client()
 
     if "usuario" not in st.session_state or st.session_state["usuario"] is None:
+        from login_unificado import autenticar_usuario
         st.subheader("🔐 Login do Administrador")
         email = st.text_input("E-mail")
         senha = st.text_input("Senha", type="password")
         if st.button("Entrar"):
-            from login_unificado import autenticar_usuario
             sucesso, retorno = autenticar_usuario(email, senha)
             if sucesso and retorno["tipo"] == "admin":
                 st.session_state["usuario"] = retorno
@@ -33,24 +33,13 @@ def render():
         st.session_state["usuario"] = None
         st.rerun()
 
-    st.markdown("## 🔍 Filtro de Solicitações")
-    filtro_tipo = st.selectbox("Buscar por:", ["Todos", "CPF", "Nome", "Protocolo"])
-    termo_busca = ""
-    if filtro_tipo != "Todos":
-        termo_busca = st.text_input(f"Digite o {filtro_tipo}:")
-
     docs = db.collection("solicitacoes").stream()
     solicitacoes = []
+
     for doc in docs:
         data = doc.to_dict()
         data["id"] = doc.id
         solicitacoes.append(data)
-
-    if filtro_tipo != "Todos" and termo_busca:
-        solicitacoes = [
-            s for s in solicitacoes
-            if termo_busca.lower() in str(s.get(filtro_tipo.lower(), "")).lower()
-        ]
 
     solicitacoes.sort(key=lambda x: x.get("data_envio", ""), reverse=True)
 
@@ -59,38 +48,24 @@ def render():
         return
 
     for s in solicitacoes:
+        protocolo = s.get("protocolo", "---")
         status = s.get("status", "Pendente")
-        cor_status = {"Pendente": "🟡", "Respondido": "🟢", "Resolvido": "⚪"}.get(status, "⚪")
+        historico = s.get("historico", [])
+        data_envio = s.get("data_envio", "Data inválida")
 
-        data_envio = s.get("data_envio", "")
-        try:
-            dt = datetime.datetime.fromisoformat(data_envio)
-            data_part = dt.strftime('%d/%m/%Y')
-            hora_part = dt.strftime('%H:%M')
-        except:
-            data_part, hora_part = "Data inválida", "Hora inválida"
-
-        with st.expander(f"{cor_status} Protocolo: {s.get('protocolo', '---')} | Data: {data_part}"):
+        with st.expander(f"📄 Protocolo: {protocolo} | Status: {status}"):
             st.markdown(f"**👤 Nome:** {s.get('nome', '---')}")
             st.markdown(f"**📧 E-mail:** {s.get('email', '---')}")
             st.markdown(f"**🪪 CPF:** {s.get('cpf', '---')}")
-            st.markdown(f"**📅 Data:** {data_part} | 🕒 Hora: {hora_part}")
-            st.markdown(f"**🧾 Protocolo:** {s.get('protocolo', '---')}")
+            st.markdown(f"**📅 Data:** {data_envio}")
 
-            st.subheader("📨 Texto da solicitação:")
-            st.markdown(s.get("descricao", "_Sem descrição_"))
-
-            st.subheader("📬 Histórico de respostas:")
-            respostas = s.get("respostas", [])
-            if not respostas:
-                st.info("Nenhuma resposta ainda.")
-            else:
-                for r in respostas:
-                    autor = r.get("autor", "Desconhecido")
-                    texto = r.get("texto", "")
-                    data_resp = r.get("data", "").replace("T", " ").split(".")[0]
-                    st.markdown(f"**{autor}** em `{data_resp}`:")
-                    st.markdown(f"> {texto}")
+            st.subheader("📜 Histórico da Conversa:")
+            for h in historico:
+                autor = h.get("autor", "Desconhecido")
+                texto = h.get("texto", "")
+                data_msg = h.get("data", "").replace("T", " ").split(".")[0]
+                st.markdown(f"**{autor}** em `{data_msg}`:")
+                st.info(f"{texto}")
 
             if status != "Resolvido":
                 with st.form(f"resposta_{s['id']}"):
@@ -102,9 +77,9 @@ def render():
                             "texto": nova_resposta.strip(),
                             "data": datetime.datetime.now().isoformat()
                         }
-                        novas_respostas = respostas + [nova_entry]
+                        historico.append(nova_entry)
                         db.collection("solicitacoes").document(s["id"]).update({
-                            "respostas": novas_respostas,
+                            "historico": historico,
                             "status": "Respondido"
                         })
                         st.success("Resposta enviada.")
