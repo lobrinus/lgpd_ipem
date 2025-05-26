@@ -158,28 +158,33 @@ def render():
                         st.success(f"✅ Solicitação enviada com sucesso!\nSeu protocolo é: {protocolo}")
 
         elif aba == "📜 Minhas Solicitações":
-            solicitacoes_ref = db.collection("solicitacoes").where("cpf", "==", usuario["cpf"])
+            email_usuario = usuario.get("email")
+            if not email_usuario:
+                st.error("❌ Seu e-mail não foi identificado. Refaça o login.")
+                st.stop()
+        
+            solicitacoes_ref = db.collection("solicitacoes").where("email", "==", email_usuario)
             solicitacoes = solicitacoes_ref.stream()
-
+        
             for doc in solicitacoes:
                 dados = doc.to_dict()
                 st.markdown("### 🔖 Protocolo: " + dados["protocolo"])
                 st.markdown(f"**📅 Data:** {dados['data']}")
                 st.markdown(f"**🟢 Status:** {status_opcoes[dados['status']]}")
                 st.markdown("---")
-
+        
                 for msg in dados.get("historico", []):
                     remetente = "👤 Você" if msg["remetente"] == "cidadao" else "🛠️ Admin"
                     data_msg = datetime.datetime.fromisoformat(msg["data"]).strftime('%d/%m/%Y %H:%M')
                     st.markdown(f"**{remetente} ({data_msg}):**")
                     st.markdown(f"> {msg['mensagem']}")
                     st.markdown("---")
-
+        
                 if dados["status"] != "resolvido":
                     with st.form(f"continuar_{dados['protocolo']}"):
                         nova_msg = st.text_area("📝 Enviar nova mensagem nesta solicitação", height=100)
                         enviar_nova = st.form_submit_button("📩 Enviar")
-
+        
                         if enviar_nova:
                             if not nova_msg.strip():
                                 st.warning("Digite sua mensagem antes de enviar.")
@@ -194,14 +199,15 @@ def render():
                                 db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
                                 st.success("✅ Mensagem enviada com sucesso!")
                                 st.rerun()
-
-                    if st.button(f"✔️ Marcar como Resolvido", key=f"resolvido_{dados['protocolo']}"):
-                        dados["status"] = "resolvido"
-                        db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
-                        st.success("🟩 Solicitação marcada como resolvida.")
-                        st.rerun()
-
+        
+                if st.button(f"✔️ Marcar como Resolvido", key=f"resolvido_{dados['protocolo']}"):
+                    dados["status"] = "resolvido"
+                    db.collection("solicitacoes").document(dados["protocolo"]).set(dados)
+                    st.success("🟩 Solicitação marcada como resolvida.")
+                    st.rerun()
+        
                 st.markdown("----")
+
                 # 👨‍💼 PAINEL DO ADMIN
     elif tipo_usuario == "admin":
         st.subheader("📥 Solicitações Recebidas")
