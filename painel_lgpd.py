@@ -237,7 +237,9 @@ def render():
     
                     cpf = usuario_data.get('cpf', '---')
     
-                    agora = datetime.datetime.now(timezone_brasilia).isoformat()
+                    agora = datetime.datetime.now(timezone_brasilia)
+
+                    protocolo = f"LGPD-{agora.strftime('%Y%m%d%H%M%S%f')}"
     
                     doc_ref = db.collection("solicitacoes").document(protocolo)
                     doc_ref.set({
@@ -249,7 +251,7 @@ def render():
                         "tipo": tipo,
                         "descricao": descricao,
                         "anexos": [file.name for file in anexos] if anexos else [],
-                        "data_envio": agora,
+                        "data_envio": agora.isoformat(),
                         "status": "Recebido",
                         "responsavel": None,
                         "resposta": None,
