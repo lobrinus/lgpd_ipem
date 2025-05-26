@@ -1,4 +1,3 @@
-Você disse:
 import streamlit as st
 import datetime
 import os
