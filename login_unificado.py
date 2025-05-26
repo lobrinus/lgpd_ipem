@@ -1,4 +1,3 @@
-# login_unificado.py
 import pyrebase
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -19,16 +18,8 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 if not firebase_admin._apps:
-    if "FIREBASE_CREDENTIALS" not in st.secrets:
-        st.error("❌ As credenciais do Firebase não foram encontradas nos secrets.")
-        st.stop()
-
-    try:
-        cred = credentials.Certificate(dict(st.secrets["FIREBASE_CREDENTIALS"]))
-        firebase_admin.initialize_app(cred)
-    except Exception as e:
-        st.error(f"❌ Erro ao inicializar o Firebase Admin: {e}")
-        st.stop()
+    cred = credentials.Certificate(dict(st.secrets["FIREBASE_CREDENTIALS"]))
+    firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
