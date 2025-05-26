@@ -37,13 +37,13 @@ def render():
     st.markdown("---")
     st.subheader("Situações Comuns")
     st.markdown("""
-    **Recebimento de solicitação de titular:**
-    ✅ Encaminhar imediatamente ao Encarregado  
-    ❌ Tentar resolver por conta própria ou ignorar
+    **Recebimento de solicitação de titular:** <br>
+    ✅ Encaminhar imediatamente ao Encarregado <br>
+    ❌ Tentar resolver por conta própria ou ignorar <br>
     
-    **Identificação de dado desatualizado:**
-    ✅ Atualizar ou marcar para correção  
-    ❌ Manter o dado incorreto no sistema
+    **Identificação de dado desatualizado:** <br>
+    ✅ Atualizar ou marcar para correção <br>
+    ❌ Manter o dado incorreto no sistema <br>
     
     **Necessidade de compartilhar dados com terceiro:**
     ✅ Verificar contrato/cláusula de proteção  
