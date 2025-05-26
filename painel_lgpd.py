@@ -226,12 +226,16 @@ def render():
             else:
                 protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')}"
                 try:
+                    usuario_doc = db.collection("usuarios").document(usuario['email']).get()
+                    usuario_data = usuario_doc.to_dict() if usuario_doc.exists else {}
+                    nome = usuario_data.get('nome', '---')
+                    cpf = usuario_data.get('cpf', '---')
                     doc_ref = db.collection("solicitacoes").document(protocolo)
                     doc_ref.set({
                         "protocolo": protocolo,
                         "email": usuario['email'],
-                        "nome": db.collection("usuarios").document(usuario['email']).get().to_dict().get('nome', '---'),
-                        "cpf": db.collection("usuarios").document(usuario['email']).get().to_dict().get('cpf', '---'),
+                        "nome": nome,
+                        "cpf": cpf,
                         "telefone": telefone,
                         "tipo": tipo,
                         "descricao": descricao,
@@ -242,6 +246,7 @@ def render():
                         "resposta": None,
                         "usuario_id": usuario['email']
                     })
+
 
                     st.success(f"""
                     ✅ Solicitação registrada com sucesso!  
