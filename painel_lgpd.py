@@ -221,41 +221,45 @@ def render():
         anexos = st.file_uploader("Anexar documentos comprobatórios", accept_multiple_files=True)
         submitted = st.form_submit_button("Enviar Solicitação")
         if submitted:
-            if not all([email_solicitante.strip(), telefone.strip(), tipo.strip(), descricao.strip()]):
-                st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
-            else:
-                protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')}"
-                try:
-                    usuario_doc = db.collection("usuarios").document(usuario['email']).get()
-                    usuario_data = usuario_doc.to_dict() if usuario_doc.exists else {}
-                    nome = usuario_data.get('nome', '---')
-                    cpf = usuario_data.get('cpf', '---')
-                    doc_ref = db.collection("solicitacoes").document(protocolo)
-                    doc_ref.set({
-                        "protocolo": protocolo,
-                        "email": usuario['email'],
-                        "nome": nome,
-                        "cpf": cpf,
-                        "telefone": telefone,
-                        "tipo": tipo,
-                        "descricao": descricao,
-                        "anexos": [file.name for file in anexos] if anexos else [],
-                        "data_envio": datetime.datetime.now().isoformat(),
-                        "status": "Recebido",
-                        "responsavel": None,
-                        "resposta": None,
-                        "usuario_id": usuario['email']
-                    })
+        if not all([email_solicitante.strip(), telefone.strip(), tipo.strip(), descricao.strip()]):
+            st.error("⚠️ Preencha todos os campos obrigatórios (marcados com *)")
+        else:
+            protocolo = f"LGPD-{datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')}"
+            try:
+                # 🔥 Buscar dados do usuário de forma segura
+                usuario_doc = db.collection("usuarios").document(usuario['email']).get()
+                usuario_data = usuario_doc.to_dict() if usuario_doc.exists else {}
+    
+                nome = usuario_data.get('nome', '---')
+                cpf = usuario_data.get('cpf', '---')
+    
+                # 🔥 Enviar solicitação
+                doc_ref = db.collection("solicitacoes").document(protocolo)
+                doc_ref.set({
+                    "protocolo": protocolo,
+                    "email": usuario['email'],
+                    "nome": nome,
+                    "cpf": cpf,
+                    "telefone": telefone,
+                    "tipo": tipo,
+                    "descricao": descricao,
+                    "anexos": [file.name for file in anexos] if anexos else [],
+                    "data_envio": datetime.datetime.now().isoformat(),
+                    "status": "Recebido",
+                    "responsavel": None,
+                    "resposta": None,
+                    "usuario_id": usuario['email']
+                })
+    
+                st.success(f"""
+                ✅ Solicitação registrada com sucesso!  
+                **Protocolo:** {protocolo}  
+                **Previsão de resposta:** {(datetime.datetime.now() + datetime.timedelta(days=15)).strftime('%d/%m/%Y')}
+                """)
+            except Exception as e:
+                st.error(f"Erro ao enviar solicitação: {str(e)}")
+        st.rerun()
 
-
-                    st.success(f"""
-                    ✅ Solicitação registrada com sucesso!  
-                    **Protocolo:** {protocolo}  
-                    **Previsão de resposta:** {(datetime.datetime.now() + datetime.timedelta(days=15)).strftime('%d/%m/%Y')}
-                    """)
-                except Exception as e:
-                    st.error(f"Erro ao enviar solicitação: {str(e)}")
-            st.rerun()
 
     # Seção de Prazos e Multas
     st.markdown("---")
