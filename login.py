@@ -55,7 +55,7 @@ def render():
                     st.success("✅ Bem-vindo, cidadão!")
                     st.info("➡️ Acesse o painel do cidadão no menu 'Painel LGPD'.")
 
-                st.experimental_rerun()
+                st.rerun()
 
             else:
                 st.error(dados)
