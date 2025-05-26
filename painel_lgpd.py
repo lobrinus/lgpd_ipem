@@ -7,6 +7,9 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from login_unificado import autenticar_usuario, registrar_usuario
 
+timezone_brasilia = pytz.timezone('America/Sao_Paulo')
+
+
 def render():
     # === Inicialização do Firebase (executa apenas uma vez) ===
     if not firebase_admin._apps:
