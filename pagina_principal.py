@@ -1,4 +1,58 @@
 import streamlit as st
+import feedparser # Para ler feeds RSS
+from datetime import datetime
+import time # Para formatação de data
+
+# Função para buscar e exibir notícias do feed RSS
+def carregar_noticias_lgpd(feed_url, num_noticias=5):
+    """
+    Busca notícias de um feed RSS e as exibe no Streamlit.
+    """
+    try:
+        feed = feedparser.parse(feed_url)
+        if feed.bozo: # Verifica se houve erro ao parsear o feed
+            st.error(f"Erro ao carregar o feed de notícias: {feed.bozo_exception}")
+            return
+
+        if not feed.entries:
+            st.info("Nenhuma notícia encontrada no feed no momento.")
+            return
+
+        st.subheader("📰 Últimas Notícias sobre LGPD (ANPD)")
+        for i, entry in enumerate(feed.entries[:num_noticias]):
+            titulo = entry.get("title", "Sem título")
+            link = entry.get("link", "#")
+            resumo = entry.get("summary", "Sem resumo disponível.")
+
+            # Tenta formatar a data de publicação
+            data_publicacao_str = "Data não informada"
+            if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                try:
+                    # entry.published_parsed é uma tupla time.struct_time
+                    # Converte para objeto datetime e depois formata
+                    dt_obj = datetime.fromtimestamp(time.mktime(entry.published_parsed))
+                    data_publicacao_str = dt_obj.strftime("%d/%m/%Y às %H:%M")
+                except Exception:
+                    # Se houver erro na conversão, usa o valor original se disponível
+                    data_publicacao_str = entry.get("published", "Data não informada")
+            elif hasattr(entry, 'updated_parsed') and entry.updated_parsed: # Fallback para data de atualização
+                 try:
+                    dt_obj = datetime.fromtimestamp(time.mktime(entry.updated_parsed))
+                    data_publicacao_str = dt_obj.strftime("%d/%m/%Y às %H:%M")
+                 except Exception:
+                    data_publicacao_str = entry.get("updated", "Data não informada")
+
+
+            with st.container(border=True):
+                st.markdown(f"#### [{titulo}]({link})")
+                st.caption(f"Publicado em: {data_publicacao_str}")
+                st.markdown(f"<div style='text-align: justify;'>{resumo}</div>", unsafe_allow_html=True)
+                st.link_button("Ler mais", link, use_container_width=True)
+            if i < num_noticias - 1: # Adiciona um separador, exceto após a última notícia
+                st.markdown("---")
+
+    except Exception as e:
+        st.error(f"Ocorreu um erro ao tentar buscar as notícias: {e}")
 
 
 def render():
@@ -29,6 +83,13 @@ def render():
             url="https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao",
             use_container_width=True
         )
+        st.markdown("---") # Separador
+
+        # Chamada para a função de notícias
+        feed_anpd_url = "https://www.gov.br/anpd/pt-br/assuntos/noticias/RSS"
+        carregar_noticias_lgpd(feed_anpd_url) # Você pode ajustar o número de notícias aqui
+    
+        st.markdown("---") # Separador
     # Seção de Contato
     with st.container():
         col1, col2 = st.columns([2, 3])
