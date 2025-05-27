@@ -4,93 +4,6 @@ from datetime import datetime
 import time # Para formatação de data
 import re # Para remoção de tags HTML
 
-# Função para buscar e exibir notícias do feed RSS com filtro
-def carregar_noticias_lgpd(feed_url, num_noticias=5, termos_filtro=None):
-    """
-    Busca notícias de um feed RSS, filtra por termos e as exibe no Streamlit.
-    """
-    if termos_filtro is None:
-        # Termos padrão em maiúsculas para facilitar a comparação case-insensitive
-        termos_filtro = ["LGPD", "ANPD", "PROTEÇÃO DE DADOS PESSOAIS", "PROTEÇÃO DE DADOS"]
-
-    try:
-        feed = feedparser.parse(feed_url)
-        if feed.bozo: # Verifica se houve erro ao parsear o feed
-            st.error(f"Erro ao carregar o feed de notícias: {feed.bozo_exception}")
-            # Adiciona mais detalhes do erro se disponíveis
-            if hasattr(feed, 'debug_message'):
-                 st.warning(f"Debug Info (Feed): {feed.debug_message}")
-            return
-
-        if not feed.entries:
-            st.info("Nenhuma notícia encontrada no feed no momento.")
-            return
-
-        st.subheader("📰 Notícias Relevantes sobre LGPD e Proteção de Dados (Fonte: Planalto)")
-        
-        noticias_filtradas_encontradas = []
-
-        for entry in feed.entries:
-            titulo = entry.get("title", "").strip()
-            link = entry.get("link", "#")
-            
-            resumo_html = entry.get("summary", entry.get("description", ""))
-            
-            if resumo_html:
-                resumo_texto_limpo = re.sub('<[^<]+?>', '', resumo_html).strip()
-            else:
-                resumo_texto_limpo = "Sem resumo disponível."
-
-            conteudo_busca = (titulo + " " + resumo_texto_limpo).upper()
-
-            if any(termo.upper() in conteudo_busca for termo in termos_filtro):
-                data_publicacao_str = "Data não informada"
-                # Tenta obter e formatar a data de publicação
-                parsed_date = None
-                if hasattr(entry, 'published_parsed') and entry.published_parsed:
-                    parsed_date = entry.published_parsed
-                elif hasattr(entry, 'updated_parsed') and entry.updated_parsed: # Fallback para data de atualização
-                    parsed_date = entry.updated_parsed
-                
-                if parsed_date:
-                    try:
-                        dt_obj = datetime.fromtimestamp(time.mktime(parsed_date))
-                        data_publicacao_str = dt_obj.strftime("%d/%m/%Y às %H:%M")
-                    except Exception:
-                        # Se houver erro na conversão, usa o valor original se disponível
-                        if hasattr(entry, 'published'):
-                            data_publicacao_str = entry.get("published", "Data não informada")
-                        elif hasattr(entry, 'updated'):
-                            data_publicacao_str = entry.get("updated", "Data não informada")
-                
-                noticias_filtradas_encontradas.append({
-                    "titulo": titulo,
-                    "link": link,
-                    "resumo_limpo": resumo_texto_limpo,
-                    "data_publicacao": data_publicacao_str
-                })
-
-        if not noticias_filtradas_encontradas:
-            st.info(f"Nenhuma notícia encontrada com os termos: {', '.join(termos_filtro)} no feed selecionado.")
-            return
-
-        # Exibe o número desejado de notícias filtradas
-        for i, noticia in enumerate(noticias_filtradas_encontradas[:num_noticias]):
-            with st.container(border=True): # Usando 'border=True' para um visual mais limpo
-                st.markdown(f"#### [{noticia['titulo']}]({noticia['link']})")
-                st.caption(f"Publicado em: {noticia['data_publicacao']}")
-                resumo_preview = (noticia['resumo_limpo'][:350] + '...') if len(noticia['resumo_limpo']) > 350 else noticia['resumo_limpo']
-                st.markdown(f"<div style='text-align: justify; font-size: 0.95em;'>{resumo_preview}</div>", unsafe_allow_html=True)
-                if noticia['link'] != "#":
-                    st.link_button("Ler matéria completa", noticia['link'], use_container_width=True)
-            if i < min(num_noticias, len(noticias_filtradas_encontradas)) - 1:
-                st.markdown("---") # Adiciona um separador visual
-
-    except Exception as e:
-        st.error(f"Ocorreu um erro ao tentar buscar e filtrar as notícias: {e}")
-        st.error(f"URL do Feed utilizado: {feed_url}")
-
-
 def render():
     st.markdown("""
     <h1 style='text-align: center;'>🏠 Bem Vindo ao Portal LGPD - IPEM-MG</h1>
@@ -119,15 +32,6 @@ def render():
             url="https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao",
             use_container_width=True
         )
-    st.markdown("---")
-
-    # Inclusão da seção de notícias LGPD
-    feed_planalto_url = "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto/noticias/ultimas-noticias/RSS"
-    # Termos para filtrar as notícias, mais específicos
-    termos_para_filtrar = ["LGPD", "ANPD", "Proteção de Dados Pessoais", "Proteção de Dados"] 
-    carregar_noticias_lgpd(feed_planalto_url, num_noticias=3, termos_filtro=termos_para_filtrar) # Exibindo 3 notícias
-
-    st.markdown("---")
 
     # Seção de Contato
     with st.container():
