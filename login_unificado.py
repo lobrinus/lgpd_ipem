@@ -24,7 +24,7 @@ firebaseConfig = {
 }
 
 try:
-    # st.write("DEBUG: Tentando inicializar Pyrebase com firebaseConfig...") # Descomente para debug na interface
+    st.write("DEBUG: Tentando inicializar Pyrebase com firebaseConfig...") # Descomente para debug na interface
     firebase_pyrebase_app = pyrebase.initialize_app(firebaseConfig)
     auth = firebase_pyrebase_app.auth()
     storage = firebase_pyrebase_app.storage()
@@ -32,8 +32,8 @@ try:
         st.error("⚠️ Erro Crítico em login_unificado.py: Pyrebase 'auth' não foi inicializado após initialize_app. Verifique as chaves em firebaseConfig.")
     if not storage:
         st.error("⚠️ Erro Crítico em login_unificado.py: Pyrebase 'storage' não foi inicializado após initialize_app. Verifique as chaves em firebaseConfig.")
-    # st.write(f"DEBUG: Pyrebase auth: {'Inicializado' if auth else 'FALHOU'}") # Descomente para debug
-    # st.write(f"DEBUG: Pyrebase storage: {'Inicializado' if storage else 'FALHOU'}") # Descomente para debug
+    st.write(f"DEBUG: Pyrebase auth: {'Inicializado' if auth else 'FALHOU'}") # Descomente para debug
+    st.write(f"DEBUG: Pyrebase storage: {'Inicializado' if storage else 'FALHOU'}") # Descomente para debug
 
 except Exception as e_pyrebase:
     st.error(f"⚠️ Erro Crítico em login_unificado.py: Falha ao inicializar Pyrebase (Auth/Storage). Exceção: {e_pyrebase}")
@@ -42,7 +42,7 @@ except Exception as e_pyrebase:
 # --- Configuração e Inicialização do Firebase Admin SDK (Firestore) ---
 if not firebase_admin._apps:
     try:
-        # st.write("DEBUG: Tentando inicializar Firebase Admin SDK...") # Descomente para debug
+        st.write("DEBUG: Tentando inicializar Firebase Admin SDK...") # Descomente para debug
         # Esta parte DEPENDE da configuração correta de [FIREBASE_CREDENTIALS]
         # nos seus "Secrets" do Streamlit Cloud.
         cred_value = st.secrets["FIREBASE_CREDENTIALS"]
@@ -60,7 +60,7 @@ if not firebase_admin._apps:
         db = firestore.client()
         if not db:
             st.error("⚠️ Erro Crítico em login_unificado.py: Firebase Admin SDK 'db' (Firestore) não foi inicializado após initialize_app. Verifique as credenciais.")
-        # st.write(f"DEBUG: Firebase Admin SDK db: {'Inicializado' if db else 'FALHOU'}") # Descomente para debug
+        st.write(f"DEBUG: Firebase Admin SDK db: {'Inicializado' if db else 'FALHOU'}") # Descomente para debug
 
     except KeyError as e_key_admin:
         st.error(f"⚠️ Erro Crítico em login_unificado.py: Chave 'FIREBASE_CREDENTIALS' não encontrada nos seus 'Secrets' do Streamlit Cloud: {e_key_admin}. Verifique o nome e a existência da seção.")
@@ -74,7 +74,7 @@ if not firebase_admin._apps:
 else:
     # Se já inicializado (ex: por um rerun do Streamlit), apenas obtenha a instância
     db = firestore.client()
-    # st.write(f"DEBUG: Firebase Admin SDK db (já inicializado): {'Disponível' if db else 'FALHOU'}") # Descomente para debug
+    st.write(f"DEBUG: Firebase Admin SDK db (já inicializado): {'Disponível' if db else 'FALHOU'}") # Descomente para debug
 
 # Fuso horário de Brasília
 timezone_brasilia = pytz.timezone('America/Sao_Paulo')
