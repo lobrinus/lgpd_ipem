@@ -2,57 +2,93 @@ import streamlit as st
 import feedparser # Para ler feeds RSS
 from datetime import datetime
 import time # Para formatação de data
+import re # Para remoção de tags HTML
 
-# Função para buscar e exibir notícias do feed RSS
-def carregar_noticias_lgpd(feed_url, num_noticias=5):
+# Função para buscar e exibir notícias do feed RSS com filtro
+def carregar_noticias_lgpd(feed_url, num_noticias=5, termos_filtro=None):
     """
-    Busca notícias de um feed RSS e as exibe no Streamlit.
+    Busca notícias de um feed RSS, filtra por termos e as exibe no Streamlit.
     """
+    if termos_filtro is None:
+        # Termos padrão em maiúsculas para facilitar a comparação case-insensitive
+        termos_filtro = ["LGPD", "ANPD", "PROTEÇÃO DE DADOS PESSOAIS", "PROTEÇÃO DE DADOS"]
+
     try:
         feed = feedparser.parse(feed_url)
         if feed.bozo: # Verifica se houve erro ao parsear o feed
             st.error(f"Erro ao carregar o feed de notícias: {feed.bozo_exception}")
+            # Adiciona mais detalhes do erro se disponíveis
+            if hasattr(feed, 'debug_message'):
+                 st.warning(f"Debug Info (Feed): {feed.debug_message}")
             return
 
         if not feed.entries:
             st.info("Nenhuma notícia encontrada no feed no momento.")
             return
 
-        st.subheader("📰 Últimas Notícias sobre LGPD (ANPD)")
-        for i, entry in enumerate(feed.entries[:num_noticias]):
-            titulo = entry.get("title", "Sem título")
+        st.subheader("📰 Notícias Relevantes sobre LGPD e Proteção de Dados (Fonte: Planalto)")
+        
+        noticias_filtradas_encontradas = []
+
+        for entry in feed.entries:
+            titulo = entry.get("title", "").strip()
             link = entry.get("link", "#")
-            resumo = entry.get("summary", "Sem resumo disponível.")
+            
+            resumo_html = entry.get("summary", entry.get("description", ""))
+            
+            if resumo_html:
+                resumo_texto_limpo = re.sub('<[^<]+?>', '', resumo_html).strip()
+            else:
+                resumo_texto_limpo = "Sem resumo disponível."
 
-            # Tenta formatar a data de publicação
-            data_publicacao_str = "Data não informada"
-            if hasattr(entry, 'published_parsed') and entry.published_parsed:
-                try:
-                    # entry.published_parsed é uma tupla time.struct_time
-                    # Converte para objeto datetime e depois formata
-                    dt_obj = datetime.fromtimestamp(time.mktime(entry.published_parsed))
-                    data_publicacao_str = dt_obj.strftime("%d/%m/%Y às %H:%M")
-                except Exception:
-                    # Se houver erro na conversão, usa o valor original se disponível
-                    data_publicacao_str = entry.get("published", "Data não informada")
-            elif hasattr(entry, 'updated_parsed') and entry.updated_parsed: # Fallback para data de atualização
-                 try:
-                    dt_obj = datetime.fromtimestamp(time.mktime(entry.updated_parsed))
-                    data_publicacao_str = dt_obj.strftime("%d/%m/%Y às %H:%M")
-                 except Exception:
-                    data_publicacao_str = entry.get("updated", "Data não informada")
+            conteudo_busca = (titulo + " " + resumo_texto_limpo).upper()
 
+            if any(termo.upper() in conteudo_busca for termo in termos_filtro):
+                data_publicacao_str = "Data não informada"
+                # Tenta obter e formatar a data de publicação
+                parsed_date = None
+                if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                    parsed_date = entry.published_parsed
+                elif hasattr(entry, 'updated_parsed') and entry.updated_parsed: # Fallback para data de atualização
+                    parsed_date = entry.updated_parsed
+                
+                if parsed_date:
+                    try:
+                        dt_obj = datetime.fromtimestamp(time.mktime(parsed_date))
+                        data_publicacao_str = dt_obj.strftime("%d/%m/%Y às %H:%M")
+                    except Exception:
+                        # Se houver erro na conversão, usa o valor original se disponível
+                        if hasattr(entry, 'published'):
+                            data_publicacao_str = entry.get("published", "Data não informada")
+                        elif hasattr(entry, 'updated'):
+                            data_publicacao_str = entry.get("updated", "Data não informada")
+                
+                noticias_filtradas_encontradas.append({
+                    "titulo": titulo,
+                    "link": link,
+                    "resumo_limpo": resumo_texto_limpo,
+                    "data_publicacao": data_publicacao_str
+                })
 
-            with st.container(border=True):
-                st.markdown(f"#### [{titulo}]({link})")
-                st.caption(f"Publicado em: {data_publicacao_str}")
-                st.markdown(f"<div style='text-align: justify;'>{resumo}</div>", unsafe_allow_html=True)
-                st.link_button("Ler mais", link, use_container_width=True)
-            if i < num_noticias - 1: # Adiciona um separador, exceto após a última notícia
-                st.markdown("---")
+        if not noticias_filtradas_encontradas:
+            st.info(f"Nenhuma notícia encontrada com os termos: {', '.join(termos_filtro)} no feed selecionado.")
+            return
+
+        # Exibe o número desejado de notícias filtradas
+        for i, noticia in enumerate(noticias_filtradas_encontradas[:num_noticias]):
+            with st.container(border=True): # Usando 'border=True' para um visual mais limpo
+                st.markdown(f"#### [{noticia['titulo']}]({noticia['link']})")
+                st.caption(f"Publicado em: {noticia['data_publicacao']}")
+                resumo_preview = (noticia['resumo_limpo'][:350] + '...') if len(noticia['resumo_limpo']) > 350 else noticia['resumo_limpo']
+                st.markdown(f"<div style='text-align: justify; font-size: 0.95em;'>{resumo_preview}</div>", unsafe_allow_html=True)
+                if noticia['link'] != "#":
+                    st.link_button("Ler matéria completa", noticia['link'], use_container_width=True)
+            if i < min(num_noticias, len(noticias_filtradas_encontradas)) - 1:
+                st.markdown("---") # Adiciona um separador visual
 
     except Exception as e:
-        st.error(f"Ocorreu um erro ao tentar buscar as notícias: {e}")
+        st.error(f"Ocorreu um erro ao tentar buscar e filtrar as notícias: {e}")
+        st.error(f"URL do Feed utilizado: {feed_url}")
 
 
 def render():
@@ -83,48 +119,53 @@ def render():
             url="https://www.gov.br/governodigital/pt-br/lgpd-pagina-do-cidadao",
             use_container_width=True
         )
-        st.markdown("---") # Separador
+    st.markdown("---")
 
-        # Chamada para a função de notícias
-        feed_anpd_url = "https://www.gov.br/anpd/pt-br/assuntos/noticias/RSS"
-        carregar_noticias_lgpd(feed_anpd_url) # Você pode ajustar o número de notícias aqui
-    
-        st.markdown("---") # Separador
+    # Inclusão da seção de notícias LGPD
+    feed_planalto_url = "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto/noticias/ultimas-noticias/RSS"
+    # Termos para filtrar as notícias, mais específicos
+    termos_para_filtrar = ["LGPD", "ANPD", "Proteção de Dados Pessoais", "Proteção de Dados"] 
+    carregar_noticias_lgpd(feed_planalto_url, num_noticias=3, termos_filtro=termos_para_filtrar) # Exibindo 3 notícias
+
+    st.markdown("---")
+
     # Seção de Contato
     with st.container():
         col1, col2 = st.columns([2, 3])
         with col1:
             st.subheader("📞 Contato do Encarregado de Dados")
             st.markdown("""
-            **Encarregado (DPO):** Leonardo Silva Marafeli  
-            **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)  
-            **Telefone:** (31) 3399-7100  
-            **Horário:** 8h às 18h (dias úteis)  
-            **Endereço:**  
-            Rua Cristiano França Teixeira Guimarães, 80  
-            Bairro Cinco - Contagem/MG  
+            **Encarregado (DPO):** Leonardo Silva Marafeli
+            **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)
+            **Telefone:** (31) 3399-7100
+            **Horário:** 8h às 18h (dias úteis)
+            **Endereço:**
+            Rua Cristiano França Teixeira Guimarães, 80
+            Bairro Cinco - Contagem/MG
             CEP: 32010-130
             """)
         with col2:
             st.subheader("🚨 Canal de Denúncias LGPD")
             st.markdown("""
-            **Para reportar incidentes ou irregularidades relacionados a LGPD:**  
-            - 📧 [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)  
-            - 📞 (31) 3399-7100 / 0800 335 335  
+            **Para reportar incidentes ou irregularidades relacionados a LGPD:**
+            - 📧 [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)
+            - 📞 (31) 3399-7100 / 0800 335 335
             - 🌐 Formulário Online via Painel LGPD
             """)
     st.markdown("---")
 
-    # Últimas Notícias
-    st.subheader("📢 Últimas Notícias")
-    with st.expander("🔔 Novidades do Sistema (Atualizado em 20/05/2025)"):
+    # Últimas Notícias (do sistema)
+    st.subheader("📢 Novidades do Portal") # Alterei o título para diferenciar do feed de notícias externas
+    with st.expander("🔔 Atualizações do Sistema (Status: 20/05/2025)"):
         st.markdown("""
-        - Nova funcionalidade de acompanhamento de solicitações
-        - Atualização da Política de Privacidade (versão 2.1)
-        - Integração com notícias sobre a LGPD diretamente dos sites oficiais
-        - Treinamento LGPD para servidores em 
+        - Nova funcionalidade de acompanhamento de solicitações.
+        - Atualização da Política de Privacidade (versão 2.1).
+        - Integração com notícias sobre a LGPD diretamente de fontes governamentais.
+        - Treinamento LGPD para servidores (em andamento).
         """)
-    # Recursos
+    st.markdown("---")
+
+    # Recursos Importantes
     st.subheader("📚 Recursos Importantes")
     tab1, tab2, tab3 = st.tabs(["Legislação", "Boas Práticas", "FAQ"])
     with tab1:
@@ -137,30 +178,31 @@ def render():
     with tab2:
         st.markdown("""
         **Principais Boas Práticas:**
-        1. Coleta mínima necessária
-        2. Criptografia de dados sensíveis
-        3. Atualização regular de sistemas
-        4. Treinamento anual de colaboradores
-        5. Auditorias trimestrais de segurança
+        1. Coleta mínima necessária de dados.
+        2. Criptografia de dados sensíveis em trânsito e repouso.
+        3. Atualização regular de sistemas e softwares.
+        4. Treinamento anual de colaboradores sobre LGPD.
+        5. Auditorias periódicas de segurança e conformidade.
         """)
     with tab3:
         st.markdown("""
         **Perguntas Frequentes:**
-        Q: Como solicitar exclusão de dados?  
-        R: Através do Painel LGPD ou formulário específico
+        P: Como solicitar exclusão de dados?
+        R: Através do Painel LGPD ou formulário específico de contato com o DPO.
 
-        Q: Quanto tempo demora uma resposta?  
-        R: Prazo máximo de 15 dias úteis. Com a probabilidade de prorrogação dependendo da complexidade da solicitação
+        P: Quanto tempo demora uma resposta à minha solicitação?
+        R: O prazo padrão é de até 15 dias, podendo ser prorrogado mediante justificativa, dependendo da complexidade.
 
-        Q: Posso acessar dados de terceiros?  
-        R: Somente com autorização judicial expressa
+        P: Posso acessar dados de terceiros através do portal?
+        R: Não. O acesso é restrito aos dados do próprio titular, salvo representação legal ou autorização judicial.
         """)
     # Rodapé
     st.markdown("---")
     st.markdown("""
-    <div style="text-align: center; color: gray; margin-top: 40px;">
+    <div style="text-align: center; color: gray; margin-top: 40px; font-size:0.9em;">
         © 2025 IPEM-MG. Todos os direitos reservados.<br>
-        R. Cristiano França Teixeira Guimarães, 80 - Cinco, Contagem - MG, 32010-130<br> 
+        R. Cristiano França Teixeira Guimarães, 80 - Cinco, Contagem - MG, 32010-130<br>
         CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
