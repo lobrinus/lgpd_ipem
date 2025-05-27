@@ -66,17 +66,17 @@ with st.sidebar:
 
     # --- Definição do Menu de Navegação ---
     menu_items_sidebar = [
-        "🏠 Página Principal",
-        "👤 Painel LGPD",
-        "✅ Boas Práticas",
-        "🔍 Orientação de Dados Pessoais",
-        "👥 Quem Lida com os Dados",
-        "📜 Política de Privacidade",
-        "🛡️ Mitigação de Riscos",
-        "⚖️ Princípios Básicos",
-        "✅ O Que Fazer e Não Fazer",
-        "🔄 Fluxo de Dados LGPD",
-        "❓ FAQ"
+        "Página Principal",
+        "Painel LGPD",
+        "Boas Práticas",
+        "Orientação de Dados Pessoais",
+        "Quem Lida com os Dados",
+        "Política de Privacidade",
+        "Mitigação de Riscos",
+        "Princípios Básicos",
+        "O Que Fazer e Não Fazer",
+        "Fluxo de Dados LGPD",
+        "FAQ"
     ]
     menu_icons_sidebar = ["house-door-fill", "person-badge-fill", "patch-check-fill", "search-heart-fill",
                           "people-fill", "file-earmark-text-fill", "shield-lock-fill", "bank",
