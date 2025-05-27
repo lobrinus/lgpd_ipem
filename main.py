@@ -37,7 +37,7 @@ with st.sidebar:
             f"""
             <div style="
                 border: 1px solid #ddd; /* Borda cinza clara */
-                background-color: #f9f9f9; /* Fundo levemente acinzentado */
+                background-color: #90EE90; /* Fundo levemente verde claro */
                 padding: 12px;
                 border-radius: 8px;
                 color: #333; /* Cor do texto escura */
