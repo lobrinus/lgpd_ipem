@@ -83,7 +83,7 @@ with st.sidebar:
                           "hand-thumbs-up-fill", "arrows-angle-contract", "question-circle-fill"] # Ícone "arrows- μέσω-fill" não é padrão, trocado.
 
     if st.session_state.get("logado", False) and st.session_state.get("tipo_usuario") == "admin":
-        admin_menu_item = "📁 Solicitações Recebidas"
+        admin_menu_item = "Painel Administrador"
         admin_menu_icon = "folder2-open" # Ícone para o painel admin
         if admin_menu_item not in menu_items_sidebar:
             menu_items_sidebar.insert(2, admin_menu_item) # Posição 2 (terceiro item)
@@ -113,7 +113,7 @@ with st.sidebar:
 PAGES = {
     "Página Principal": "pagina_principal",
     "Painel LGPD": "painel_lgpd",
-    "Solicitações Recebidas": "solicitacoes_recebidas", # Apenas para admin
+    "Painel Administrador": "painel_administrador", # Apenas para admin
     "Boas Práticas": "boas_praticas",
     "Orientação de Dados Pessoais": "orientacao_dados",
     "Quem Lida com os Dados": "quem_lida",
