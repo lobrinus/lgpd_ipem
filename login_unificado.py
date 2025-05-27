@@ -9,7 +9,7 @@ import datetime
 auth = None
 storage = None
 db = None
-firebase_pyrebase_app = None # Mantido para referência, caso necessário
+firebase_pyrebase_app = None
 
 # --- Configuração e Inicialização do Pyrebase (Auth e Storage) ---
 # Usando as configurações diretamente no código, conforme seu arquivo login_unificado (6).py
@@ -20,29 +20,30 @@ firebaseConfig = {
     "storageBucket": "lgpd-ipem-mg-9f1a5.appspot.com",
     "messagingSenderId": "510388427771",
     "appId": "1:510388427771:web:fdcda6526f125892db8266",
-    "databaseURL": "" # Geralmente vazio se não estiver usando Realtime Database ativamente
+    "databaseURL": ""
 }
 
 try:
-    st.write("DEBUG: Tentando inicializar Pyrebase com firebaseConfig...") # Descomente para debug na interface
+    # print("DEBUG: Tentando inicializar Pyrebase com firebaseConfig...") # Para logs no Streamlit Cloud
     firebase_pyrebase_app = pyrebase.initialize_app(firebaseConfig)
     auth = firebase_pyrebase_app.auth()
     storage = firebase_pyrebase_app.storage()
     if not auth:
-        st.error("⚠️ Erro Crítico em login_unificado.py: Pyrebase 'auth' não foi inicializado após initialize_app. Verifique as chaves em firebaseConfig.")
+        # Esta mensagem aparecerá na interface se 'auth' não for criado.
+        st.error("⚠️ Erro Crítico em login_unificado.py: Pyrebase 'auth' não foi inicializado após initialize_app. Verifique as chaves em firebaseConfig ou a conectividade com o Firebase.")
     if not storage:
-        st.error("⚠️ Erro Crítico em login_unificado.py: Pyrebase 'storage' não foi inicializado após initialize_app. Verifique as chaves em firebaseConfig.")
-    st.write(f"DEBUG: Pyrebase auth: {'Inicializado' if auth else 'FALHOU'}") # Descomente para debug
-    st.write(f"DEBUG: Pyrebase storage: {'Inicializado' if storage else 'FALHOU'}") # Descomente para debug
+        st.error("⚠️ Erro Crítico em login_unificado.py: Pyrebase 'storage' não foi inicializado após initialize_app. Verifique as chaves em firebaseConfig ou a conectividade com o Firebase.")
+    # print(f"DEBUG: Pyrebase auth: {'Inicializado' if auth else 'FALHOU'}")
+    # print(f"DEBUG: Pyrebase storage: {'Inicializado' if storage else 'FALHOU'}")
 
 except Exception as e_pyrebase:
     st.error(f"⚠️ Erro Crítico em login_unificado.py: Falha ao inicializar Pyrebase (Auth/Storage). Exceção: {e_pyrebase}")
-    # auth e storage permanecem None, o que causará o erro "Serviço ... indisponível" nas outras páginas.
+    # auth e storage permanecem None
 
 # --- Configuração e Inicialização do Firebase Admin SDK (Firestore) ---
 if not firebase_admin._apps:
     try:
-        st.write("DEBUG: Tentando inicializar Firebase Admin SDK...") # Descomente para debug
+        # print("DEBUG: Tentando inicializar Firebase Admin SDK...")
         # Esta parte DEPENDE da configuração correta de [FIREBASE_CREDENTIALS]
         # nos seus "Secrets" do Streamlit Cloud.
         cred_value = st.secrets["FIREBASE_CREDENTIALS"]
@@ -52,41 +53,34 @@ if not firebase_admin._apps:
         elif isinstance(cred_value, dict):
             cred_dict = cred_value
         else:
-            # Este erro aparecerá se 'FIREBASE_CREDENTIALS' não for um dict ou JSON str
             raise ValueError("O segredo 'FIREBASE_CREDENTIALS' nos seus 'Secrets' do Streamlit Cloud não é um dicionário nem uma string JSON válida.")
 
         cred = credentials.Certificate(cred_dict)
         firebase_admin.initialize_app(cred)
         db = firestore.client()
         if not db:
-            st.error("⚠️ Erro Crítico em login_unificado.py: Firebase Admin SDK 'db' (Firestore) não foi inicializado após initialize_app. Verifique as credenciais.")
-        st.write(f"DEBUG: Firebase Admin SDK db: {'Inicializado' if db else 'FALHOU'}") # Descomente para debug
+            st.error("⚠️ Erro Crítico em login_unificado.py: Firebase Admin SDK 'db' (Firestore) não foi inicializado após initialize_app. Verifique as credenciais em [FIREBASE_CREDENTIALS] nos seus segredos.")
+        # print(f"DEBUG: Firebase Admin SDK db: {'Inicializado' if db else 'FALHOU'}")
 
     except KeyError as e_key_admin:
         st.error(f"⚠️ Erro Crítico em login_unificado.py: Chave 'FIREBASE_CREDENTIALS' não encontrada nos seus 'Secrets' do Streamlit Cloud: {e_key_admin}. Verifique o nome e a existência da seção.")
         # db permanece None
-    except ValueError as e_value_admin: # Captura o ValueError de formato inválido do segredo
+    except ValueError as e_value_admin:
         st.error(f"⚠️ Erro Crítico em login_unificado.py: Formato inválido para 'FIREBASE_CREDENTIALS' nos seus 'Secrets' do Streamlit Cloud: {e_value_admin}")
         # db permanece None
     except Exception as e_admin:
         st.error(f"⚠️ Erro Crítico em login_unificado.py: Falha geral ao inicializar Firebase Admin SDK (Firestore). Exceção: {e_admin}")
         # db permanece None
 else:
-    # Se já inicializado (ex: por um rerun do Streamlit), apenas obtenha a instância
     db = firestore.client()
-    st.write(f"DEBUG: Firebase Admin SDK db (já inicializado): {'Disponível' if db else 'FALHOU'}") # Descomente para debug
+    # print(f"DEBUG: Firebase Admin SDK db (já inicializado): {'Disponível' if db else 'FALHOU'}")
 
-# Fuso horário de Brasília
 timezone_brasilia = pytz.timezone('America/Sao_Paulo')
-
-# --- Funções de Autenticação e Usuário ---
-# (As funções autenticar_usuario, registrar_usuario, upload_file_to_storage, gerar_protocolo_unico permanecem as mesmas da versão anterior - login_unificado_py_final_v3)
-# Vou incluí-las aqui para o código ser completo:
 
 def autenticar_usuario(email, senha):
     if not auth:
         return False, "❌ Serviço de autenticação Pyrebase (auth) não está disponível."
-    if not db:
+    if not db: # Verifica se o Firestore foi inicializado
         return False, "❌ Serviço de banco de dados Firestore (db) não está disponível."
 
     email_lower = email.lower()
@@ -94,13 +88,12 @@ def autenticar_usuario(email, senha):
         user_auth_info = auth.sign_in_with_email_and_password(email_lower, senha)
         doc_ref = db.collection("usuarios").document(email_lower)
         doc = doc_ref.get()
-
         if doc.exists:
             user_data = doc.to_dict()
             return True, {
                 "email": email_lower,
                 "tipo": user_data.get("tipo", "cidadao"),
-                "nome": user_data.get("nome", ""),
+                "nome": user_data.get("nome", ""), # Retorna o nome do usuário
                 "idToken": user_auth_info.get('idToken')
             }
         else:
@@ -109,7 +102,7 @@ def autenticar_usuario(email, senha):
         error_message = str(e).upper()
         if any(code in error_message for code in ["INVALID_LOGIN_CREDENTIALS", "INVALID_PASSWORD", "EMAIL_NOT_FOUND", "USER_NOT_FOUND", "INVALID_EMAIL"]):
             return False, "❌ E-mail ou senha incorretos."
-        # Para depuração, veja os logs do Streamlit Cloud: print(f"Debug Auth Error: {e}")
+        # Para depuração, veja os logs do Streamlit Cloud: print(f"DEBUG Auth Error: {e}")
         return False, "❌ Erro durante a tentativa de login. Verifique suas credenciais ou tente mais tarde."
 
 def registrar_usuario(email, senha, nome, telefone, cpf, tipo="cidadao"):
@@ -136,7 +129,7 @@ def registrar_usuario(email, senha, nome, telefone, cpf, tipo="cidadao"):
             return False, "❌ Este e-mail já está cadastrado."
         elif "WEAK_PASSWORD" in error_str or "PASSWORD_SHOULD_BE_AT_LEAST_6_CHARACTERS" in error_str:
             return False, "❌ A senha é muito fraca. Deve ter pelo menos 6 caracteres."
-        # Para depuração, veja os logs do Streamlit Cloud: print(f"Debug Register Error: {e}")
+        # Para depuração, veja os logs do Streamlit Cloud: print(f"DEBUG Register Error: {e}")
         return False, f"❌ Erro no registro. Tente novamente ou verifique os dados informados."
 
 def upload_file_to_storage(file_object, destination_path_in_storage):
