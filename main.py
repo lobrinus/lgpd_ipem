@@ -33,24 +33,25 @@ with st.sidebar:
 
         display_name_sidebar = nome_logado_sidebar if nome_logado_sidebar else email_logado_sidebar
 
-        st.markdown(
-            f"""
-            <div style="
-                background-color: #28a745; /* Verde */
-                padding: 12px;
-                border-radius: 8px;
-                color: white;
-                font-weight: bold;
-                margin-bottom: 20px;
-                word-break: break-word;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            ">
-                Usuário: {display_name_sidebar}<br>
-                Perfil: {tipo_usuario_sidebar}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    st.markdown(
+                f"""
+                <div style="
+                    border: 1px solid #ddd; /* Borda cinza clara */
+                    background-color: #f9f9f9; /* Fundo levemente acinzentado */
+                    padding: 12px;
+                    border-radius: 8px;
+                    color: #333; /* Cor do texto escura */
+                    font-weight: bold;
+                    margin-bottom: 20px;
+                    word-break: break-word;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Sombra suave */
+                ">
+                    <span style="font-size: 0.9em; color: #555;">Usuário:</span> {display_name_sidebar}<br>
+                    <span style="font-size: 0.9em; color: #555;">Perfil:</span> {tipo_usuario_sidebar}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
         # Botão de Logout na Sidebar
         if st.button("🚪 Sair / Logout", key="sidebar_btn_logout_main", use_container_width=True):
             keys_to_clear = ["logado", "email", "tipo_usuario", "nome_usuario",
