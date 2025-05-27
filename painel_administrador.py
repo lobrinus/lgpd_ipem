@@ -12,7 +12,7 @@ from login_unificado import (
 )
 
 def render():
-    st.markdown("<h1 style='text-align: center;'>📁 Solicitações Recebidas (Administração)</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>Painel Administrador (Administração)</h1>", unsafe_allow_html=True)
 
     # Verifica se os serviços do Firebase estão disponíveis
     if not db or not upload_file_to_storage: # A autenticação é verificada pela sessão
