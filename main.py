@@ -111,18 +111,18 @@ with st.sidebar:
 # --- Lógica de Renderização de Páginas ---
 # Cada 'nome_do_arquivo.py' deve ter uma função render()
 PAGES = {
-    "🏠 Página Principal": "pagina_principal",
-    "👤 Painel LGPD": "painel_lgpd",
-    "📁 Solicitações Recebidas": "solicitacoes_recebidas", # Apenas para admin
-    "✅ Boas Práticas": "boas_praticas",
-    "🔍 Orientação de Dados Pessoais": "orientacao_dados",
-    "👥 Quem Lida com os Dados": "quem_lida",
-    "📜 Política de Privacidade": "politica_privacidade",
-    "🛡️ Mitigação de Riscos": "mitigacao_riscos",
-    "⚖️ Princípios Básicos": "principios",
-    "✅ O Que Fazer e Não Fazer": "fazer_nao_fazer",
-    "🔄 Fluxo de Dados LGPD": "fluxo_dados",
-    "❓ FAQ": "faq"
+    "Página Principal": "pagina_principal",
+    "Painel LGPD": "painel_lgpd",
+    "Solicitações Recebidas": "solicitacoes_recebidas", # Apenas para admin
+    "Boas Práticas": "boas_praticas",
+    "Orientação de Dados Pessoais": "orientacao_dados",
+    "Quem Lida com os Dados": "quem_lida",
+    "Política de Privacidade": "politica_privacidade",
+    "Mitigação de Riscos": "mitigacao_riscos",
+    "Princípios Básicos": "principios",
+    "O Que Fazer e Não Fazer": "fazer_nao_fazer",
+    "Fluxo de Dados LGPD": "fluxo_dados",
+    "FAQ": "faq"
 }
 
 # Verifica se a página selecionada existe no mapeamento
