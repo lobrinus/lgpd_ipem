@@ -39,10 +39,10 @@ def render():
         with col1:
             st.subheader("📞 Contato do Encarregado de Dados")
             st.markdown("""
-            **Encarregado (DPO):** Leonardo Silva Marafeli
-            **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)
-            **Telefone:** (31) 3399-7100
-            **Horário:** 8h às 18h (dias úteis)
+            **Encarregado (DPO):** Leonardo Silva Marafeli<br>
+            **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)<br>
+            **Telefone:** (31) 3399-7100<br>
+            **Horário:** 8h às 18h (dias úteis)<br>
             **Endereço:**
             Rua Cristiano França Teixeira Guimarães, 80
             Bairro Cinco - Contagem/MG
