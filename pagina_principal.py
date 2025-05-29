@@ -62,6 +62,7 @@ def render():
     st.subheader("📢 Novidades do Portal") # Alterei o título para diferenciar do feed de notícias externas
     with st.expander("🔔 Atualizações do Sistema (Status: 20/05/2025)"):
         st.markdown("""
+        - Novo Painel de Login
         - Nova funcionalidade de acompanhamento de solicitações.
         - Atualização da Política de Privacidade (versão 2.1).
         - Integração com notícias sobre a LGPD diretamente de fontes governamentais.
