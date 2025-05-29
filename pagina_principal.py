@@ -1,8 +1,7 @@
 import streamlit as st
-import feedparser # Para ler feeds RSS
 from datetime import datetime
-import time # Para formatação de data
-import re # Para remoção de tags HTML
+import time
+import re
 
 def render():
     st.markdown("""
