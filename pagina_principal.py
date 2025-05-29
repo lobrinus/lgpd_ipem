@@ -63,7 +63,7 @@ def render():
         st.markdown("""
         - Novo Painel de Login
         - Nova funcionalidade de acompanhamento de solicitações.
-        - Atualização da Política de Privacidade (versão 2.1).
+        - Atualização da Política de Privacidade.
         - Integração com notícias sobre a LGPD diretamente de fontes governamentais.
         - Treinamento LGPD para servidores (em andamento).
         """)
