@@ -13,7 +13,10 @@ try:
         upload_file_to_storage,
         db, # Instância do Firestore client
         timezone_brasilia, # Objeto de fuso horário
-        gerar_protocolo_unico # Função para gerar protocolo
+        gerar_protocolo_unico, # Função para gerar protocolo
+        # MODIFIED_CODE_START
+        auth # Importa a instância auth para usar na recuperação de senha
+        # MODIFIED_CODE_END
     )
 except ImportError:
     st.error("ERRO CRÍTICO: 'login_unificado.py' não encontrado. Funcionalidades essenciais do Painel LGPD estão indisponíveis.")
@@ -36,79 +39,135 @@ def render():
     st.markdown("<h1 style='text-align: center;'>👤 Painel LGPD</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
-    if not db or not autenticar_usuario or not registrar_usuario or not upload_file_to_storage or not gerar_protocolo_unico:
+    # MODIFIED_CODE_START
+    # Verifica se 'auth' também foi carregado com sucesso
+    if not db or not autenticar_usuario or not registrar_usuario or not upload_file_to_storage or not gerar_protocolo_unico or not auth:
+    # MODIFIED_CODE_END
         st.error("❌ Ops! Um ou mais serviços essenciais não estão disponíveis. Verifique 'login_unificado.py' e a configuração do Firebase.")
         st.stop()
 
     if "modo_auth_painel" not in st.session_state:
         st.session_state["modo_auth_painel"] = "login"
 
+    # NEW_CODE_START
+    # Estado para controlar a visibilidade do formulário de reset de senha
+    if "mostrar_reset_senha" not in st.session_state:
+        st.session_state["mostrar_reset_senha"] = False
+    # NEW_CODE_END
+
     if not st.session_state.get("logado", False):
-        st.subheader("Acesse ou crie sua conta para continuar")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("🔑 Entrar no Painel", key="painel_btn_login_tab_render", use_container_width=True):
-                st.session_state["modo_auth_painel"] = "login"
-        with col2:
-            if st.button("📝 Criar Conta", key="painel_btn_registro_tab_render", use_container_width=True):
-                st.session_state["modo_auth_painel"] = "registro"
-        st.markdown("---")
+        # MODIFIED_CODE_START
+        # Lógica para exibir ou o painel de login/registro OU o painel de reset de senha
+        if st.session_state["mostrar_reset_senha"]:
+            # Formulário de Recuperação de Senha
+            with st.form("form_reset_senha"):
+                st.subheader("🔑 Recuperação de Senha")
+                st.write("Por favor, informe seu e-mail para enviarmos as instruções de redefinição de senha.")
+                email_reset = st.text_input("Seu E-mail*", key="reset_email_key_form") # Chave única para este input
+                submit_reset = st.form_submit_button("Enviar E-mail de Redefinição")
 
-        if st.session_state["modo_auth_painel"] == "login":
-            with st.form("form_login_painel_lgpd_page"):
-                st.subheader("🔑 Login")
-                email_login = st.text_input("E-mail*", key="login_email_painel_lgpd_key")
-                senha_login = st.text_input("Senha*", type="password", key="login_senha_painel_lgpd_key")
-                login_submit = st.form_submit_button("Entrar")
-
-                if login_submit:
-                    if not email_login or not senha_login:
-                        st.warning("Por favor, preencha todos os campos.")
+                if submit_reset:
+                    if not email_reset.strip():
+                        st.warning("Por favor, informe seu e-mail.")
+                    elif "@" not in email_reset or "." not in email_reset.split('@')[-1]: # Validação simples
+                        st.error("Formato de e-mail inválido.")
                     else:
-                        sucesso, user_data = autenticar_usuario(email_login, senha_login)
-                        if sucesso:
-                            st.session_state["logado"] = True
-                            st.session_state["email"] = user_data["email"]
-                            st.session_state["tipo_usuario"] = user_data["tipo"]
-                            st.session_state["nome_usuario"] = user_data["nome"]
-                            st.success("✅ Login realizado com sucesso!")
-                            st.rerun()
-                        else:
-                            st.error(f"{user_data}")
-        else: # modo_auth_painel == "registro"
-            with st.form("form_registro_painel_lgpd_page"):
-                st.subheader("📝 Registro de Novo Usuário")
-                nome_reg = st.text_input("Nome completo*", key="reg_nome_painel_key")
-                cpf_reg = st.text_input("CPF ou CNPJ*", max_chars=18, key="reg_cpf_painel_key")
-                telefone_reg = st.text_input("Telefone*", key="reg_telefone_painel_key")
-                email_reg = st.text_input("E-mail*", key="reg_email_painel_lgpd_key")
-                senha_reg = st.text_input("Senha (mínimo 6 caracteres)*", type="password", key="reg_senha_painel_key")
-                senha_conf_reg = st.text_input("Confirme a senha*", type="password", key="reg_senha_conf_painel_key")
-                registro_submit = st.form_submit_button("Registrar")
+                        try:
+                            with st.spinner("Enviando e-mail..."):
+                                auth.send_password_reset_email(email_reset)
+                            st.success(f"✅ Se o e-mail '{email_reset}' estiver cadastrado, um link para redefinição de senha foi enviado.")
+                            st.info("Por favor, verifique sua caixa de entrada e também a pasta de spam/lixo eletrônico.")
+                            # Não muda o estado aqui para o usuário ver a mensagem
+                        except Exception as e:
+                            error_message = str(e)
+                            if "EMAIL_NOT_FOUND" in error_message.upper() or "USER_NOT_FOUND" in error_message.upper():
+                                st.error(f"O e-mail '{email_reset}' não foi encontrado em nosso sistema.")
+                            else:
+                                st.error(f"Ocorreu um erro ao tentar enviar o e-mail de redefinição.")
+                                # st.caption(f"Detalhe do erro: {error_message}") # Para depuração
+                                st.warning("Tente novamente mais tarde ou contate o suporte se o problema persistir.")
+            
+            if st.button("Voltar para Login", key="btn_voltar_login_reset_form_page"): # Chave única
+                st.session_state["mostrar_reset_senha"] = False
+                st.session_state["modo_auth_painel"] = "login" 
+                st.rerun()
+        
+        else:
+            # Painel de Login/Registro (código original)
+        # MODIFIED_CODE_END
+            st.subheader("Acesse ou crie sua conta para continuar")
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🔑 Entrar no Painel", key="painel_btn_login_tab_render", use_container_width=True):
+                    st.session_state["modo_auth_painel"] = "login"
+                    st.session_state["mostrar_reset_senha"] = False # Garante que o modo reset está desativado
+            with col2:
+                if st.button("📝 Criar Conta", key="painel_btn_registro_tab_render", use_container_width=True):
+                    st.session_state["modo_auth_painel"] = "registro"
+                    st.session_state["mostrar_reset_senha"] = False # Garante que o modo reset está desativado
+            st.markdown("---")
 
-                if registro_submit:
-                    if not all([nome_reg.strip(), cpf_reg.strip(), telefone_reg.strip(), email_reg.strip(), senha_reg.strip(), senha_conf_reg.strip()]):
-                        st.warning("Por favor, preencha todos os campos obrigatórios.")
-                    elif senha_reg != senha_conf_reg:
-                        st.error("❌ As senhas não coincidem.")
-                    elif len(senha_reg) < 6:
-                        st.error("❌ A senha deve ter pelo menos 6 caracteres.")
-                    else:
-                        sucesso, msg = registrar_usuario(
-                            email=email_reg, senha=senha_reg, nome=nome_reg,
-                            telefone=telefone_reg, cpf=cpf_reg, tipo="cidadao"
-                        )
-                        if sucesso:
-                            st.success(msg)
-                            st.session_state["modo_auth_painel"] = "login"
-                            st.balloons()
-                            st.rerun()
+            if st.session_state["modo_auth_painel"] == "login":
+                with st.form("form_login_painel_lgpd_page"):
+                    st.subheader("🔑 Login")
+                    email_login = st.text_input("E-mail*", key="login_email_painel_lgpd_key")
+                    senha_login = st.text_input("Senha*", type="password", key="login_senha_painel_lgpd_key")
+                    login_submit = st.form_submit_button("Entrar")
+
+                    if login_submit:
+                        if not email_login or not senha_login:
+                            st.warning("Por favor, preencha todos os campos.")
                         else:
-                            st.error(msg)
-        exibir_rodape() # Adiciona o rodapé aqui também para páginas de login/registro
+                            sucesso, user_data = autenticar_usuario(email_login, senha_login)
+                            if sucesso:
+                                st.session_state["logado"] = True
+                                st.session_state["email"] = user_data["email"]
+                                st.session_state["tipo_usuario"] = user_data["tipo"]
+                                st.session_state["nome_usuario"] = user_data["nome"]
+                                st.success("✅ Login realizado com sucesso!")
+                                st.rerun()
+                            else:
+                                st.error(f"{user_data}")
+                # NEW_CODE_START
+                # Botão/Link para "Esqueci minha senha" abaixo do formulário de login
+                if st.button("Esqueci minha senha", key="btn_mostrar_reset_senha_link"): # Chave única
+                    st.session_state["mostrar_reset_senha"] = True
+                    st.rerun() 
+                # NEW_CODE_END
+            else: # modo_auth_painel == "registro"
+                with st.form("form_registro_painel_lgpd_page"):
+                    st.subheader("📝 Registro de Novo Usuário")
+                    nome_reg = st.text_input("Nome completo*", key="reg_nome_painel_key")
+                    cpf_reg = st.text_input("CPF ou CNPJ*", max_chars=18, key="reg_cpf_painel_key")
+                    telefone_reg = st.text_input("Telefone*", key="reg_telefone_painel_key")
+                    email_reg = st.text_input("E-mail*", key="reg_email_painel_lgpd_key")
+                    senha_reg = st.text_input("Senha (mínimo 6 caracteres)*", type="password", key="reg_senha_painel_key")
+                    senha_conf_reg = st.text_input("Confirme a senha*", type="password", key="reg_senha_conf_painel_key")
+                    registro_submit = st.form_submit_button("Registrar")
+
+                    if registro_submit:
+                        if not all([nome_reg.strip(), cpf_reg.strip(), telefone_reg.strip(), email_reg.strip(), senha_reg.strip(), senha_conf_reg.strip()]):
+                            st.warning("Por favor, preencha todos os campos obrigatórios.")
+                        elif senha_reg != senha_conf_reg:
+                            st.error("❌ As senhas não coincidem.")
+                        elif len(senha_reg) < 6:
+                            st.error("❌ A senha deve ter pelo menos 6 caracteres.")
+                        else:
+                            sucesso, msg = registrar_usuario(
+                                email=email_reg, senha=senha_reg, nome=nome_reg,
+                                telefone=telefone_reg, cpf=cpf_reg, tipo="cidadao"
+                            )
+                            if sucesso:
+                                st.success(msg)
+                                st.session_state["modo_auth_painel"] = "login"
+                                st.balloons()
+                                st.rerun()
+                            else:
+                                st.error(msg)
+        exibir_rodape() 
         return
 
-    # --- Usuário Logado ---
+
     if not st.session_state.get("logado", False):
         st.warning("⚠️ Sessão de usuário inválida. Por favor, faça login novamente.")
         keys_to_clear_critical = ["logado", "email", "tipo_usuario", "nome_usuario", "modo_auth_painel"]
@@ -214,7 +273,7 @@ def render():
 
         if not usuario_logado_email:
             st.error("❌ E-mail do usuário não identificado para buscar solicitações. Faça login novamente.")
-            st.stop() # Adicionado st.stop() para maior segurança
+            st.stop() 
 
         solicitacoes_query = db.collection("solicitacoes").where("email_solicitante", "==", usuario_logado_email).order_by("data_envio_inicial", direction=firestore.Query.DESCENDING)
         minhas_solicitacoes_docs = solicitacoes_query.stream()
@@ -238,13 +297,12 @@ def render():
                 data_para_exibir_str = s_data.get("ultima_atualizacao", s_data.get("data_envio_inicial"))
 
                 try:
-                    if isinstance(data_para_exibir_str, datetime.datetime): # Se for Timestamp do Firestore
-                        # Garante que é timezone-aware (Firestore server timestamps são UTC)
+                    if isinstance(data_para_exibir_str, datetime.datetime): 
                         data_obj_s = data_para_exibir_str.astimezone(timezone_brasilia) if data_para_exibir_str.tzinfo else timezone_brasilia.localize(data_para_exibir_str)
-                    elif isinstance(data_para_exibir_str, str): # Se for string ISO
+                    elif isinstance(data_para_exibir_str, str): 
                         data_obj_s = datetime.datetime.fromisoformat(data_para_exibir_str).astimezone(timezone_brasilia)
-                    else: # Fallback se o tipo não for esperado
-                        data_obj_s = datetime.datetime.now(timezone_brasilia) # Ou outra data padrão
+                    else: 
+                        data_obj_s = datetime.datetime.now(timezone_brasilia) 
                         st.caption(f"Alerta: Formato de data inesperado para {protocolo_s}: {type(data_para_exibir_str)}")
                     data_formatada_s = data_obj_s.strftime('%d/%m/%Y às %H:%M')
                 except Exception as e_date:
@@ -252,9 +310,12 @@ def render():
                     st.caption(f"Erro ao formatar data para {protocolo_s}: {e_date}")
 
 
-                expander_title = f"**Protocolo:** {protocolo_s} | **Última Interação:** {data_formatada_s} | **Status:** <span style='color:{cor_status_s};font-weight:bold;'>{display_status_s}</span>"
+                expander_title_label = (f"Protocolo: {protocolo_s} | Última Interação: {data_formatada_s}")
 
-                with st.expander(expander_title, expanded=False):
+                with st.expander(expander_title_label, expanded=False):
+                    status_html = f"**Status:** <span style='color:{cor_status_s};font-weight:bold;'>{display_status_s}</span>"
+                    st.markdown(status_html, unsafe_allow_html=True)
+                    st.markdown("---")
                     st.markdown(f"#### Detalhes da Solicitação: {protocolo_s}")
                     st.markdown(f"**Tipo:** {s_data.get('tipo_solicitacao', 'N/A')}")
                     historico_conversa_s = s_data.get("historico", [])
@@ -273,24 +334,24 @@ def render():
                             st.markdown(f"> {msg.get('mensagem', '_Mensagem vazia_')}")
                             anexos_msg_hist = msg.get("anexos_mensagem_urls", [])
                             if anexos_msg_hist:
-                                with st.container(): # Usar container para melhor agrupamento visual
+                                with st.container(): 
                                     st.markdown("_Anexos da mensagem:_")
                                     for anexo_idx, anexo_item in enumerate(anexos_msg_hist):
                                         st.markdown(f"- [{anexo_item.get('nome_arquivo', 'Ver Anexo')}]({anexo_item.get('url')})", unsafe_allow_html=True, key=f"anexo_link_{protocolo_s}_{msg_idx}_{anexo_idx}")
                         st.markdown("---")
 
                     if status_atual_s != "resolvido":
-                        with st.form(key=f"form_continuar_solicitacao_cidadao_{protocolo_s}"): # Chave do formulário mais específica
+                        with st.form(key=f"form_continuar_solicitacao_cidadao_{protocolo_s}"): 
                             nova_mensagem_cidadao = st.text_area(
                                 "📝 Enviar nova mensagem ou responder:",
                                 height=100,
-                                key=f"form_cont_nova_msg_cidadao_input_{protocolo_s}" # Chave do widget
+                                key=f"form_cont_nova_msg_cidadao_input_{protocolo_s}" 
                             )
                             uploaded_files_continua = st.file_uploader(
                                 "📎 Anexar novos arquivos (Opcional)",
                                 type=["jpg", "jpeg", "png", "pdf"],
                                 accept_multiple_files=True,
-                                key=f"form_cont_anexos_cidadao_uploader_{protocolo_s}" # Chave do widget
+                                key=f"form_cont_anexos_cidadao_uploader_{protocolo_s}" 
                             )
                             enviar_nova_msg_btn = st.form_submit_button("📩 Enviar Mensagem")
 
@@ -317,7 +378,7 @@ def render():
                                     }
                                     db.collection("solicitacoes").document(protocolo_s).update({
                                         "historico": firestore.ArrayUnion([nova_entrada_historico]),
-                                        "status": "pendente",
+                                        "status": "pendente", 
                                         "ultima_atualizacao": firestore.SERVER_TIMESTAMP
                                     })
                                     st.success("✅ Mensagem enviada! O IPEM foi notificado.")
@@ -325,17 +386,9 @@ def render():
                     else:
                         st.success("✔️ Esta solicitação foi marcada como resolvida.")
                         st.markdown("💬 _Não é possível enviar novas mensagens para solicitações resolvidas._")
-                    st.markdown("---") # Separador visual para cada solicitação
+                    st.markdown("---") 
+    
+
+    exibir_rodape()
 
 
-def exibir_rodape():
-    st.markdown("---")
-    st.markdown("""
-    <div style="text-align: center; color: gray; margin-top: 40px; font-size: 0.9em;">
-        R. Cristiano França Teixeira Guimarães, 80 - Cinco, Contagem - MG, 32010-130<br>
-        CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335<br>
-        <p style="text-align: center; color: gray;">
-        © 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os direitos reservados.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
