@@ -1,41 +1,36 @@
 import streamlit as st
 import datetime
-import pytz # Para fusos horários
-import os # Para manipulação de caminhos e extensões de arquivo
-import uuid # Para nomes de arquivo únicos
-from firebase_admin import firestore # Apenas firestore se db já importado
-# Importa as funções e variáveis necessárias de login_unificado
+import pytz
+import os
+import uuid
+from firebase_admin import firestore
 from login_unificado import (
-    db, # Instância do Firestore client
-    timezone_brasilia, # Objeto de fuso horário
-    upload_file_to_storage # Função para upload de arquivos
+    db, 
+    timezone_brasilia, 
+    upload_file_to_storage 
 )
 
 def render():
     st.markdown("<h1 style='text-align: center;'>Painel Administrador (Administração)</h1>", unsafe_allow_html=True)
 
-    # Verifica se os serviços do Firebase estão disponíveis
-    if not db or not upload_file_to_storage: # A autenticação é verificada pela sessão
+
+    if not db or not upload_file_to_storage: 
         st.error("❌ Ops! Um ou mais serviços essenciais (como banco de dados ou armazenamento) não estão disponíveis. Verifique a configuração do Firebase e os logs.")
         st.stop()
 
-    # --- Controle de Acesso: Apenas Administradores ---
+
     if not st.session_state.get("logado", False) or st.session_state.get("tipo_usuario") != "admin":
         st.error("🚫 Acesso Negado! Esta página é exclusiva para administradores.")
         st.info("➡️ Por favor, faça login como administrador para visualizar as solicitações.")
-        # Adicionar um botão para redirecionar para a página de login principal, se houver
-        # Exemplo: if st.button("Ir para Login"): st.switch_page("login_principal")
-        return # Interrompe a renderização
+        return 
 
-    # Informações do administrador logado
     admin_nome = st.session_state.get("nome_usuario", "Admin")
     admin_email = st.session_state.get("email", "N/A")
     st.success(f"🔑 Logado como Administrador: {admin_nome} ({admin_email})")
     st.markdown("---")
 
     st.markdown("## 🔍 Filtro e Visualização de Solicitações")
-
-    # --- Controles de Filtragem ---
+    
     col_filtro1, col_filtro2, col_filtro_btn = st.columns([2,2,1])
     with col_filtro1:
         filtro_campo = st.selectbox(
@@ -56,18 +51,15 @@ def render():
                 termo_busca_admin = st.text_input(f"Digite o {filtro_campo}:", key="admin_termo_busca_texto_input")
 
     with col_filtro_btn:
-        st.write("") # Espaçador para alinhar o botão
+        st.write("")
         st.write("")
         if st.button("🔄 Atualizar", key="admin_btn_atualizar_lista", use_container_width=True):
             st.rerun()
 
-    # --- Busca de Solicitações no Firestore ---
     solicitacoes_ref_fs = db.collection("solicitacoes")
 
-    # Aplica filtros de consulta do Firestore quando possível
     if termo_busca_admin:
         if filtro_campo == "Protocolo":
-            # Firestore é case-sensitive para IDs de documento (protocolo)
             solicitacoes_ref_fs = solicitacoes_ref_fs.where("protocolo", "==", termo_busca_admin.strip())
         elif filtro_campo == "Status":
             solicitacoes_ref_fs = solicitacoes_ref_fs.where("status", "==", termo_busca_admin)
@@ -179,7 +171,6 @@ def render():
                                 st.markdown(f"- [{anexo_msg_item_view.get('nome_arquivo', 'Ver Anexo')}]({anexo_msg_item_view.get('url')})", unsafe_allow_html=True)
                 st.markdown("---")
 
-            # --- Ações do Administrador: Responder e Marcar como Resolvido ---
             if status_atual_admin != "resolvido":
                 st.subheader("📬 Responder ao Cidadão / Adicionar Observação")
                 with st.form(key=f"form_resposta_admin_panel_{protocolo_admin}"):
