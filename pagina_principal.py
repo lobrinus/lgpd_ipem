@@ -9,8 +9,6 @@ def render():
     """, unsafe_allow_html=True)
     st.markdown("---")
     
-
-    # Seção de Acesso Rápido
     st.subheader("⚡ Acesso Rápido")
     cols = st.columns([1, 1, 1], gap="small")
     with cols[0]:
@@ -32,7 +30,7 @@ def render():
             use_container_width=True
         )
 
-    # Seção de Contato
+
     with st.container():
         col1, col2 = st.columns([2, 3])
         with col1:
@@ -57,8 +55,8 @@ def render():
             """)
     st.markdown("---")
 
-    # Últimas Notícias (do sistema)
-    st.subheader("📢 Novidades do Portal") # Alterei o título para diferenciar do feed de notícias externas
+   
+    st.subheader("📢 Novidades do Portal") 
     with st.expander("🔔 Atualizações do Sistema (Status: 20/05/2025)"):
         st.markdown("""
         - Novo Painel de Login
@@ -69,7 +67,7 @@ def render():
         """)
     st.markdown("---")
 
-    # Recursos Importantes
+
     st.subheader("📚 Recursos Importantes")
     tab1, tab2, tab3 = st.tabs(["Legislação", "Boas Práticas", "FAQ"])
     with tab1:
