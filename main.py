@@ -24,15 +24,6 @@ try:
 except Exception as e:
     st.sidebar.warning(f"Não foi possível carregar a imagem 'icone_ipem.png': {e}")
 
-with st.sidebar:
-    # Exibe informações do usuário logado
-    if st.session_state.get("logado", False):
-        email_logado_sidebar = st.session_state.get("email", "N/A")
-        nome_logado_sidebar = st.session_state.get("nome_usuario", "") # Obtém o nome da sessão
-        tipo_usuario_sidebar = st.session_state.get("tipo_usuario", "cidadao").capitalize()
-
-        display_name_sidebar = nome_logado_sidebar if nome_logado_sidebar else email_logado_sidebar
-
         st.markdown(
             f"""
             <div style="
@@ -52,22 +43,11 @@ with st.sidebar:
             """,
             unsafe_allow_html=True
         )
-        # Botão de Logout na Sidebar
-        if st.button("🚪 Sair / Logout", key="sidebar_btn_logout_main", use_container_width=True):
-            keys_to_clear = ["logado", "email", "tipo_usuario", "nome_usuario",
-                             "admin_email", "modo_auth_painel", "usuario"] # Adicione outras chaves de sessão
-            for key_clear in keys_to_clear:
-                if key_clear in st.session_state:
-                    del st.session_state[key_clear]
-            st.success("Logout realizado com sucesso!")
-            st.rerun()
-    else:
-        st.info("Bem-vindo(a)! Para interagir com as solicitações, acesse o 'Painel LGPD' e faça login ou registre-se.")
+
 
     # --- Definição do Menu de Navegação ---
     menu_items_sidebar = [
         "Página Principal",
-        "Painel LGPD",
         "Boas Práticas",
         "Orientação de Dados Pessoais",
         "Quem Lida com os Dados",
@@ -112,8 +92,6 @@ with st.sidebar:
 # Cada 'nome_do_arquivo.py' deve ter uma função render()
 PAGES = {
     "Página Principal": "pagina_principal",
-    "Painel LGPD": "painel_lgpd",
-    "Painel Administrador": "painel_administrador", # Apenas para admin
     "Boas Práticas": "boas_praticas",
     "Orientação de Dados Pessoais": "orientacao_dados",
     "Quem Lida com os Dados": "quem_lida",
@@ -129,27 +107,6 @@ PAGES = {
 if pagina_selecionada_sidebar in PAGES:
     module_name = PAGES[pagina_selecionada_sidebar]
 
-    # Tratamento especial para a página de admin
-    if module_name == "solicitacoes_recebidas":
-        if st.session_state.get("logado", False) and st.session_state.get("tipo_usuario") == "admin":
-            try:
-                module = __import__(module_name)
-                module.render()
-            except ImportError:
-                st.error(f"Módulo '{module_name}.py' não encontrado. Verifique o nome do arquivo.")
-            except AttributeError:
-                st.error(f"Módulo '{module_name}.py' não possui a função 'render()'.")
-            except Exception as e_render:
-                st.error(f"Erro ao renderizar a página '{pagina_selecionada_sidebar}': {e_render}")
-        else:
-            # Se não for admin e tentar acessar, redireciona ou mostra erro
-            st.error("🚫 Acesso negado. Esta página é exclusiva para administradores.")
-            st.info("Se você é um administrador, por favor, faça login.")
-            if st.button("Ir para Login no Painel LGPD", key="redirect_login_admin_main"):
-                # Para mudar a página via código, você precisaria de uma lógica mais complexa
-                # ou usar st.experimental_set_query_params e tratar na próxima execução.
-                # A forma mais simples é instruir o usuário.
-                st.warning("Por favor, selecione 'Painel LGPD' no menu para fazer login.")
     else:
         # Para todas as outras páginas
         try:
