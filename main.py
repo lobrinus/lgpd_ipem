@@ -8,14 +8,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Importa login_unificado para garantir que o Firebase seja inicializado.
-# Essencial para que st.session_state e db estejam disponíveis globalmente se necessário.
-try:
-    import login_unificado
-except ImportError:
-    st.error("ERRO CRÍTICO: O arquivo 'login_unificado.py' não foi encontrado. A aplicação não pode continuar.")
-    st.stop() # Impede a execução do restante da aplicação
-
 # --- Barra Lateral (Sidebar) ---
 # Certifique-se que 'icone_ipem.png' está na pasta raiz ou forneça o caminho correto.
 # Exemplo se estiver em uma subpasta: "img_lgpd/icone_ipem.png"
