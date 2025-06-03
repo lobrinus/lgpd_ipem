@@ -58,16 +58,11 @@ def render():
     </style>
     """, unsafe_allow_html=True)
     
-    # HEADER
     st.markdown("<h1 style='text-align: center; color: #000000;'>📜 Política de Privacidade</h1>", unsafe_allow_html=True)
     st.markdown("---")
     
-    # ABAS
     aba1, aba2, aba3 = st.tabs(["📑 Base Legal", "📖 Glossário", "⏳ Linha do Tempo"])
     
-    ########################
-    # ABA 1 - BASE LEGAL
-    ########################
     with aba1:
         st.subheader("📑 Base Legal Aplicável ")
         
@@ -128,9 +123,6 @@ def render():
         </p>
         """, unsafe_allow_html=True)
     
-    ########################
-    # ABA 2 - GLOSSÁRIO
-    ########################
     with aba2:
         st.subheader("📖 Glossário LGPD")
     
@@ -159,9 +151,6 @@ def render():
             st.markdown("Hipóteses previstas na lei que autorizam o tratamento de dados pessoais.")
     
     
-    ########################
-    # ABA 3 - LINHA DO TEMPO
-    ########################
     with aba3:
         st.subheader("⏳ Histórico de Atualizações da Política de Privacidade")
     
@@ -256,8 +245,6 @@ def render():
         """, unsafe_allow_html=True)
     
     
-    
-    #  Introdução
     st.markdown("""
     <div class="policy-container">
         <h2 class="section-title"> Introdução</h2>
@@ -269,7 +256,6 @@ def render():
     """, unsafe_allow_html=True)
     
     
-    # Alterações na Política
     st.markdown("""
     <div class="policy-container">
         <h2 class="section-title"> Alterações na Política</h2>
@@ -281,8 +267,7 @@ def render():
     </div>
     """, unsafe_allow_html=True)
     
-    
-    #  Definições
+
     st.markdown("""
     <div class="policy-container">
         <h2 class="section-title"> Definições</h2>
@@ -295,8 +280,7 @@ def render():
     </div>
     """, unsafe_allow_html=True)
     
-    
-    # CSS para estilização de quadros
+
     st.markdown("""
     <style>
         .container-section {
@@ -334,7 +318,6 @@ def render():
     </style>
     """, unsafe_allow_html=True)
     
-    # CSS básico para estilização
     st.markdown("""
         <style>
             .finalidade-card {
@@ -361,11 +344,10 @@ def render():
         </style>
     """, unsafe_allow_html=True)
     
-    # Seção: Dados Coletados
+
     st.header("Dados Coletados")
     st.markdown("O IPEM-MG coleta os seguintes dados, organizados de acordo com sua natureza:")
     
-    # Layout com colunas nativas para quadros
     col1, col2 = st.columns(2)
     
     with col1:
@@ -397,7 +379,6 @@ def render():
         </div>
         """, unsafe_allow_html=True)
     
-    #  Finalidades do Tratamento
     st.markdown("""
     <div class="policy-container">
         <h2 class="section-title"> Finalidades do Tratamento</h2>
@@ -521,16 +502,14 @@ def render():
             </div>
             """, unsafe_allow_html=True)
     
-    st.markdown("</div>", unsafe_allow_html=True)  # Fecha o container
+    st.markdown("</div>", unsafe_allow_html=True)
     
-    #  Compartilhamento de Dados
     st.markdown("""
     <div class="policy-container">
         <h2 class="section-title"> Compartilhamento de Dados</h2>
         <p>O IPEM-MG poderá compartilhar dados pessoais com:</p>
     """, unsafe_allow_html=True)
     
-    # Dados em formato estruturado para fácil manutenção
     compartilhamento = [
         {
             "icone": "🏛️",
