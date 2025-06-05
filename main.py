@@ -8,16 +8,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- Barra Lateral (Sidebar) ---
-# Certifique-se que 'icone_ipem.png' está na pasta raiz ou forneça o caminho correto.
-# Exemplo se estiver em uma subpasta: "img_lgpd/icone_ipem.png"
 try:
     st.sidebar.image("icone_ipem.png", use_container_width=True)
 except Exception as e:
     st.sidebar.warning(f"Não foi possível carregar a imagem 'icone_ipem.png': {e}")
 
-# --- Definição do Menu de Navegação ---
-# Removida a lógica de login e painel admin
+
 menu_items_sidebar = [
     "Página Principal",
     "Boas Práticas",
@@ -34,7 +30,7 @@ menu_icons_sidebar = ["house-door-fill", "person-badge-fill", "patch-check-fill"
                       "people-fill", "file-earmark-text-fill", "shield-lock-fill", "bank",
                       "hand-thumbs-up-fill", "arrows-angle-contract", "question-circle-fill"]
 
-with st.sidebar: # Garante que o menu apareça na sidebar
+with st.sidebar:
     try:
         pagina_selecionada_sidebar = option_menu(
             "Menu Principal",
@@ -54,8 +50,6 @@ with st.sidebar: # Garante que o menu apareça na sidebar
         st.error(f"Erro ao renderizar o menu de navegação: {e_option_menu}")
         st.stop()  # Impede a continuação se o menu falhar
 
-# --- Lógica de Renderização de Páginas ---
-# Cada 'nome_do_arquivo.py' deve ter uma função render()
 PAGES = {
     "Página Principal": "pagina_principal",
     "Boas Práticas": "boas_praticas",
