@@ -1,10 +1,9 @@
 from streamlit_option_menu import option_menu
 import streamlit as st
 
-# Configuração da página (deve ser o primeiro comando Streamlit)
 st.set_page_config(
     page_title="Portal LGPD - IPEM-MG",
-    page_icon="📘",  # Ou o caminho para um ícone .png/.ico, ex: "img_lgpd/icone.png"
+    page_icon="📘",
     layout="wide"
 )
 
@@ -26,7 +25,7 @@ menu_items_sidebar = [
     "Fluxo de Dados LGPD",
     "FAQ"
 ]
-menu_icons_sidebar = ["house-door-fill", "person-badge-fill", "patch-check-fill", "search-heart-fill",
+menu_icons_sidebar = ["house-door-fill", "patch-check-fill", "search-heart-fill",
                       "people-fill", "file-earmark-text-fill", "shield-lock-fill", "bank",
                       "hand-thumbs-up-fill", "arrows-angle-contract", "question-circle-fill"]
 
@@ -36,19 +35,24 @@ with st.sidebar:
             "Menu Principal",
             options=menu_items_sidebar,
             icons=menu_icons_sidebar,
-            menu_icon="list-stars",  # Ícone do menu
+            menu_icon="list-stars",
             default_index=0,
             orientation="vertical",
             styles={
-                "container": {"padding": "5px !important", "background-color": "#f0f2f6"},  # Cor de fundo suave
-                "icon": {"color": "#0d6efd", "font-size": "20px"},  # Azul para ícones
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#dde"},
-                "nav-link-selected": {"background-color": "#0d6efd", "color": "white"},  # Azul para selecionado
+                "container": {"padding": "5px !important", "background-color": "transparent"},
+                "icon": {"color": "#0d6efd", "font-size": "20px"},
+                "nav-link": {
+                    "font-size": "16px",
+                    "text-align": "left",
+                    "margin": "0px",
+                    "--hover-color": "#44475a" # Uma cor de hover que funciona bem em ambos os modos
+                },
+                "nav-link-selected": {"background-color": "#0d6efd", "color": "white"},
             }
         )
     except Exception as e_option_menu:
         st.error(f"Erro ao renderizar o menu de navegação: {e_option_menu}")
-        st.stop()  # Impede a continuação se o menu falhar
+        st.stop()
 
 PAGES = {
     "Página Principal": "pagina_principal",
@@ -63,7 +67,6 @@ PAGES = {
     "FAQ": "faq"
 }
 
-# Verifica se a página selecionada existe no mapeamento
 if pagina_selecionada_sidebar in PAGES:
     module_name = PAGES[pagina_selecionada_sidebar]
     try:
