@@ -1,7 +1,5 @@
 import streamlit as st
 from PIL import Image
-from login_unificado import autenticar_usuario, registrar_usuario
-# CSS personalizado
 
 def render():
     st.markdown("""
