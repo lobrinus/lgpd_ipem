@@ -3,45 +3,57 @@ import streamlit as st
 def render():
     st.markdown("""
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-    }
+    /* Estilos Gerais */
     .main .block-container {
         padding-left: 2rem;
         padding-right: 2rem;
         max-width: 100%;
     }
+
+    /* --- CORREÇÃO PARA DARK MODE --- */
+    /* Define os quadros para usarem as cores do tema do Streamlit */
     .section, .sidebar-section {
-        border: 2px solid black;
+        border: 1px solid #4F4F4F; /* Uma cor de borda neutra que funciona bem em ambos os modos */
         border-radius: 10px;
         padding: 20px;
         margin-bottom: 20px;
-        background-color: #f9f9f9;
+        /* Usa a cor de fundo secundária do tema, que muda automaticamente entre claro e escuro */
+        background-color: var(--secondary-background-color);
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
-    .sidebar-section {
-        background-color: #e8f5e9;
-    }
+
+    /* Define o texto dos cabeçalhos dentro dos quadros para usar a cor de texto do tema */
     .section h3, .sidebar-section h3 {
-        color: black;
+        /* Usa a cor de texto principal do tema, que muda automaticamente entre preto e branco */
+        color: var(--text-color);
         font-weight: bold;
     }
+
+    /* O texto dentro das listas (li) herdará a cor do tema automaticamente, 
+       desde que não seja forçado para outra cor. */
     .section ul, .sidebar-section ul {
         padding-left: 20px;
     }
+
+    /* Mantém as outras regras que não causam problemas de cor */
     .highlight {
         font-weight: bold;
-        color: black;
+        color: black; /* O destaque amarelo com texto preto geralmente funciona bem em ambos os modos */
         background-color: #ffeb3b;
     }
+
+    /* Adapta a seção de FAQ para usar as cores do tema */
     .faq-section {
         border: 2px solid #FF9800;
         border-radius: 10px;
         padding: 20px;
         margin-bottom: 20px;
-        background-color: #FFF3E0;
+        /* Também adapta a cor de fundo */
+        background-color: var(--secondary-background-color);
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
+
+    /* A cor do título do FAQ (laranja) tem bom contraste em ambos os modos */
     .faq-title {
         color: #FF9800;
         font-weight: bold;
@@ -59,10 +71,8 @@ def render():
     **privacidade e segurança de dados**:
     """)
 
-    # Layout dividido em colunas
     col1, col2, col3 = st.columns([2, 4, 2])
 
-    # Sidebar esquerda
     with col1:
         st.markdown("""
         <div class="sidebar-section">
@@ -86,7 +96,6 @@ def render():
         </div>
         """, unsafe_allow_html=True)
 
-    # Conteúdo principal
     with col2:
         st.markdown("""
         <div class="section">
@@ -143,7 +152,6 @@ def render():
         </div>
         """, unsafe_allow_html=True)
 
-    # Sidebar direita
     with col3:
         st.markdown("""
         <div class="sidebar-section">
@@ -156,7 +164,6 @@ def render():
         </div>
         """, unsafe_allow_html=True)
 
-    # Rodapé
     st.markdown("""<hr>""", unsafe_allow_html=True)
     st.markdown("""
     <div style="text-align: center; color: gray;">
