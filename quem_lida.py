@@ -42,7 +42,7 @@ def render():
     st.markdown("""
     **Definição:** Intermediador entre controlador, titulares e ANPD.
 
-    **No IPEM-MG:** [Nome do Encarregado], designado por portaria.
+    **No IPEM-MG:** Leonardo Marafeli, designado por portaria.
 
     **Atribuições:**
     - Aceitar reclamações de titulares  
