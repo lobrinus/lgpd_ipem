@@ -87,13 +87,13 @@ def render():
         st.markdown("""
         **Perguntas Frequentes:**
         
-        P: Como solicitar exclusão de dados? <br>
+        P: Como solicitar exclusão de dados?  
         R: Através do Painel LGPD ou formulário específico de contato com o DPO.
         
-        P: Quanto tempo demora uma resposta à minha solicitação? <br>
+        P: Quanto tempo demora uma resposta à minha solicitação?  
         R: O prazo padrão é de até 15 dias, podendo ser prorrogado mediante justificativa, dependendo da complexidade.
         
-        P: Posso acessar dados de terceiros através do portal? <br>
+        P: Posso acessar dados de terceiros através do portal?  
         R: Não. O acesso é restrito aos dados do próprio titular, salvo representação legal ou autorização judicial.
         """)
 
@@ -106,6 +106,7 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone: (31) 3399-7100 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
 
 
 
