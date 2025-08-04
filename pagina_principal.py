@@ -30,13 +30,12 @@ def render():
             use_container_width=True
         )
 
-
     with st.container():
         col1, col2 = st.columns([2, 3])
         with col1:
             st.subheader("📞 Contato do Encarregado de Dados")
             st.markdown("""
-            **Encarregado (DPO):** Leonardo Silva Marafeli  
+            **Encarregado (DPO):** Leonardo Silva Marafeli
             **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)  
             **Telefone:** (31) 3399-7100  
             **Horário:** 8h às 18h (dias úteis)  
@@ -66,8 +65,6 @@ def render():
         - Treinamento LGPD para servidores (em andamento).
         """)
     st.markdown("---")
-
-
     st.subheader("📚 Recursos Importantes")
     tab1, tab2, tab3 = st.tabs(["Legislação", "Boas Práticas", "FAQ"])
     with tab1:
@@ -89,24 +86,27 @@ def render():
     with tab3:
         st.markdown("""
         **Perguntas Frequentes:**
-        P: Como solicitar exclusão de dados?
+        
+        P: Como solicitar exclusão de dados? <br>
         R: Através do Painel LGPD ou formulário específico de contato com o DPO.
-
-        P: Quanto tempo demora uma resposta à minha solicitação?
+        
+        P: Quanto tempo demora uma resposta à minha solicitação? <br>
         R: O prazo padrão é de até 15 dias, podendo ser prorrogado mediante justificativa, dependendo da complexidade.
-
-        P: Posso acessar dados de terceiros através do portal?
+        
+        P: Posso acessar dados de terceiros através do portal? <br>
         R: Não. O acesso é restrito aos dados do próprio titular, salvo representação legal ou autorização judicial.
         """)
+
     # Rodapé
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: gray; margin-top: 40px; font-size:0.9em;">
         © 2025 IPEM-MG. Todos os direitos reservados.<br>
         R. Cristiano França Teixeira Guimarães, 80 - Cinco, Contagem - MG, 32010-130<br>
-        CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
+        CNPJ: 17.322.264/0001-64 | Telefone: (31) 3399-7100 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
 
 
 
