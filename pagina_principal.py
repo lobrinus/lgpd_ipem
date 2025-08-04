@@ -8,7 +8,6 @@ def render():
     <h1 style='text-align: center;'>🏠 Bem Vindo ao Portal LGPD - IPEM-MG</h1>
     """, unsafe_allow_html=True)
     st.markdown("---")
-    
     st.subheader("⚡ Acesso Rápido")
     cols = st.columns([1, 1, 1], gap="small")
     with cols[0]:
@@ -36,9 +35,9 @@ def render():
             st.subheader("📞 Contato do Encarregado de Dados")
             st.markdown("""
             **Encarregado (DPO):** Leonardo Silva Marafeli
-            **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)  
-            **Telefone:** (31) 3399-7100  
-            **Horário:** 8h às 18h (dias úteis)  
+            **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)
+            **Telefone:** (31) 3399-7100
+            **Horário:** 8h às 18h (dias úteis)
             **Endereço:**
             Rua Cristiano França Teixeira Guimarães, 80
             Bairro Cinco - Contagem/MG
@@ -106,6 +105,7 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone: (31) 3399-7100 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
 
 
 
