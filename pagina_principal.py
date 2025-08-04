@@ -97,6 +97,15 @@ def render():
 
         P: Posso acessar dados de terceiros através do portal?
         R: Não. O acesso é restrito aos dados do próprio titular, salvo representação legal ou autorização judicial.
+
+        P: O que acontece caso haja vazamento de dados?
+        R: Os seguintes passos serão tomados caso tenha algum vazamento de dados, 
+        1. Contenção do Incidente,
+        2. Avaliação do Dano,
+        3. Comunicação aos Clientes Afetados,
+        4. Notificação à Autoridade Nacional de Proteção de Dados (ANPD),
+        5. Oferecimento de Suporte e Orientações,
+        6. Medidas Corretivas
         """)
     # Rodapé
     st.markdown("---")
@@ -107,4 +116,5 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
 
