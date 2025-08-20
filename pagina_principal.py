@@ -34,7 +34,7 @@ def render():
         with col1:
             st.subheader("📞 Contato do Encarregado de Dados")  
             st.markdown("""
-            **Encarregado (DPO):** Leonardo Silva Marafeli  
+            **Encarregado (DPO): Leonardo Silva Marafeli**
             **E-mail:** [encarregado.data@ipem.mg.gov.br](mailto:encarregado.data@ipem.mg.gov.br)  
             **Telefone:** (31) 3399-7100  
             **Horário:** 8h às 18h (dias úteis)  
@@ -105,6 +105,7 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone: (31) 3399-7100 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
 
 
 
