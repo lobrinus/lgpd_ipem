@@ -42,7 +42,7 @@ def render():
     st.markdown("""
     **Definição:** Intermediador entre controlador, titulares e ANPD.
 
-    **No IPEM-MG:** Leonardo Marafeli, designado por portaria.
+    **No IPEM-MG:** Leonardo Marafeli, designado pela Portaria Ipem-MG nº 078, de 09 de setembro de 2021.
 
     **Atribuições:**
     - Aceitar reclamações de titulares  
@@ -85,3 +85,4 @@ def render():
         </p>
     </div>
     """, unsafe_allow_html=True)
+
