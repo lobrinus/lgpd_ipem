@@ -10,14 +10,14 @@ def render():
     with col1:
         st.subheader("✅ O Que Fazer")
         st.markdown("""
-        - Coletar apenas dados necessários para a finalidade declarada
-        - Manter os dados atualizados e precisos
-        - Armazenar em ambiente seguro com acesso controlado
-        - Excluir dados quando não forem mais necessários
-        - Registrar todas as operações de tratamento
-        - Comunicar incidentes ao Encarregado imediatamente
+        - Bloqueie seu computador sempre que se ausentar da sua mesa
+        - Use senhas fortes, com letras, números e símbolos
+        - Guarde documentos físicos com dados pessoais em gavetas ou armários trancados
+        - Ao imprimir, retire o documento da impressora imediatamente
+        - Utilize apenas o e-mail institucional para assuntos de trabalho
+        - Em caso de dúvida sobre um e-mail suspeito (phishing), contate o setor de TI
         - Usar canais seguros para compartilhar dados
-        - Solicitar orientação em caso de dúvidas
+        - Compartilhe dados apenas quando necessário e com quem tem a devida autorização para recebê-los
         """)
     
     with col2:
@@ -63,3 +63,4 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
