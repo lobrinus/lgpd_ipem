@@ -36,7 +36,10 @@ def render():
         """)
     
     st.markdown("---")
-    st.subheader("Situações Comuns do Dia a Dia")
+    
+    # --- LINHA ALTERADA ---
+    # Trocamos st.subheader por st.markdown para permitir a centralização
+    st.markdown("<h3 style='text-align: center;'>Situações Comuns do Dia a Dia</h3>", unsafe_allow_html=True)
 
     # Nova seção de Situações Comuns com duas colunas
     col3, col4 = st.columns(2)
@@ -85,3 +88,7 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
+
+# Para testar, você pode adicionar a chamada da função no final
+# if __name__ == '__main__':
+#     render()
