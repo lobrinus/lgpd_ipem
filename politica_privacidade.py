@@ -199,14 +199,14 @@ def render():
             </div>
           </div>
           <div class="timeline-container right">
-            <div class="date">05/2025</div>
+            <div class="date">03/2025</div>
             <div class="timeline-content">
               <h4>Revisão Geral</h4>
               <p>Ajustes nos tópicos de Direitos dos Titulares e Compartilhamento de Dados.</p>
             </div>
           </div>
           <div class="timeline-container left">
-            <div class="date">05/2025</div>
+            <div class="date">04/2025</div>
             <div class="timeline-content">
               <h4>Inclusão de Formulário LGPD</h4>
               <p>Adicionado formulário para solicitação de dados pessoais.</p>
@@ -280,4 +280,5 @@ def render():
         <p>© 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os direitos reservados.</p>
     </div>
     """, unsafe_allow_html=True)
+
 
