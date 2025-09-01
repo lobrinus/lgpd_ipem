@@ -2,56 +2,78 @@ import streamlit as st
 
 def render():
     st.markdown("""
-    <h1 style='text-align: center;'>✅ O Que Fazer e Não Fazer</h1>
+    <h1 style='text-align: center;'>✅ O Que Fazer e Não Fazer ❌</h1>
     """, unsafe_allow_html=True)
-    st.markdown("---")  
+    st.markdown("---") 
+    
+    # Seção Principal de Do's and Don'ts
     col1, col2 = st.columns(2)
     
     with col1:
         st.subheader("✅ O Que Fazer")
         st.markdown("""
-        - Bloqueie seu computador sempre que se ausentar da sua mesa
-        - Use senhas fortes, com letras, números e símbolos
-        - Guarde documentos físicos com dados pessoais em gavetas ou armários trancados
-        - Ao imprimir, retire o documento da impressora imediatamente
-        - Utilize apenas o e-mail institucional para assuntos de trabalho
-        - Em caso de dúvida sobre um e-mail suspeito (phishing), contate o setor de TI
-        - Usar canais seguros para compartilhar dados
-        - Compartilhe dados apenas quando necessário e com quem tem a devida autorização para recebê-los
+        - **Bloqueie o computador** sempre que se ausentar da sua mesa.
+        - **Use senhas fortes**, com letras, números e símbolos.
+        - **Guarde documentos físicos** em gavetas ou armários trancados.
+        - **Retire impressões** da impressora imediatamente.
+        - **Use apenas o e-mail institucional** para trabalho.
+        - **Contate o setor de TI** em caso de e-mail suspeito (phishing).
+        - **Use canais seguros** para compartilhar dados.
+        - **Compartilhe dados apenas com autorização** e real necessidade.
         """)
     
     with col2:
         st.subheader("❌ O Que Não Fazer")
         st.markdown("""
-        - Coletar dados sem base legal ou consentimento
-        - Manter dados além do tempo necessário
-        - Armazenar em locais não autorizados (ex: pendrives)
-        - Compartilhar dados sem verificar a necessidade
-        - Enviar dados por e-mail não criptografado
-        - Ignorar solicitações de titulares
-        - Deixar sistemas desprotegidos ou sem senha
-        - Tentar esconder violações ou incidentes
+        - **Coletar dados** sem base legal ou finalidade clara.
+        - **Manter dados** além do tempo necessário para a finalidade.
+        - **Armazenar em locais não autorizados** (Ex: pendrives pessoais).
+        - **Compartilhar dados** sem verificar a real necessidade.
+        - **Enviar dados sensíveis** por meios não seguros.
+        - **Ignorar solicitações** de titulares de dados.
+        - **Deixar sistemas desprotegidos** ou sem senha.
+        - **Tentar esconder** violações ou incidentes de segurança.
         """)
     
     st.markdown("---")
-    st.subheader("Situações Comuns")
-    st.markdown("""
-    <strong>Recebimento de solicitação de titular:</strong><br>
-    ✅ Encaminhar imediatamente ao Encarregado<br>
-    ❌ Tentar resolver por conta própria ou ignorar<br><br>
-    
-    <strong>Identificação de dado desatualizado:</strong><br>
-    ✅ Atualizar ou marcar para correção<br>
-    ❌ Manter o dado incorreto no sistema<br><br>
-    
-    <strong>Necessidade de compartilhar dados com terceiro:</strong><br>
-    ✅ Verificar contrato/cláusula de proteção<br>
-    ❌ Enviar sem medidas de segurança adequadas<br><br>
-    
-    <strong>Descoberta de violação:</strong><br>
-    ✅ Comunicar imediatamente ao DPO<br>
-    ❌ Tentar resolver sem registro ou tentar esconder
-    """, unsafe_allow_html=True)
+    st.subheader("Situações Comuns do Dia a Dia")
+
+    # Nova seção de Situações Comuns com duas colunas
+    col3, col4 = st.columns(2)
+
+    with col3:
+        st.markdown("""
+        #### ✅ Ações Corretas
+        
+        **Ao receber uma solicitação de titular:**
+        - Encaminhar imediatamente ao Encarregado (DPO).
+
+        **Ao identificar um dado desatualizado:**
+        - Atualizar ou solicitar a correção no sistema.
+
+        **Ao precisar compartilhar dados com terceiro:**
+        - Verificar se o contrato possui cláusula de proteção de dados.
+
+        **Ao descobrir uma violação de dados:**
+        - Comunicar imediatamente ao Encarregado (DPO).
+        """)
+
+    with col4:
+        st.markdown("""
+        #### ❌ Ações Incorretas
+        
+        **Ao receber uma solicitação de titular:**
+        - Tentar resolver por conta própria ou ignorar.
+
+        **Ao identificar um dado desatualizado:**
+        - Manter o dado incorreto no sistema.
+
+        **Ao precisar compartilhar dados com terceiro:**
+        - Enviar sem medidas de segurança adequadas.
+
+        **Ao descobrir uma violação de dados:**
+        - Tentar resolver sem registro ou esconder o fato.
+        """)
 
     
     # Rodapé
@@ -63,4 +85,3 @@ def render():
         CNPJ: 17.322.264/0001-64 | Telefone:  (31) 3399-7134 / 08000 335 335
     </div>
     """, unsafe_allow_html=True)
-
