@@ -213,10 +213,10 @@ def render():
             </div>
           </div>
           <div class="timeline-container right">
-            <div class="date">05/2025</div>
+            <div class="date">04/2025</div>
             <div class="timeline-content">
               <h4>Atualização de Transparência</h4>
-              <p>Adição da tabela de base legal, glossário LGPD e histórico de atualizações.</p>
+              <p>Instituida a Portaria Ipem-MG nº 25, de 03 de abril de 2025, que define novos membros com o objetivo de promover a implementação das disposições da Lei nº 13.709/2018 (LGPD), no âmbito do Ipem-MG</p>
             </div>
           </div>
         </div>
@@ -280,3 +280,4 @@ def render():
         <p>© 2025 IPEM-MG. Promovendo privacidade e segurança de dados. Todos os direitos reservados.</p>
     </div>
     """, unsafe_allow_html=True)
+
